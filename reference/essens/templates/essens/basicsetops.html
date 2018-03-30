@@ -1,0 +1,1307 @@
+{% extends 'essens/base.html' %}
+{% load staticfiles %}
+{% block content %}
+            {% if user.is_authenticated %}
+                <div class="page-container">
+
+                    <h2 class="top-menu">Hello {{ user.username }},</h2>
+                    <p>Please choose from below options.</p>
+
+                </div>
+            {% endif %}
+            <div class="content container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="links">
+                            <!-- Example row of columns -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                       <div class="caption">
+                                            <h2>Basic SetOps</h2>
+                                            <p>The code in this file is used for basic input and output. </p>
+                                           <p> This is further sub-divided as follows</p>
+                                           <ul>
+                                               <li><h4>Level - 0</h4></li>
+                                               <ul>
+                                                   <li><h4>1. Compare Elements</h4></li>
+                                                   <p> The Code for compare elements are mentioned below. </p>
+                                                   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_SetOps/Level0/compare_elements.hpp" download="compare_elements">Compare Elements</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Compares Two Elements a,b</font>
+<font color="#008000">//returns 0 if a==b</font>
+<font color="#008000">//returns -1 if a<b< font="">
+<font color="#008000">//returns +1 if a&gt;b</font>
+
+<font color="#008000">/****** Compares Relations *******/</font>
+
+<font color="#008000">//Single Elements</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">int</font> compare(AnyType e1, AnyType e2)
+{ <font color="#0000ff">if</font>(e1==e2){<font color="#0000ff">return</font> 0;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(e1&lt;e2){<font color="#0000ff">return</font> 1;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(e1&gt;e2){<font color="#0000ff">return</font> -1;}
+}
+
+<font color="#008000">//Pairs of Elements</font>
+<font color="#008000">//Options</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">int</font> compare(pair&lt;Type1, Type2&gt; e1, pair &lt;Type1, Type2&gt; e2, <font color="#0000ff">const</font> string &amp;opt)
+{ <font color="#0000ff">int</font> val=-100;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"first"</font>){val=compare(e1.first, e2.first); <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"second"</font>){val=compare(e1.second, e2.second); <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"both"</font>){val=!(!compare(e1.first, e2.first) &amp;&amp; !compare(e1.second, e2.second)); <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//Defaul--no match</font>
+cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR:: ** Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; val=-100;
+<font color="#0000ff">return</font> val;
+}
+
+<font color="#008000">//Deafult</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">int</font> compare(pair&lt;Type1, Type2&gt; e1, pair &lt;Type1, Type2&gt; e2)
+{ <font color="#0000ff">return</font> compare(e1, e2, <font color="#ff0000">"both"</font>);}
+
+<font color="#008000">//Strings</font>
+<font color="#0000ff">int</font> compare (string s1, string s2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(s1.compare(s2)==0) {<font color="#0000ff">return</font> 0;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(s1.compare(s2)&gt;0) {<font color="#0000ff">return</font> 1;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(s1.compare(s2)&lt;0) {<font color="#0000ff">return</font> -1;}
+}
+
+<font color="#008000">//Edges</font>
+<font color="#008000">//0 if equal</font>
+<font color="#008000">//1 if not</font>
+<font color="#008000">//-1 if edge_wt is less</font>
+
+
+<font color="#008000">//Options</font>
+<font color="#0000ff">int</font> compare( Edge e1, Edge e2, <font color="#0000ff">const</font> string &amp;opt)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> val=-100;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Comparing Only one element"</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"node1"</font>) {val=compare(e1.node1, e2.node1); <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"node2"</font>) {val=compare(e1.node2, e2.node2); <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"wt"</font>) {val=compare(e1.edge_wt, e2.edge_wt); <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;   <font color="#008000">//Comparing both ends	</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt== <font color="#ff0000">"end_dir"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">if</font>( (compare(e1.node1,e2.node1)==0) &amp;&amp; (compare(e1.node2,e2.node2)==0)) {val=0;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{val=1;}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt== <font color="#ff0000">"end_undir"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">if</font>( (compare(e1.node1,e2.node1)==0) &amp;&amp; (compare(e1.node2,e2.node2)==0)) {val=0;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>( (compare(e1.node1,e2.node2)==0) &amp;&amp; (compare(e1.node2,e2.node1)==0)){val=0;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;     <font color="#0000ff">else</font>{val=1;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Matches any one end</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt== <font color="#ff0000">"any_dir"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">if</font>( (compare(e1.node1,e2.node1)==0) || (compare(e1.node2,e2.node2)==0)) {val=0;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{val=1;}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt== <font color="#ff0000">"any_undir"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">if</font>( (compare(e1.node1,e2.node1)==0) || (compare(e1.node2,e2.node2)==0)) {val=0;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>( (compare(e1.node1,e2.node2)==0) || (compare(e1.node2,e2.node1)==0)){val=0;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{val=1;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;   <font color="#008000">//Comparing all features	</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt== <font color="#ff0000">"all_dir"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">if</font>( (compare(e1.node1,e2.node1)==0) &amp;&amp; (compare(e1.node2,e2.node2)==0)&amp;&amp; (compare(e1.edge_wt,e2.edge_wt)==0)) {val=0;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{val=1;}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt== <font color="#ff0000">"all_undir"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">if</font>( (compare(e1.edge_wt,e2.edge_wt)==0))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">if</font>( (compare(e1.node1,e2.node1)==0) &amp;&amp; (compare(e1.node2,e2.node2)==0)) {val=0;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;       <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;        <font color="#0000ff">if</font>( (compare(e1.node1,e2.node2)==0) &amp;&amp; (compare(e1.node2,e2.node1)==0)){val=0;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{val=1;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    <font color="#0000ff">else</font>{val=1;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> val;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Defaul--no match</font>
+&nbsp;&nbsp;&nbsp;&nbsp;      cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR:: -- Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; val=-100;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> val;
+}
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">int</font> compare( Edge e1, Edge e2)
+{ <font color="#0000ff">return</font> compare(e1, e2, <font color="#ff0000">"end_dir"</font>);}
+
+
+
+<font color="#008000">/******* End of Functions **************/</font></b<></font></pre><font color="#008000">
+</font></code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <li><h4>2. Extract Elements</h4></li>
+                                                   <p> The Code for Extract elements are mentioned below. </p>
+                                                   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_SetOps/Level0/extract_elements.hpp" download="extract_elements">Extract Elements</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Extracts Relevant Information From Structure</font>
+
+
+
+
+<font color="#008000">//Pairs of Elements</font>
+<font color="#008000">//all</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> get(pair&lt;Type1, Type2&gt; e1, <font color="#0000ff">const</font> string &amp;opt, pair&lt;Type1, Type2&gt; *entry)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"all"</font>){*entry=e1;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::  Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//first </font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> get(pair&lt;Type1, Type2&gt; e1, <font color="#0000ff">const</font> string &amp;opt, Type1* entry)
+{ &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"first"</font>){*entry=e1.first;}
+&nbsp;&nbsp; <font color="#0000ff">else</font>{cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::  ^^^^Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; }
+&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//second</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> get(pair&lt;Type1, Type2&gt; e1, <font color="#0000ff">const</font> string &amp;opt, Type2* entry)
+{ &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"second"</font>){*entry=e1.second;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::  Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; }
+
+
+<font color="#0000ff">return</font>;
+}
+
+
+<font color="#008000">//Edges</font>
+<font color="#0000ff">void</font> get(Edge e1, <font color="#0000ff">const</font> string &amp;opt, <font color="#0000ff">int</font> *entry)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"node1"</font>){*entry=e1.node1;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"node2"</font>){*entry=e1.node2;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> { cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::  Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of first else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">void</font> get(Edge e1, <font color="#0000ff">const</font> string &amp;opt, int_int *entry)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"ends"</font>){entry-&gt;first=e1.node1; entry-&gt;second=e1.node2;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> { cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::  Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">void</font> get(Edge e1, <font color="#0000ff">const</font> string &amp;opt, <font color="#0000ff">double</font> *entry)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"wt"</font>){*entry=e1.edge_wt;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> { cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::  Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#0000ff">void</font> get(Edge e1, <font color="#0000ff">const</font> string &amp;opt, Edge *entry)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"all"</font>){*entry=e1;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> { cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::  Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//Single Elements</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get(Type1 e1, <font color="#0000ff">const</font> string &amp;opt, Type1* entry)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"all"</font>) {*entry=e1;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::  ...Option"</font> &lt;&lt; opt &lt;&lt; <font color="#ff0000">"Not Defined \n"</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//As a vector operation</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> get_all(vector&lt;Type1&gt; Elements, <font color="#0000ff">const</font> string &amp;opt, vector&lt;Type2&gt; *Entries)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; Entries-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Type2 entry;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;Elements.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get(Elements[i], opt, &amp;entry);
+&nbsp;&nbsp;&nbsp;&nbsp; Entries-&gt;push_back(entry);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#008000">/******* End of Functions **************/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <li><h4>3. Permute Elements</h4></li>
+                                                   <p> The Code for Extract elements are mentioned below. </p>
+                                                   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_SetOps/Level0/permute_elements.hpp" download="permute_elements">Permute Elements</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****** Permute a Vector of Integers *******/</font>
+
+<font color="#0000ff">int</font> factorial(<font color="#0000ff">int</font> i)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> fact=1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1)
+&nbsp;&nbsp;&nbsp;&nbsp; { fact=fact*i;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i=i-1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(i==0) {<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> fact;
+}
+
+
+<font color="#008000">//Assume list is sorted</font>
+vector&lt;<font color="#0000ff">int</font>&gt; permute_elements(<font color="#0000ff">int</font> nodes, <font color="#0000ff">int</font> max_val)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; perm_num;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; mynums;
+&nbsp;&nbsp;&nbsp;&nbsp; mynums.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;nodes; j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {mynums.push_back(j);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; srand (time(NULL));
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> iters=rand()%max_val+10000;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+&nbsp;&nbsp;&nbsp;&nbsp; perm_num=mynums;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(i!=iters)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> a=rand()%mynums.size();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> b=rand()%mynums.size();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> temp=perm_num[a];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; perm_num[a]=perm_num[b];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; perm_num[b]=temp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i++;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> perm_num;
+}
+
+<font color="#008000">/******* End of Functions **************/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                               </ul>
+                                               <li><h4>Level - 1</h4></li>
+                                               <ul>
+                                                   <li><h4> ADJ </h4></li>
+                                                   <p><h4>Select Elements</h4> </p>
+                                                           <p> The code is mentioned below </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_SetOps/Level1/ADJ/select_elements.hpp" download="select_elements"> Select Elements </a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****** Functions to Select Set of Network Elements *******/</font>
+<font color="#008000">//Pick Two Random Edges that are disconnected</font>
+<font color="#0000ff">void</font> pick_random_2edges(A_Network X, vector&lt;Edge&gt; *edges)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Inititialize</font>
+&nbsp;&nbsp;&nbsp;&nbsp; edges-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> v1, v2,v3,v4,ind, wt;
+&nbsp;&nbsp;&nbsp;&nbsp; int_double dummy;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; Edge mye;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; nodes_selected;
+&nbsp;&nbsp;&nbsp;&nbsp; nodes_selected.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Select first Edge  </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Select first node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; srand (time(NULL));
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; v1=rand()%nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Select connector from adjacency list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; srand (time(NULL));
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ind=rand()%X[v1].ListW.size();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; v2=X[v1].ListW[ind].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; wt=X[v1].ListW[ind].second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; nodes_selected.push_back(v1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; nodes_selected.push_back(v2);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; mye=create(v1,v2,wt);
+&nbsp;&nbsp;&nbsp;&nbsp; edges-&gt;push_back(mye);
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Keep Selecting second edge until condition met</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Select first node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; srand (time(NULL));
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; v3=rand()%nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//go back if v3 been selected</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(contains(nodes_selected,v3)) {<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//go back if v2 connected to v3</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    <font color="#0000ff">if</font>(contains_sort(v2, X[v3].ListW,<font color="#ff0000">"first"</font>)){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Select connector from adjacency list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; srand (time(NULL));
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ind=rand()%X[v3].ListW.size();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; v4=X[v3].ListW[ind].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; wt=X[v3].ListW[ind].second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   <font color="#008000">//go back if v4 been selected</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    <font color="#0000ff">if</font>(contains(nodes_selected,v4)) {<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//go back if v4 connected to v1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   <font color="#0000ff">if</font>(contains_sort(v4,X[v1].ListW, <font color="#ff0000">"first"</font>)){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">break</font>;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  mye=create(v3,v4,wt);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  edges-&gt;push_back(mye);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">//Pick Random Edges; Edges are distinct but may or may not be connected</font>
+<font color="#008000">//If in=TRUE pick edges that are in the network</font>
+<font color="#008000">//If in ==FALSE pick edges that are NOT in the network</font>
+<font color="#0000ff">void</font> pick_random_edges(A_Network X, vector&lt;Edge&gt; *edges, <font color="#0000ff">int</font> num, <font color="#0000ff">bool</font> in)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Inititialize</font>
+&nbsp;&nbsp;&nbsp;&nbsp; edges-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> v1, v2,a,b,ind, wt;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; src;
+&nbsp;&nbsp;&nbsp;&nbsp; src.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; dest;
+&nbsp;&nbsp;&nbsp;&nbsp; dest. clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; int_double dummy;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; Edge mye;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; nodes_selected;
+&nbsp;&nbsp;&nbsp;&nbsp; nodes_selected.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> it=0;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; v2=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(it &lt; num)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Select first Edge  </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Select first node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; srand (v2+time(0));
+&nbsp;&nbsp;&nbsp;&nbsp; v1=rand()%nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(in)&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Select connector from adjacency list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; srand (v1+time(0));
+&nbsp;&nbsp;&nbsp;&nbsp; ind=rand()%X[v1].ListW.size();
+&nbsp;&nbsp;&nbsp;&nbsp; v2=X[v1].ListW[ind].first;
+&nbsp;&nbsp;&nbsp;&nbsp; wt=X[v1].ListW[ind].second;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Select connector from adjacency list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; srand (v1+time(0));
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; v2=rand()%nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//check if it is not connected</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(v2, X[v1].ListW, <font color="#ff0000">"first"</font>) &amp;&amp; (!(v1==v2))){wt=1; <font color="#0000ff">break</font>;};
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//out when we find the vertex</font>
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; a=min(v1,v2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; b=max(v1,v2);
+&nbsp;&nbsp;&nbsp;&nbsp; mye=create(a,b,wt);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//check if edge is not alread selected add it</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(*edges, mye))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { *edges=merge(mye,*edges); it++;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//cout &lt;&lt; it &lt;&lt;"==\n";</font>
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/******* End of Functions **************/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <li><h4> Order Elements </h4></li>
+                                                           <p> The code is mentioned below </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_SetOps/Level1/order_elements.hpp" download="order_elements"> Order Elements </a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****** Functions to Denote Order *******/</font>
+
+<font color="#008000">//-------Increasing order</font>
+
+
+<font color="#008000">//Pairs of Elements</font>
+<font color="#008000">//--increment by first</font>
+&nbsp; <font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> inc_first(AnyType e1, AnyType e2)
+{
+&nbsp;&nbsp; <font color="#0000ff">if</font>(compare(e1.first,e2.first)==0)
+&nbsp;&nbsp; { <font color="#0000ff">return</font> (compare(e1.second, e2.second)==1);}
+&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">return</font> (compare(e1.first, e2.first)==1);}
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> inc_first_only(AnyType e1, AnyType e2)
+{ <font color="#0000ff">return</font> (compare(e1.first, e2.first)==1);}
+
+<font color="#008000">//--increment by second</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> inc_second(AnyType e1, AnyType e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(compare(e1.second,e2.second)==0)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (compare(e1.first, e2.first)==1);}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (compare(e1.second, e2.second)==1);}
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> inc_second_only(AnyType e1, AnyType e2)
+{ <font color="#0000ff">return</font> (compare(e1.second, e2.second)==1);}
+
+<font color="#008000">//Default </font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType1, <font color="#0000ff">class</font> AnyType2&gt;
+<font color="#0000ff">bool</font> inc( pair&lt;AnyType1, AnyType2&gt; e1, pair&lt;AnyType1, AnyType2&gt; e2)
+{ <font color="#0000ff">return</font> inc_first(e1,e2);}
+
+
+<font color="#008000">//Strings</font>
+<font color="#0000ff">bool</font> inc(<font color="#0000ff">const</font> string s1, <font color="#0000ff">const</font> string s2){ <font color="#0000ff">return</font> (s1.compare(s2)&lt;=0); }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//Edges</font>
+<font color="#008000">//--increment by node1</font>
+<font color="#0000ff">bool</font> inc_node1(Edge e1,  Edge e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(e1.node1==e2.node1)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (e1.node2 &lt;e2.node2);}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (e1.node1 &lt; e2.node1);}
+}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//--increment by node2</font>
+<font color="#0000ff">bool</font> inc_node2( Edge e1, Edge e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(e1.node2==e2.node2)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (e1.node1 &lt;e2.node1);}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (e1.node2 &lt; e2.node2);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+}&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+
+<font color="#008000">//--increment by weight</font>
+<font color="#0000ff">bool</font> inc_wt( Edge e1, Edge e2)
+{ <font color="#0000ff">return</font> (compare(e1.edge_wt,e2.edge_wt)==1);}
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">bool</font> inc( Edge e1,  Edge e2)
+{ <font color="#0000ff">return</font> inc_node1(e1,e2);}
+
+<font color="#008000">//Single Elements</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> inc(AnyType e1,  AnyType e2) { <font color="#0000ff">return</font> (compare(e1,e2)==1);}
+
+<font color="#008000">/******* End of Functions **************/</font>
+
+
+
+<font color="#008000">//-------Decreasing order</font>
+
+
+<font color="#008000">//Pairs of Elements</font>
+<font color="#008000">//--decrement by first</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> dec_first(AnyType e1, AnyType e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(compare(e1.first,e2.first)==0)
+&nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">return</font> (compare(e1.second, e2.second)==-1);}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">return</font> (compare(e1.first, e2.first)==-1);}
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> dec_first_only(AnyType e1, AnyType e2)
+{ <font color="#0000ff">return</font> (compare(e1.first, e2.first)==-1);}
+
+<font color="#008000">//--increment by second</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> dec_second(AnyType e1, AnyType e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(compare(e1.second,e2.second)==0)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (compare(e1.first, e2.first)==-1);}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (compare(e1.second, e2.second)==-1);}
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> decc_second_only(AnyType e1, AnyType e2)
+{ <font color="#0000ff">return</font> (compare(e1.second, e2.second)==-1);}
+
+<font color="#008000">//Default </font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType1, <font color="#0000ff">class</font> AnyType2&gt;
+<font color="#0000ff">bool</font> dec( pair&lt;AnyType1, AnyType2&gt; e1, pair&lt;AnyType1, AnyType2&gt; e2)
+{ <font color="#0000ff">return</font> dec_first(e1,e2);}
+
+<font color="#008000">//Strings</font>
+<font color="#0000ff">bool</font> dec (string s1, string s2){ <font color="#0000ff">return</font> (s1.compare(s2)&gt;0); }
+
+<font color="#008000">//Edges</font>
+<font color="#008000">//--decrement by node1</font>
+<font color="#0000ff">bool</font> dec_node1( Edge e1, Edge e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(compare(e1.node1,e2.node1)==0)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (compare(e1.node2, e2.node2)==-1);}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (compare(e1.node1, e2.node1)==-1);}
+}
+
+<font color="#008000">//--decrement by node2</font>
+<font color="#0000ff">bool</font> dec_node2( Edge e1, Edge e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(compare(e1.node2,e2.node2)==0)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font> (compare(e1.node1, e2.node1)==-1);}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">return</font>(compare(e1.node2, e2.node2)==-1);}
+}&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+
+<font color="#008000">//--decrement by weight</font>
+<font color="#0000ff">bool</font> dec_wt( Edge e1, Edge e2) {<font color="#0000ff">return</font> (compare(e1.edge_wt, e2.edge_wt)==-1);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">bool</font> dec( Edge e1,  Edge e2)
+{ <font color="#0000ff">return</font> dec_node1(e1,e2);}
+
+<font color="#008000">//Single Elements</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> dec(AnyType e1,  AnyType e2) { <font color="#0000ff">return</font> (compare(e1,e2)==-1);}
+<font color="#008000">/******* End of Functions **************/</font>
+
+
+
+<font color="#008000">/*** Functions to Denote Equality*********/</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> eq(<font color="#0000ff">const</font> AnyType e1,  <font color="#0000ff">const</font> AnyType e2) { <font color="#0000ff">return</font> (e1==e2);}
+
+<font color="#008000">//Pairs of Elements</font>
+<font color="#008000">//--equality by first</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> eq_first(AnyType e1, AnyType e2) { <font color="#0000ff">return</font> (e1.first==e2.first);}
+
+<font color="#008000">//--equality by second</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> eq_second(AnyType e1, AnyType e2) { <font color="#0000ff">return</font> (e1.second==e2.second);}
+
+<font color="#008000">//--equality by first and second</font>
+<font color="#008000">/*template &lt;class AnyType&gt;
+bool eq(AnyType e1, AnyType e2) { return ((e1.first==e2.first) &amp;&amp; (e1.second==e2.second));}*/</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//Edges</font>
+<font color="#008000">//--equality by node1</font>
+<font color="#0000ff">bool</font> eq_node1( Edge e1, Edge e2) {<font color="#0000ff">return</font> ((e1.node1==e2.node1)) ; }
+<font color="#008000">//--equality by node2</font>
+<font color="#0000ff">bool</font> eq_node2( Edge e1, Edge e2) {<font color="#0000ff">return</font> (e1.node2==e2.node2); }&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//--equality by weight</font>
+<font color="#0000ff">bool</font> eq_wt( Edge e1, Edge e2) {<font color="#0000ff">return</font> (e1.edge_wt==e2.edge_wt); }
+<font color="#008000">//--equality by node1 and node2</font>
+<font color="#0000ff">bool</font> eq_both( Edge e1, Edge e2) {<font color="#0000ff">return</font> ((e1.node1==e2.node1) &amp;&amp; (e1.node2==e2.node2)); }
+<font color="#008000">//--equality by node1 and node2 and weight</font>
+<font color="#0000ff">bool</font> eq( Edge e1, Edge e2) {<font color="#0000ff">return</font> ((e1.node1==e2.node1) &amp;&amp; (e1.node2==e2.node2) &amp;&amp; (e1.edge_wt==e2.edge_wt) ); }
+
+<font color="#008000">//Strings</font>
+<font color="#008000">//Check strings</font>
+<font color="#0000ff">bool</font> eq(<font color="#0000ff">const</font> string s1, <font color="#0000ff">const</font> string s2){ <font color="#0000ff">return</font> ( (s1.compare(s2)&lt;0) ); }
+
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">/*** Functions to Denote Non Equality*********/</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> neq(<font color="#0000ff">const</font> AnyType &amp;e1,  <font color="#0000ff">const</font> AnyType &amp;e2) { <font color="#0000ff">return</font> (!(e1==e2));}
+
+<font color="#008000">//Pairs of Elements</font>
+<font color="#008000">//--equality by first</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> neq_first(AnyType e1, AnyType e2) { <font color="#0000ff">return</font> (!(e1.first==e2.first));}
+
+<font color="#008000">//--equality by second</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> neq_second(AnyType e1, AnyType e2) { <font color="#0000ff">return</font> (!(e1.second==e2.second));}
+
+
+<font color="#008000">/******* End of Functions **************/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                               </ul>
+                                               <li><h4>Level - 2</h4></li>
+                                               <ul>
+                                                   <li><h4>1. Binary Set Opertaions </h4></li>
+                                                   <p> The code is mentioned below </p>
+                                                   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_SetOps/Level2/binary_set_operations.hpp" download="binary_set_operations"> Binary Set Operations </a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Assumes elements are unique</font>
+<font color="#008000">//Elements should be sorted in increasing order</font>
+<font color="#008000">//Intersection</font>
+<font color="#008000">//Difference</font>
+<font color="#008000">//Subset</font>
+<font color="#008000">//Sorted Merge</font>
+
+<font color="#008000">/******Intersect Two Sets ***/</font>
+<font color="#008000">//Should be sorted</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; intersect(vector&lt;AnyType&gt; elista, vector&lt;AnyType&gt; elistb,<font color="#0000ff">bool</font> (func) ( AnyType, AnyType))
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Create output vector</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;AnyType&gt; elistc;
+&nbsp;&nbsp;&nbsp;&nbsp; elistc.resize(elista.size()+elistb.size());
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">typename</font> std::vector&lt;AnyType&gt;::iterator it;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Execute intersection</font>
+&nbsp;&nbsp;&nbsp;&nbsp; it=set_intersection(elista.begin(),elista.end(), elistb.begin(), elistb.end(), elistc.begin(), func);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Resize output</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  elistc.resize(it-elistc.begin());
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> elistc;
+}
+
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; intersect(vector&lt;AnyType&gt; elista, vector&lt;AnyType&gt; elistb)
+{ <font color="#0000ff">return</font> intersect(elista, elistb, inc);}
+
+<font color="#008000">/******Find Difference of A-B ***/</font>
+<font color="#008000">//Should be sorted</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; difference(vector&lt;AnyType&gt; elista, vector&lt;AnyType&gt; elistb, <font color="#0000ff">bool</font> (func) (AnyType, AnyType))
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Create output vector</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;AnyType&gt; elistc;
+&nbsp;&nbsp;&nbsp;&nbsp; elistc.resize(elista.size());
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">typename</font> std::vector&lt;AnyType&gt;::iterator it;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Execute intersection</font>
+&nbsp;&nbsp;&nbsp;&nbsp; it=set_difference(elista.begin(),elista.end(), elistb.begin(), elistb.end(), elistc.begin(),func);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Resize output</font>
+&nbsp;&nbsp;&nbsp;&nbsp; elistc.resize(it-elistc.begin());
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> elistc;
+}
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; difference(vector&lt;AnyType&gt; elista, vector&lt;AnyType&gt; elistb)
+{ <font color="#0000ff">return</font> difference(elista, elistb, inc);}
+
+
+
+
+<font color="#008000">/********Merge Lists A and B***********/</font>
+<font color="#008000">//Should be sorted</font>
+<font color="#008000">//has Repeats</font>
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; merge(vector&lt;AnyType&gt; elista, vector&lt;AnyType&gt; elistb, <font color="#0000ff">bool</font> (func) (AnyType, AnyType))
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Create output vector</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;AnyType&gt; elistc;
+&nbsp;&nbsp;&nbsp;&nbsp; elistc.resize(elista.size()+elistb.size());
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">typename</font> std::vector&lt;AnyType&gt;::iterator it;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Execute intersection</font>
+&nbsp;&nbsp;&nbsp;&nbsp; it=merge(elista.begin(),elista.end(), elistb.begin(), elistb.end(), elistc.begin(), func);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Resize output</font>
+&nbsp;&nbsp;&nbsp;&nbsp; elistc.resize(it-elistc.begin());
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> elistc;
+}
+<font color="#008000">/***** End of Function ***/</font>
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; merge(vector&lt;AnyType&gt; elista, vector&lt;AnyType&gt; elistb)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Create output vector</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> merge(elista, elistb, inc);
+}
+<font color="#008000">/***** End of Function ***/</font>
+
+
+<font color="#008000">//Should be sorted</font>
+<font color="#008000">//has Repeats</font>
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; merge(AnyType e1, vector&lt;AnyType&gt; elistb, <font color="#0000ff">bool</font> (func) (AnyType, AnyType))
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Create vector of element</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;AnyType&gt; elista;
+&nbsp;&nbsp;&nbsp;&nbsp; elista.resize(1);
+&nbsp;&nbsp;&nbsp;&nbsp; elista[0]=e1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Create output vector</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;AnyType&gt; elistc;
+&nbsp;&nbsp;&nbsp;&nbsp; elistc.resize(1+elistb.size());
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">typename</font> std::vector&lt;AnyType&gt;::iterator it;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Execute intersection</font>
+&nbsp;&nbsp;&nbsp;&nbsp; it=merge(elista.begin(),elista.end(), elistb.begin(), elistb.end(), elistc.begin(),func);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Resize output</font>
+&nbsp;&nbsp;&nbsp;&nbsp; elistc.resize(it-elistc.begin());
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> elistc;
+}
+
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; merge(AnyType e1, vector&lt;AnyType&gt; elistb)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;AnyType&gt; e1_vec;
+&nbsp;&nbsp;&nbsp;&nbsp; e1_vec.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; e1_vec.push_back(e1);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> merge(e1_vec,elistb);
+}
+
+
+
+<font color="#008000">//Subset</font>
+<font color="#008000">//Checks if B is a subset of A</font>
+<font color="#008000">//Should be sorted</font>
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> issubset(vector&lt;AnyType&gt; elista, vector&lt;AnyType&gt; elistb, <font color="#0000ff">bool</font> (func) (AnyType, AnyType))
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find Intersection</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;AnyType&gt; elistc=intersect(elista, elistb, func);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if Intersection equal to B</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> (elistc.size()==elistb.size());
+}
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">bool</font> issubset(vector&lt;AnyType&gt; elista, vector&lt;AnyType&gt; elistb)
+{ <font color="#0000ff">return</font> issubset(elista, elistb, inc);}
+<font color="#008000">//******* End of Functions **************/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <li><h4>2. Unary Set Opertaions </h4></li>
+                                                   <p> The code is mentioned below </p>
+                                                   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_SetOps/Level2/unary_set_operations.hpp" download="unary_set_operations"> Unary Set Operations </a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//All These Functions are Defined in  STL C++</font>
+<font color="#008000">//The compare function has been modified to accomodate different datasets</font>
+
+
+<font color="#008000">//Change from list to vector</font>
+<font color="#008000">//This will be obsolete when we do template for containers</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; list_to_vector(list&lt;AnyType&gt; mylist)
+{
+vector&lt;AnyType&gt; new_node;
+new_node.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<font color="#0000ff">while</font>(!mylist.empty())
+{
+&nbsp;&nbsp;&nbsp;&nbsp; new_node.push_back(mylist.back());
+&nbsp;&nbsp;&nbsp;&nbsp; mylist.pop_back();
+}<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> new_node;
+}
+<font color="#008000">/******* End of Functions **************/</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<font color="#008000">//Sort</font>
+<font color="#008000">/******Sort Vectors of Elements***/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> sort(vector&lt;AnyType&gt; *e1, <font color="#0000ff">bool</font> (func) (<font color="#0000ff">const</font> AnyType , <font color="#0000ff">const</font> AnyType))
+{  sort(e1-&gt;begin(), e1-&gt;end(), func); <font color="#0000ff">return</font>;}
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> sort(vector&lt;AnyType&gt; *e1)
+{  sort(e1, inc); <font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">//Heap Functions</font>
+<font color="#008000">/******Creating Heap from Vectors of Elements***/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> make_heap(vector&lt;AnyType&gt; *e1, <font color="#0000ff">bool</font> (func) (<font color="#0000ff">const</font> AnyType , <font color="#0000ff">const</font> AnyType))
+{ make_heap(e1-&gt;begin(), e1-&gt;end(), func); <font color="#0000ff">return</font>;}
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> make_heap(vector&lt;AnyType&gt; *e1)
+{ make_heap(e1, inc); <font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">/******Pop Top of Heap from Vectors of Elements***/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> pop_heap(vector&lt;AnyType&gt; *e1, <font color="#0000ff">bool</font> (func) (<font color="#0000ff">const</font> AnyType , <font color="#0000ff">const</font> AnyType))
+{ pop_heap(e1-&gt;begin(), e1-&gt;end(), func);
+&nbsp;&nbsp; e1-&gt;pop_back();
+&nbsp; <font color="#0000ff">return</font>;}
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> pop_heap(vector&lt;AnyType&gt; *e1)
+{ pop_heap(e1, inc);
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">/******Push into Heap one Elements***/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> push_heap(vector&lt;AnyType&gt; *e1, AnyType a, <font color="#0000ff">bool</font> (func) (<font color="#0000ff">const</font> AnyType , <font color="#0000ff">const</font> AnyType))
+{e1-&gt;push_back(a);
+&nbsp; push_heap(e1-&gt;begin(), e1-&gt;end(), func); <font color="#0000ff">return</font>;}
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> push_heap(vector&lt;AnyType&gt; *e1, AnyType a)
+{ push_heap(e1,a, inc); <font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Functions **************/</font>
+
+
+<font color="#008000">/******Push into Heap multiple Elements***/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> push_heap(vector&lt;AnyType&gt; *e1, vector&lt;AnyType&gt; a, <font color="#0000ff">bool</font> (func) (<font color="#0000ff">const</font> AnyType , <font color="#0000ff">const</font> AnyType))
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;a.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; e1-&gt;push_back(a[i]);
+push_heap(e1-&gt;begin(), e1-&gt;end(), func);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">//Max Min</font>
+<font color="#008000">/******Find Max from Vectors of Elements***/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+AnyType max_element(vector&lt;AnyType&gt; e1, <font color="#0000ff">bool</font> (func) (<font color="#0000ff">const</font> AnyType , <font color="#0000ff">const</font> AnyType))
+{<font color="#0000ff">return</font> *max_element(e1.begin(), e1.end(), func);}
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+AnyType max_element(vector&lt;AnyType&gt; e1)
+{<font color="#0000ff">return</font> max_element(e1, inc);}
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">/******Find Min from Vectors of Elements***/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+AnyType min_element(vector&lt;AnyType&gt; e1, <font color="#0000ff">bool</font> (func) (<font color="#0000ff">const</font> AnyType , <font color="#0000ff">const</font> AnyType))
+{<font color="#0000ff">return</font> *min_element(e1.begin(), e1.end(), func);}
+
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+AnyType min_element(vector&lt;AnyType&gt; e1)
+{<font color="#0000ff">return</font> min_element(e1, inc);}
+<font color="#008000">/******* End of Functions **************/</font>
+
+
+<font color="#008000">//Contains</font>
+<font color="#008000">/****Checks if Given Element in Vector ******/</font>
+
+
+<font color="#008000">//reduce Type1, Type2 ==&gt; Type3</font>
+<font color="#008000">//Finds index of given value; else returns -1;</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2, <font color="#0000ff">class</font> Type3 &gt;
+<font color="#0000ff">bool</font> contains(vector&lt;Type1&gt; e1, <font color="#0000ff">const</font> string &amp;opt1, Type2 e2, <font color="#0000ff">const</font> string &amp;opt2, Type3 common)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; Type3 entry1, entry2;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; get(e2,opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {   get(e1[i], opt1, &amp;entry1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(entry1,entry2)) {found=<font color="#0000ff">true</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> found;
+}
+
+<font color="#008000">//Finds indices of all matching values; else returns -1;</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2, <font color="#0000ff">class</font> Type3 &gt;
+<font color="#0000ff">void</font> contains(vector&lt;Type1&gt; e1, <font color="#0000ff">const</font> string &amp;opt1, Type2 e2, <font color="#0000ff">const</font> string &amp;opt2, Type3 common, vector&lt;<font color="#0000ff">int</font>&gt; *index)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; index-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Type3 entry1, entry2;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; get(e2,opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {   get(e1[i], opt1, &amp;entry1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(entry1,entry2)) {index-&gt;push_back(i);}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#008000">//Returns indices and values of all matching values; else returns -1;</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2, <font color="#0000ff">class</font> Type3 &gt;
+<font color="#0000ff">void</font> contains(vector&lt;Type1&gt; e1, <font color="#0000ff">const</font> string &amp;opt1, Type2 e2, <font color="#0000ff">const</font> string &amp;opt2, Type3 common, vector&lt;Type1&gt; *elements, vector&lt;<font color="#0000ff">int</font>&gt; *index)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; elements-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; index-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Type3 entry1, entry2;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;Type1, <font color="#0000ff">int</font>&gt; myEs;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; get(e2,opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {   get(e1[i], opt1, &amp;entry1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(entry1,entry2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {elements-&gt;push_back(e1[i]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; index-&gt;push_back(i);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">///////////////</font>
+
+<font color="#008000">//Finds index of given value; else returns -1;</font>
+<font color="#008000">//Assumes the vector is sorted in increasing order. Therefore breaks when reaches higher numbers</font>
+
+<font color="#0000ff">bool</font> binary_search(vector&lt;<font color="#0000ff">int</font>&gt; e1, <font color="#0000ff">int</font> e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; found=binary_search(e1.begin(), e1.end(),e2);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> found;
+}
+
+<font color="#008000">//reduce Type2 ==&gt; Type1</font>
+<font color="#008000">//Finds index of given value; else returns -1;</font>
+<font color="#008000">//Assumes the vector is sorted in increasing order. Therefore breaks when reaches higher numbers</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2 &gt;
+<font color="#0000ff">bool</font> contains_sort(vector&lt;Type1&gt; e1, Type2 e2, <font color="#0000ff">const</font> string &amp;opt2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; Type1 entry2;
+&nbsp;&nbsp;&nbsp;&nbsp; get(e2,opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(e1[i],entry2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {found=<font color="#0000ff">true</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(compare(e1[i],entry2)&lt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">break</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> found;
+}
+
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2 &gt;
+<font color="#0000ff">bool</font> contains_sort(Type2 e2, vector&lt;Type1&gt; e1, <font color="#0000ff">const</font> string &amp;opt2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; Type2 entry2;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get(e1[i],opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(e2,entry2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {found=<font color="#0000ff">true</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(compare(entry2,e2)&lt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">break</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> found;
+}
+
+<font color="#008000">//Finds index of given value; else returns -1;</font>
+<font color="#008000">//Assumes the vector is sorted in increasing order. Therefore breaks when reaches higher numbers</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">bool</font> contains_sort(vector&lt;Type1&gt; e1, Type1 e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(e1[i],e2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {found=<font color="#0000ff">true</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(compare(e1[i],e2)&lt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">break</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> found;
+}
+
+
+
+
+<font color="#008000">///////////////////</font>
+<font color="#008000">//reduce Type2 ==&gt; Type1</font>
+<font color="#008000">//Finds index of given value; else returns -1;</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2 &gt;
+<font color="#0000ff">bool</font> contains(vector&lt;Type1&gt; e1, Type2 e2, <font color="#0000ff">const</font> string &amp;opt2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; Type1 entry2;
+&nbsp;&nbsp;&nbsp;&nbsp; get(e2,opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(e1[i],entry2))
+&nbsp;&nbsp;&nbsp;&nbsp; {found=<font color="#0000ff">true</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> found;
+}
+
+<font color="#008000">//First Element is large</font>
+<font color="#008000">//Finds indices of all matching values; else returns -1;</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> contains(vector&lt;Type1&gt; e1, <font color="#0000ff">const</font> string &amp;opt2, Type2 e2,  vector&lt;<font color="#0000ff">int</font>&gt; *index)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; index-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Type2 entry2;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get(e1[i],opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(e2,entry2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {index-&gt;push_back(i);}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//Returns indices and values of all matching values; else returns -1;</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> contains(vector&lt;Type1&gt; e1, <font color="#0000ff">const</font> string &amp;opt2, Type2 e2,  vector&lt;Type1&gt; *elements, vector&lt;<font color="#0000ff">int</font>&gt; *index)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; elements-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; index-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Type2 entry2;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get(e1[i],opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(e2,entry2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {elements-&gt;push_back(e1[i]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; index-&gt;push_back(i);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//Second Element is large</font>
+<font color="#008000">//Finds indices of all matching values; else returns -1;</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> contains(vector&lt;Type1&gt; e1, Type2 e2, <font color="#0000ff">const</font> string &amp;opt2, vector&lt;<font color="#0000ff">int</font>&gt; *index)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; index-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Type1 entry2;
+&nbsp;&nbsp;&nbsp;&nbsp; get(e2,opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(e1[i],entry2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {index-&gt;push_back(i);}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//Returns indices and values of all matching values; else returns -1;</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> contains(vector&lt;Type1&gt; e1, Type2 e2, <font color="#0000ff">const</font> string &amp;opt2, vector&lt;Type1&gt; *elements, vector&lt;<font color="#0000ff">int</font>&gt; *index)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; elements-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; index-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Type1 entry2;
+&nbsp;&nbsp;&nbsp;&nbsp; get(e2,opt2,&amp;entry2);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!compare(e1[i],entry2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {elements-&gt;push_back(e1[i]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; index-&gt;push_back(i);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#008000">//Default;</font>
+<font color="#008000">//Finds index of given value; else returns -1; compares exact elements</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">bool</font> contains(vector&lt;Type1&gt; e1, Type1 e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {   <font color="#0000ff">if</font>(!compare(e1[i],e2))
+&nbsp;&nbsp;&nbsp;&nbsp; {found=<font color="#0000ff">true</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> found;
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> contains(vector&lt;Type1&gt; e1, Type1 e2, vector&lt;<font color="#0000ff">int</font>&gt; *index)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; index-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;e1.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {   <font color="#0000ff">if</font>(!compare(e1[i],e2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {index-&gt;push_back(i);}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/***********************/</font>
+
+
+<font color="#008000">//Unique</font>
+<font color="#008000">//Set should be sorted</font>
+<font color="#008000">/******Create Unique Vectors of Elements***/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+vector&lt;AnyType&gt; unique(vector&lt;AnyType&gt; e1, <font color="#0000ff">bool</font> (func) (AnyType , AnyType))
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;AnyType&gt; Out;
+&nbsp;&nbsp;&nbsp;&nbsp; Out=e1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get unique elements</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">typename</font> vector&lt;AnyType&gt;::iterator it;
+&nbsp;&nbsp;&nbsp;&nbsp; it=unique(Out.begin(), Out.end(), func);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Resize to get unique elements only</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Out.resize(distance(Out.begin(),it));
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> Out;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+}
+
+<font color="#008000">/******* End of Function **************/</font>
+
+<font color="#008000">//Unique based on a particular field</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+vector&lt;Type1&gt; unique(vector&lt;Type1&gt; e1, <font color="#0000ff">const</font> string &amp;opt, <font color="#0000ff">bool</font> (func) (Type2 , Type2), Type2 common)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Type1&gt; Out, elements;
+&nbsp;&nbsp;&nbsp;&nbsp; Out.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Type2&gt; entry;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; index;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Extract Fields</font>
+&nbsp;&nbsp;&nbsp;&nbsp; get_all(e1, opt, &amp;entry);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Unique Based on Fields</font>
+&nbsp;&nbsp;&nbsp;&nbsp; entry=unique(entry, func);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find entries in Oe1 that match</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;entry.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { contains(e1,opt,entry[i],&amp;elements, &amp;index);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Out.push_back(elements[0]);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font> Out;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******* End of Function **************/</font>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Default</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   <font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   vector&lt;AnyType&gt; unique(vector&lt;AnyType&gt; e1)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   vector&lt;AnyType&gt; Out;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   Out=unique(e1,eq);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   <font color="#0000ff">return</font> Out;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">/***** Max and Min ******/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                               </ul>
+                                           </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </body>
+    </html>
+{% endblock %}

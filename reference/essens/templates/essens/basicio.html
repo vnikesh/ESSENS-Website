@@ -1,0 +1,1873 @@
+{% extends 'essens/base.html' %}
+{% load staticfiles %}
+{% block content %}
+            {% if user.is_authenticated %}
+                <div class="page-container">
+
+                    <h2 class="top-menu">Hello {{ user.username }},</h2>
+                    <p>Please choose from below options.</p>
+
+                </div>
+            {% endif %}
+            <div class="content container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="links">
+                            <!-- Example row of columns -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                       <div class="caption">
+                                            <h2>Basic IO</h2>
+                                            <p>The code in this file is used for basic input and output. </p>
+                                           <p> This is further sub-divided as follows</p>
+                                           <ul>
+                                               <li><h4>Format</h4></li>
+                                               <ul>
+                                                   <li><h4>Input</h4></li>
+                                                   <p> The USER gives the basic inputs here and it is further categoried as follows</p>
+                                                   <ul>
+                                                       <li><h4>Level-1</h4></li>
+                                                       <p>The Level 1 is then further divided as Follows</p>
+                                                       <ul>
+                                                           <li><h4> ADJ </h4></li>
+                                                           <p><h4>1. Create Network</h4> </p>
+                                                           <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Input/Level1/ADJ/create_network.hpp" download="create_network">ADJ - Create Network</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+
+																	   <code>
+<pre>
+<font color="#008000">//==Level1 Functions</font>
+<font color="#008000">//Edges are sorted</font>
+<font color="#008000">//create_Network (creates ADJ network)</font>
+
+<font color="#008000">/**** Storing Network in Adjacency List ******/</font>
+<font color="#0000ff">void</font> create_Network(vector&lt;Edge&gt; *b, <font color="#0000ff">int</font> bf_size, A_Network *X, <font color="#0000ff">int</font> Ns)
+&nbsp; {&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">if</font>(bf_size&gt;0){cout &lt;&lt; <font color="#ff0000">"ESSENS:ERROR:: No Buffers in Adjacency List \n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Initialize</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  ADJ_Bundle AList; <font color="#008000">//create current Adj_Bundle</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  int_double colvals;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">int</font> current_node=-1;
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Read Through the list of edges	 </font>
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;b-&gt;size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Read each entry of edgelist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">int</font> node1=b-&gt;at(i).node1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">int</font> node2=b-&gt;at(i).node2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">double</font> edge_wt=b-&gt;at(i).edge_wt;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initailize and Add Row</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">if</font>(current_node!=node1)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">if</font>(current_node &gt;-1) <font color="#008000">//Update network after each row</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Update Rows</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  X-&gt;push_back(AList); <font color="#008000">//Add row and neighbors to network;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  AList.ListW.clear(); <font color="#008000">//Clear List of Edges;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Add missing vertices if necessary</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  current_node++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">while</font>(current_node!=node1)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  {AList.Row=current_node;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  X-&gt;push_back(AList); <font color="#008000">//Add row and neighbors to network;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  AList.ListW.clear(); <font color="#008000">//Clear List of Edges;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  current_node++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Set to next node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  current_node=node1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  AList.Row=current_node;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Add Columns corresponding to the rows</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  colvals.first=node2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  colvals.second=edge_wt;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  AList.ListW.push_back(colvals);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Clear edgelist</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  b-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Add the final buffers</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//No need of buffer space becuase link can be easily appended</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Update Rows</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  X-&gt;push_back(AList); <font color="#008000">//Add row and neighbors to network;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  AList.ListW.clear(); <font color="#008000">//Clear AList;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Add remaining nodes that are only dests</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">if</font>(!(Ns==-1))
+&nbsp;&nbsp;&nbsp;&nbsp;  {
+&nbsp;&nbsp;&nbsp;&nbsp;  current_node++;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">while</font>(current_node!=Ns)
+&nbsp;&nbsp;&nbsp;&nbsp;  {AList.Row=current_node;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  X-&gt;push_back(AList); <font color="#008000">//Add row and neighbors to network;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  AList.ListW.clear(); <font color="#008000">//Clear List of Edges;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  current_node++;
+&nbsp;&nbsp;&nbsp;&nbsp;  }
+&nbsp;&nbsp;&nbsp;&nbsp;  }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">return</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; }
+&nbsp; <font color="#008000">/***** End of Function **********/</font>
+
+<font color="#008000">//Create network of n singleton nodes</font>
+<font color="#0000ff">void</font> create_Network(<font color="#0000ff">int</font> n, <font color="#0000ff">int</font> bf_size, A_Network *X)
+{&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//if(bf_size&gt;0){cout &lt;&lt; "ESSENS:ERROR:: No Buffers in Adjacency List \n";}</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle AList; <font color="#008000">//create current Adj_Bundle</font>
+&nbsp;&nbsp;&nbsp;&nbsp; int_double colvals;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> current_node=-1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Read Through the list of edges	 </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;n;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Read each entry of edgelist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initailize and Add Row</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(current_node!=i)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(current_node &gt;-1) <font color="#008000">//Update network after each row</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update Rows</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; X-&gt;push_back(AList); <font color="#008000">//Add row and neighbors to network;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; AList.ListW.clear(); <font color="#008000">//Clear List of Edges;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Set to next node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; current_node=i;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; AList.Row=current_node;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Create ListW</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; AList.ListW.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update Rows</font>
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;push_back(AList); <font color="#008000">//Add row and neighbors to network;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; AList.ListW.clear(); <font color="#008000">//Clear AList;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/***** End of Function **********/</font>
+</pre>
+</code>
+																   </td>
+																   <td class="C_btnholder">
+																	   <div class="C_shell">
+																		   <div class="inner">
+																			   <div class="btn trans_half" style="width: 16px; background-color: rgb(255, 255, 255);"><a href="#" title="Open C++ Shell (in a new window)" target="_top"><span class="C_ico settings"></span> Edit &amp; Run</a></div>
+																		   </div>
+																	   </div>
+																   </td>
+																   </tbody>
+															   </table>
+														   </div>
+                                                           <p><h4>2. Create NetworkP</h4></p>
+                                                           <p> The following code</p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ADJ_Create_Networkp.txt" download="create_networkP">ADJ - Create NetworkP</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                           <code>
+<pre>
+
+<font color="#008000">//Create network of n singleton nodes</font>
+<font color="#0000ff">void</font> create_NetworkP(<font color="#0000ff">int</font> n, A_Network *X, <font color="#0000ff">int</font> p)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle AList; <font color="#008000">//create current Adj_Bundle</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Set size of X</font>
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;resize(n, AList);
+<font color="#0000ff">#pragma</font> omp parallel num_threads(p)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Work will be divided amongst p threads in the for loop</font>
+<font color="#0000ff">#pragma</font> omp <font color="#0000ff">for</font> nowait
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;n;i++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update Rows</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AList.Row=i;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AList.ListW.clear(); <font color="#008000">//Clear List of Edges;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(i)=AList; <font color="#008000">//Add row and neighbors to network;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+
+<font color="#008000">/***** End of Function **********/</font>
+</pre>
+</code>
+																   </td>
+																   </tbody>
+															   </table>
+														   </div>
+
+														   <li><h4> CSR </h4></li>
+                                                           <p><h4>Create Network</h4> </p>
+                                                           <p> The Code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ADJ_Create_Networkp.txt" download="create_networkP">ADJ - Create NetworkP</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                           <code>
+<pre><font color="#008000">/**** Storing Network in CSR Format ******/</font>
+<font color="#0000ff">void</font> create_Network(vector&lt;Edge&gt; b, <font color="#0000ff">int</font> bf_size, C_Network *X)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Initialize</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  int_int rids;
+&nbsp;&nbsp;&nbsp;&nbsp;  int_double colvals;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">int</font> current_node=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> row_index=0;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Read Through the list of edges	 </font>
+&nbsp;&nbsp;&nbsp;&nbsp;   <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;b.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp;    {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Read each entry of edgelist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">int</font> node1=b[i].node1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">int</font> node2=b[i].node2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">double</font> edge_wt=b[i].edge_wt;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Initailize and Add Row</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">if</font>(current_node!=node1)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   <font color="#0000ff">if</font>(current_node &gt;-1) <font color="#008000">//Update network after each row</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Add buffer spaces after columns of each row--except first row	 </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">for</font>(<font color="#0000ff">int</font> bf=0;bf&lt;bf_size;bf++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  {   colvals.first=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  colvals.second=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  X-&gt;ListW.push_back(colvals);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  row_index++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   <font color="#008000">//Update Rows</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   X-&gt;Row_Info.push_back(rids); <font color="#008000">//Add to rids</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Set to next node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  current_node=node1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  rids.second=current_node; <font color="#008000">//Set current node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  rids.first=row_index; <font color="#008000">//Get Index from where next column starts</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Add Columns corresponding to the rows</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  colvals.first=node2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  colvals.second=edge_wt;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  X-&gt;ListW.push_back(colvals);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  row_index++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Clear edgelist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; b.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Add the final buffers</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">for</font>(<font color="#0000ff">int</font> bf=0;bf&lt;bf_size;bf++)
+&nbsp;&nbsp;&nbsp;&nbsp;  {colvals.first=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  colvals.second=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  X-&gt;ListW.push_back(colvals);
+&nbsp;&nbsp;&nbsp;&nbsp;  row_index++;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update Rows</font>
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;Row_Info.push_back(rids); <font color="#008000">//Add to rids</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Delimiter to mark end of Rows in Bundle</font>
+&nbsp;&nbsp;&nbsp;&nbsp; rids.first=row_index;
+&nbsp;&nbsp;&nbsp;&nbsp; rids.second=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;Row_Info.push_back(rids); <font color="#008000">//Add to rids</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">return</font>;
+&nbsp; }
+</pre>
+</code>
+																   </td>
+																   </tbody>
+															   </table>
+														   </div>
+                                                           <li><h4> Chage Type </h4></li>
+                                                           <p> The Code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Input/Level1/change_type.hpp" download="change_type">Change Type</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre>
+<font color="#008000">/****List of Functions ******/</font>
+<font color="#008000">//==Level2 Functions	</font>
+<font color="#008000">/**k
+&nbsp; ==Default buffer size=0
+&nbsp; ==Default input_file "E_input.txt"
+&nbsp; == Calls
+&nbsp; create_network()
+&nbsp; --Overloaded as;
+&nbsp; (Network); DONE
+&nbsp; (Network, buffer);
+&nbsp; (input_file,Network);
+&nbsp; (input_file,Network,buffer);
+&nbsp;
+
+<font color="#008000">/**** Conversion Between Networks ****/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> change_type (vector&lt;Edge&gt; e, myNetworkType *X)
+{ create_network(e,X);}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> change_type (myNetworkType X, vector&lt;Edge&gt; *elist)
+{ print_edgelist(X,elist);}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType1, <font color="#0000ff">class</font> myNetworkType2&gt;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">void</font> change_type (myNetworkType1 X1, myNetworkType1 *X2);
+{ vector&lt;Edge&gt; elist;
+&nbsp;&nbsp;&nbsp;&nbsp; print_edgelist(X1, *elist);
+&nbsp;&nbsp;&nbsp;&nbsp; change_type(elist, X2);
+}
+<font color="#008000">/********* End of Function **********/</font>
+</pre><font color="#008000">
+</font></code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       </ul>
+                                                       <li><h4>Level-2</h4></li>
+                                                       <p><h5>1. Input to Comms</h5></p>
+                                                       <p> This is the level - 2 Code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Input/Level2/input_to_comms.hpp" download="input_to_comms">Input To Comms</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/**** Reading File to get Communities of Vertices******/</font>
+<font color="#008000">//First row:Vertex</font>
+<font color="#008000">//Second row: Community</font>
+
+<font color="#0000ff">void</font> readin_community(<font color="#0000ff">char</font> *file, vector&lt;int_int&gt; *comm_vec)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//File reading parameters</font>
+&nbsp;&nbsp;&nbsp;&nbsp; FILE *comm_file;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">char</font> line[128];
+&nbsp;&nbsp;&nbsp;&nbsp; int_int v_comm;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; comm_vec-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; comm_file=fopen(file, <font color="#ff0000">"r"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(fgets(line,128,comm_file) != NULL)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> n1,n2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Read line </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sscanf(line,<font color="#ff0000">"%d %d"</font>,&amp;n1,&amp;n2);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v_comm.first=n1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v_comm.second=n2;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; comm_vec-&gt;push_back(v_comm);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; fclose(comm_file);
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/********* End of Function **********/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <p><h5>2. Input to Networks</h5></p>
+                                                       <p> This is the level - 2 Code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Input/Level2/input_to_network.hpp" download="input_to_networks">Input To Network</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****List of Functions ******/</font>
+<font color="#008000">//==Level2 Functions	</font>
+<font color="#008000">/*readin_Network
+&nbsp; ==Default buffer size=0
+&nbsp; ==Default input_file "E_input.txt"
+&nbsp; == Calls
+&nbsp; create_network()
+&nbsp; --Overloaded as;
+&nbsp; (Network); DONE
+&nbsp; (Network, buffer); DONE
+&nbsp; (input_file,Network);
+&nbsp; (input_file,Network,buffer);*/</font>
+&nbsp;
+&nbsp;
+<font color="#008000">/**** Reading File to Create Network******/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> readin_network(myNetworkType *X, <font color="#0000ff">char</font> *file, <font color="#0000ff">int</font> XtraN)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity0: Reads in File to a vector of edges <edgelist></edgelist></font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//File reading parameters</font>
+&nbsp;&nbsp;&nbsp;&nbsp; FILE *graph_file;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">char</font> line[128];
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nodes;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Edge&gt; a ;<font color="#008000">//list of all edges of network</font>
+&nbsp;&nbsp;&nbsp;&nbsp; a.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Edge myedge;
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; graph_file=fopen(file, <font color="#ff0000">"r"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(fgets(line,128,graph_file) != NULL)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> n1,n2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Read line </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sscanf(line,<font color="#ff0000">"%d %d %lf"</font>,&amp;n1,&amp;n2,&amp;myedge.edge_wt);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node1=n1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node2=n2;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.push_back(myedge);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; fclose(graph_file);
+
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity1: Creates specified network format</font>
+&nbsp;&nbsp;&nbsp;&nbsp; create_Network(&amp;a, 0, X,XtraN);
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/********* End of Function **********/</font>
+
+
+<font color="#008000">/**** Reading File to Create Network******/</font>
+<font color="#008000">//These are for directed networks which can start with 0 or 1</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> readin_network(myNetworkType *X, <font color="#0000ff">char</font> *file, <font color="#0000ff">int</font> fst, <font color="#0000ff">int</font> XtraN)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity0: Reads in File to a vector of edges <edgelist></edgelist></font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//File reading parameters</font>
+&nbsp;&nbsp;&nbsp;&nbsp; FILE *graph_file;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">char</font> line[128];
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nodes;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Edge&gt; a ;<font color="#008000">//list of all edges of network</font>
+&nbsp;&nbsp;&nbsp;&nbsp; a.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Edge myedge;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; graph_file=fopen(file, <font color="#ff0000">"r"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(fgets(line,128,graph_file) != NULL)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> n1,n2;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Read line</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sscanf(line,<font color="#ff0000">"%d %d %lf"</font>,&amp;n1,&amp;n2,&amp;myedge.edge_wt);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node1=n1-fst;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node2=n2-fst;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.push_back(myedge);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node1=n2-fst;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node2=n1-fst;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.push_back(myedge);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; fclose(graph_file);
+&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;a, inc_node1);
+&nbsp;&nbsp;&nbsp;&nbsp; a=unique(a);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">":::"</font>&lt;&lt; a.size() &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity1: Creates specified network format</font>
+&nbsp;&nbsp;&nbsp;&nbsp; create_Network(&amp;a, 0, X,XtraN);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/********* End of Function **********/</font>
+
+
+
+<font color="#008000">/**** Reading File to EdgeList******/</font>
+<font color="#0000ff">void</font> readin_networkE(<font color="#0000ff">char</font> *myfile, vector&lt;Edge&gt; *EdgeL, <font color="#0000ff">int</font> *nodes)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity0: Reads in File to a vector of edges <edgelist></edgelist></font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//File reading parameters</font>
+&nbsp;&nbsp;&nbsp;&nbsp; FILE *graph_file;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">char</font> line[128];
+&nbsp;&nbsp;&nbsp;&nbsp; EdgeL-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Edge myedge;
+&nbsp;&nbsp;&nbsp;&nbsp; *nodes=-1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; graph_file=fopen(myfile, <font color="#ff0000">"r"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(fgets(line,128,graph_file) != NULL)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Read line</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sscanf(line,<font color="#ff0000">"%d %d %lf"</font>,&amp;myedge.node1,&amp;myedge.node2,&amp;myedge.edge_wt);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myedge.node1&gt;*nodes){*nodes=myedge.node1;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myedge.node2&gt;*nodes){*nodes=myedge.node2;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EdgeL-&gt;push_back(myedge);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; *nodes=*nodes+1;
+&nbsp;&nbsp;&nbsp;&nbsp; fclose(graph_file);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; sort(EdgeL, inc_node1);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/********* End of Function **********/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   </ul>
+                                                   <li><h4>Level-0</h4></li>
+                                                   <p>The Level 0 is then further divided as Follows</p>
+                                                       <ul>
+                                                           <li><h4> ADJ </h4></li>
+                                                           <p><h4>Network Defs</h4> </p>
+                                                           <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Level0/ADJ/network_defs.hpp" download="network_defs">Network Defs</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#0000ff">using</font> <font color="#0000ff">namespace</font> std;
+
+<font color="#008000">//Structure in STATIC Adjacency List---For diagram go to () </font>
+<font color="#008000">//Rows=global ID of the rows</font>
+<font color="#008000">//For edges connected with Rows</font>
+<font color="#008000">//NListW.first=Column number</font>
+<font color="#008000">//NListW.second=Value of edge</font>
+<font color="#0000ff">struct</font> ADJ_Bundle
+{
+&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> Row;
+&nbsp;&nbsp;&nbsp;&nbsp; vector &lt;int_double&gt; ListW;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Constructor</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle() {ListW.resize(0);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Destructor</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">void</font> clear()
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">while</font>(!ListW.empty()) {ListW.pop_back();}}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+};
+
+<font color="#0000ff">typedef</font>  vector&lt;ADJ_Bundle&gt; A_Network;
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                           <li><h4> CRS </h4></li>
+                                                           <p><h4>Network Defs</h4> </p>
+                                                           <p> The Following code mentioned below is about "Network Defs" </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Level0/CRS/network_defs.hpp" download="network_defs">Network Defs</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#0000ff">using</font> <font color="#0000ff">namespace</font> std;
+
+<font color="#008000">//Structure  in STATIC CSR format---For diagram go to () </font>
+<font color="#008000">//Row_Info.first=global ID of the rows</font>
+<font color="#008000">//Row_Info.second=index of the column in row (i)</font>
+<font color="#008000">//NListW.first=Column number</font>
+<font color="#008000">//NListW.second=Value of edge</font>
+<font color="#0000ff">struct</font> CSR_Bundle
+{
+&nbsp;&nbsp; vector&lt;int_int&gt; Row_Info;
+&nbsp;&nbsp; vector &lt;int_double&gt; ListW;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Constructor</font>
+&nbsp;&nbsp;&nbsp;&nbsp; CSR_Bundle()
+&nbsp;&nbsp;&nbsp;&nbsp; {Row_Info.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; ListW.resize(0);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Destructor</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">void</font> clear()
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">while</font>(!Row_Info.empty()){Row_Info.pop_back();}
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">while</font>(!ListW.empty()){ListW.pop_back();}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+};
+
+<font color="#008000">//Structure for Network: </font>
+<font color="#0000ff">typedef</font> CSR_Bundle C_Network;</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                           <li><h4> Structure Defs </h4></li>
+                                                           <p> The "structure defs" code is mentioned below. </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Level0/structure_defs.hpp" download="structure_defs">Structure Defs</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">/******* Network Structures *********/</font>
+<font color="#008000">//Note: Edges are not ordered, unless specified by code</font>
+<font color="#008000">// Node+Weight = -1;0 indicates buffer space</font>
+<font color="#008000">//Structure for Edge</font>
+<font color="#0000ff">struct</font> Edge
+{ <font color="#0000ff">int</font> node1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2;
+<font color="#0000ff">double</font> edge_wt;};
+
+Edge create (<font color="#0000ff">int</font> n1, <font color="#0000ff">int</font> n2, <font color="#0000ff">double</font> wt)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; Edge e;
+&nbsp;&nbsp;&nbsp;&nbsp; e.node1=n1;
+&nbsp;&nbsp;&nbsp;&nbsp; e.node2=n2;
+&nbsp;&nbsp;&nbsp;&nbsp; e.edge_wt=wt;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> e;
+}
+
+
+
+<font color="#008000">/**** End of Edge ****/</font>
+
+<font color="#008000">/*** Pairs ***/</font>
+<font color="#0000ff">typedef</font> pair&lt;<font color="#0000ff">int</font>, <font color="#0000ff">int</font>&gt; int_int;  <font color="#008000">/** /typedef pair of integers */</font>
+<font color="#0000ff">typedef</font> pair&lt;<font color="#0000ff">int</font>, <font color="#0000ff">double</font>&gt; int_double; <font color="#008000">/** /typedef pair of integer and double */</font>
+<font color="#0000ff">typedef</font> pair&lt;<font color="#0000ff">double</font>, <font color="#0000ff">int</font>&gt; double_int; <font color="#008000">/** /typedef pair of integer and double */</font>
+
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> AnyType1, <font color="#0000ff">class</font> AnyType2&gt;
+pair&lt;AnyType1, AnyType2&gt; create (AnyType1 e1, AnyType2 e2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;AnyType1, AnyType2&gt; mypair;
+&nbsp;&nbsp;&nbsp;&nbsp; mypair.first=e1;
+&nbsp;&nbsp;&nbsp;&nbsp; mypair.second=e2;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> mypair;
+}
+<font color="#008000">/*** End of Pairs ***/</font>
+
+<font color="#008000">/*** Maps ****/</font>
+<font color="#0000ff">typedef</font> map&lt;string,<font color="#0000ff">int</font>&gt; map_st_int;
+<font color="#0000ff">typedef</font> map&lt;<font color="#0000ff">int</font>,string&gt; map_int_st;
+<font color="#0000ff">typedef</font> map&lt;string,string&gt; map_st_st;
+&nbsp;
+<font color="#008000">/**** Find Key by Value for Maps ***/</font>
+string find_key(map_st_int MyMap, <font color="#0000ff">int</font> value)
+{
+&nbsp; map&lt;string, <font color="#0000ff">int</font>&gt;::const_iterator it;
+&nbsp; string key = <font color="#ff0000">" "</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found =<font color="#0000ff">false</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Go through Map to find key</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (it = MyMap.begin(); it != MyMap.end(); ++it)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font> (it-&gt;second == value)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {key = it-&gt;first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  found=<font color="#0000ff">true</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!found) {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR:: Key to Value not Found in Map \n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> key;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/*** End of Function ***/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       </ul>
+                                                   <li><h4>Output</h4></li>
+                                                   <ul>
+                                                       <li><h4>Level-1</h4></li>
+                                                       <p>The Level 1 is then further divided as Follows</p>
+                                                       <ul>
+                                                           <li><h4> ADJ </h4></li>
+                                                           <p><h4>Print Format Network</h4></p>
+                                                           <p> The "Print format network" code of ADJ  is mentioned below.</p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Output/Level1/ADJ/print_format_network.hpp" download="print_format_network">Print Format Network</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//==Level1 Functions</font>
+<font color="#008000">/**print_edgelist (in CSR/ADJ format) in corresponding directories
+&nbsp; --Overloaded as;
+&nbsp; (Network); DONE
+&nbsp; (Network, Edglist (EdgeOnly/Edge)); DONE
+&nbsp; (Network, edgelist); DONE
+&nbsp; (Network, ouputfile); DONE**/</font>
+&nbsp;
+<font color="#008000">/**print_detail (in CSR/ADJ format) in corresponding directories
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp; --Overloaded as;
+&nbsp; (Network); DONE
+&nbsp; (Network, ouputfile); DONE**/</font>
+
+
+<font color="#008000">/**** Print Network with Data Structure **************/</font>
+<font color="#0000ff">void</font> print_detail(A_Network C)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"GRows: "</font> &lt;&lt; C[j].Row &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;C[j].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"C: "</font> &lt;&lt; C[j].ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"V: "</font> &lt;&lt; C[j].ListW[k].second &lt;&lt; <font color="#ff0000">"**"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ADJ Network)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">void</font> print_detail(A_Network C, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Open file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::trunc); <font color="#008000">//clear if same named file exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; <font color="#ff0000">"GRows: "</font> &lt;&lt; C[j].Row &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;C[j].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; <font color="#ff0000">"C: "</font> &lt;&lt; C[j].ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; <font color="#ff0000">"V: "</font> &lt;&lt; C[j].ListW[k].second &lt;&lt; <font color="#ff0000">"**"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ADJ Network)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******* End of Function **************/</font>
+
+
+<font color="#008000">/******* Print Network as Edge List (Node Node Wt) without Details of Data Structure**************/</font>
+<font color="#0000ff">void</font> print_edgelist (A_Network C)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;C[j].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; C[j].Row &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt;  C[j].ListW[k].first &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; C[j].ListW[k].second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#0000ff">void</font> print_edgelist (A_Network C, vector&lt;Edge&gt; *elist)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; elist-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Edge e;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;C[j].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge Values</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; e.node1=C[j].Row;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; e.node2=C[j].ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; e.edge_wt=C[j].ListW[k].second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; elist-&gt;push_back(e); <font color="#008000">//Add to list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">void</font> print_edgelist (A_Network C, map_st_int MyMap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; j &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; string mynode=find_key(MyMap,C[j].Row);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;C[j].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; mynode &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt;  find_key(MyMap,C[j].ListW[k].first) &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; C[j].ListW[k].second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">void</font> print_edgelist (A_Network C, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Open file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::trunc); <font color="#008000">//clear if same named file exists</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;C[j].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; C[j].Row &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt;  C[j].ListW[k].first &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; C[j].ListW[k].second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">void</font> print_edgelist (A_Network C, map_st_int MyMap, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Open file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::trunc); <font color="#008000">//clear if same named file exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; j &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; string mynode=find_key(MyMap,C[j].Row);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;C[j].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; mynode &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt;  find_key(MyMap,C[j].ListW[k].first) &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; C[j].ListW[k].second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#008000">/******* End of Function ****/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                           <li><h4> CRS </h4></li>
+                                                           <p><h4>Print Format Network</h4></p>
+                                                           <p> The "Print format Network" code is mentioned below </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Output/Level1/CRS/print_format_network.hpp" download="print_format_network">Print Format Network</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//==Level1 Functions</font>
+<font color="#008000">/**print_edgelist (in CSR/ADJ format) in corresponding directories
+&nbsp; --Overloaded as;
+&nbsp; (Network); DONE
+&nbsp; (Network, Edglist (Edge)); DONE
+&nbsp; (Network, edgelist); DONE
+&nbsp; (Network, ouputfile); DONE
+&nbsp;
+&nbsp; <font color="#008000">/**print_detail (in CSR/ADJ format) in corresponding directories
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp; --Overloaded as;
+&nbsp; (Network); DONE
+&nbsp; (Network, ouputfile); DONE**/</font>
+&nbsp;
+<font color="#008000">/**** Print Network with Buffers and Keeping Data Structure **************/</font>
+<font color="#0000ff">void</font> print_detail(C_Network C)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> start=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.Row_Info.size()-1;j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"GRows: "</font> &lt;&lt; C.Row_Info[j].second &lt;&lt; <font color="#ff0000">"::Index: "</font> &lt;&lt; C.Row_Info[j].first &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=C.Row_Info[j].first;k&lt;C.Row_Info[j+1].first;k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"C: "</font> &lt;&lt; C.ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"V: "</font> &lt;&lt; C.ListW[k].second &lt;&lt; <font color="#ff0000">"**"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">void</font> print_detail(C_Network C, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Open file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::trunc); <font color="#008000">//clear if same named file exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.Row_Info.size()-1;j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; <font color="#ff0000">"GRows: "</font> &lt;&lt; C.Row_Info[j].second &lt;&lt; <font color="#ff0000">"::Index: "</font> &lt;&lt; C.Row_Info[j].first &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=C.Row_Info[j].first;k&lt;C.Row_Info[j+1].first;k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; <font color="#ff0000">"C: "</font> &lt;&lt; C.ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; <font color="#ff0000">"V: "</font> &lt;&lt; C.ListW[k].second &lt;&lt; <font color="#ff0000">"**"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;    myfile &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******* End of Function **************/</font>
+
+
+
+<font color="#008000">/******* Print Network as Edge List (Node Node Wt) without Buffer or Details of Data Structure**************/</font>
+<font color="#0000ff">void</font> print_edgelist (C_Network C)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.Row_Info.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(C.Row_Info[j].second==-1) {<font color="#0000ff">break</font>;} <font color="#008000">//Do not consider buffers</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=C.Row_Info[j].first;k&lt;C.Row_Info[j+1].first;k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">if</font>(C.ListW[k].first==-1){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; C.Row_Info[j].second &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt;  C.ListW[k].first &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; C.ListW[k].second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/******/</font>
+
+<font color="#0000ff">void</font> print_edgelist (C_Network C, vector&lt;Edge&gt; *elist)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; elist-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; Edge e;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.Row_Info.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(C.Row_Info[j].second==-1) {<font color="#0000ff">break</font>;} <font color="#008000">//Do not consider buffers</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=C.Row_Info[j].first;k&lt;C.Row_Info[j+1].first;k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(C.ListW[k].first==-1){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge Values</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; e.node1=C.Row_Info[j].second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; e.node2=C.ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; e.edge_wt=C.ListW[k].second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; elist-&gt;push_back(e); <font color="#008000">//Add to list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/******/</font>
+
+<font color="#0000ff">void</font> print_edgelist (C_Network C, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Open file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::trunc); <font color="#008000">//clear if same named file exists</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.Row_Info.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(C.Row_Info[j].second==-1) {<font color="#0000ff">break</font>;} <font color="#008000">//Do not consider buffers</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=C.Row_Info[j].first;k&lt;C.Row_Info[j+1].first;k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">if</font>(C.ListW[k].first==-1){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; C.Row_Info[j].second &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt;  C.ListW[k].first &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; C.ListW[k].second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******* End of Function ****/</font></font></pre><font color="#008000">
+</font></code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                           <li><h4> Print Format Others </h4></li>
+                                                           <p> "Print format others" code is mentioned below.</p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Output/Level1/print_format_others.hpp" download="print_format_others">Print Format Others</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//==Level1 Functions</font>
+&nbsp; <font color="#008000">/**print_element (Prints specified elements)
+&nbsp;
+&nbsp;
+&nbsp; //Edge **/</font>
+
+<font color="#008000">/**** Print Single Types **************/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> print_element(AnyType mye)
+{cout &lt;&lt; mye &lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> print_element(AnyType mye, <font color="#0000ff">char</font> *filename)
+{ofstream myfile;&nbsp;&nbsp;&nbsp;&nbsp;
+myfile.open (filename, ios::trunc); <font color="#008000">//append to existsing file</font>
+myfile &lt;&lt; mye &lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#008000">//Using Maps</font>
+<font color="#0000ff">void</font> print_element(<font color="#0000ff">int</font> mye, map_st_int MyMap)
+{cout &lt;&lt; find_key(MyMap,mye) &lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#0000ff">void</font> print_element(<font color="#0000ff">int</font> mye, map_st_int MyMap, <font color="#0000ff">char</font> *filename)
+{ofstream myfile;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::app); <font color="#008000">//append to existsing file</font>
+myfile &lt;&lt; find_key(MyMap,mye) &lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+
+<font color="#008000">/******* End of Function **************/</font>
+
+<font color="#008000">/******* Print Pairs **************/</font>
+
+<font color="#0000ff">void</font> print_element(int_int mye)
+{cout &lt;&lt; mye.first &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.second&lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#0000ff">void</font> print_element(int_double mye)
+{cout &lt;&lt; mye.first &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.second&lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#008000">/*
+template &lt;class Type1, class Type2&gt;
+void print_element(pair&lt;Type1,Type2&gt; mye, char *filename)
+{ofstream myfile;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::app);
+myfile &lt;&lt; mye.first &lt;&lt;"::"&lt;&lt;mye.second&lt;&lt;"\n";}*/</font>
+
+
+<font color="#008000">//Using Maps</font>
+<font color="#0000ff">void</font> print_element(int_int mye, map_st_int MyMap)
+{cout &lt;&lt; find_key(MyMap,mye.first) &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;find_key(MyMap,mye.second)&lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> print_element(pair&lt;<font color="#0000ff">int</font>,Type1&gt; mye, map_st_int MyMap)
+{cout &lt;&lt; find_key(MyMap,mye.first) &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.second&lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#0000ff">void</font> print_element(int_int mye, map_st_int MyMap, <font color="#0000ff">char</font> *filename)
+{ofstream myfile;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::app); <font color="#008000">//append to existsing file</font>
+myfile &lt;&lt; find_key(MyMap,mye.first) &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;find_key(MyMap,mye.second)&lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> print_element(pair&lt;<font color="#0000ff">int</font>,Type1&gt; mye, map_st_int MyMap, <font color="#0000ff">char</font> *filename)
+{ofstream myfile;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::app); <font color="#008000">//append to existsing file</font>
+myfile &lt;&lt; find_key(MyMap,mye.first) &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.second&lt;&lt;<font color="#ff0000">"\n"</font>;}
+<font color="#008000">/******* End of Function **************/</font>
+
+<font color="#008000">/******* Print Edges **************/</font>
+<font color="#0000ff">void</font> print_element(Edge mye)
+{cout &lt;&lt; mye. node1 &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.node2 &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.edge_wt &lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#0000ff">void</font> print_element(Edge mye, <font color="#0000ff">char</font> *filename)
+{ofstream myfile;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::app); <font color="#008000">//append to existsing file</font>
+myfile &lt;&lt; mye. node1 &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.node2 &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.edge_wt &lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#008000">//Using Maps</font>
+<font color="#0000ff">void</font> print_element(Edge mye, map_st_int MyMap)
+{cout &lt;&lt; find_key(MyMap,mye.node1) &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt; find_key(MyMap,mye.node2)  &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.edge_wt &lt;&lt;<font color="#ff0000">"\n"</font>;}
+
+<font color="#0000ff">void</font> print_element(Edge mye, map_st_int MyMap, <font color="#0000ff">char</font> *filename)
+{ofstream myfile;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::app); <font color="#008000">//append to existsing file</font>
+myfile &lt;&lt; find_key(MyMap,mye.node1) &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt; find_key(MyMap,mye.node2)  &lt;&lt;<font color="#ff0000">"::"</font>&lt;&lt;mye.edge_wt &lt;&lt;<font color="#ff0000">"\n"</font>;}
+<font color="#008000">/******* End of Function **************/</font>
+
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> print_element(pair&lt;Type1,Type2&gt; mye)
+{print_element(mye.first);
+print_element(mye.second);}
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       </ul>
+                                                       <li><h4>Level-2</h4></li>
+                                                       <p><h5>1. Printout Network</h5></p>
+                                                       <p> The code mentioned below is "printout network" </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Output/Level2/printout_network.hpp" download="printout_network">Printout Netowrk</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//==Level2 Functions	</font>
+&nbsp; <font color="#008000">/**print_network
+&nbsp; ==Default DEBUG=False
+&nbsp; == Output File with same name is overwritten
+&nbsp; == Calls
+&nbsp; print_edgelist()
+&nbsp; print_detail()
+&nbsp; --Overloaded as;
+&nbsp; (Network);
+&nbsp; (Network, DEBUG);
+&nbsp; (Network, outputfile);
+&nbsp; (Network, DEBUG, outputfile); **/</font>
+&nbsp;
+<font color="#008000">/**** Print Network ******/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> print_network(myNetworkType X)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; print_edgelist(X);
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> print_network(myNetworkType X, map_st_int MyMap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; print_edgelist(X, MyMap);
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> print_network(myNetworkType X, <font color="#0000ff">bool</font> DEBUG)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(DEBUG) {print_detail(X);cout &lt;&lt;<font color="#ff0000">"---\n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!DEBUG) {print_edgelist(X);cout &lt;&lt;<font color="#ff0000">"---\n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> print_network(myNetworkType X, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; print_edgelist(X,filename);
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> print_network(myNetworkType X, <font color="#0000ff">bool</font> DEBUG, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(DEBUG) {print_detail(X, filename);cout &lt;&lt;<font color="#ff0000">"---\n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!DEBUG) {print_edgelist(X, filename);cout &lt;&lt;<font color="#ff0000">"---\n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> myNetworkType&gt;
+<font color="#0000ff">void</font> print_network(myNetworkType C, map_int_st MyMap, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Open file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::trunc); <font color="#008000">//clear if same named file exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;C.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; string mynode=MyMap.find(C[j].Row)-&gt;second;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;C[j].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; mynode &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; MyMap.find(C[j].ListW[k].first)-&gt;second  &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; C[j].ListW[k].second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for (ListW)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for (Row_Info)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/********* End of Function **********/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <p><h5>2. Printout Others</h5></p>
+                                                       <p> The code mentioned below is "printout others" code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/Format/Output/Level2/printout_others.hpp" download="printout_others">Printout Others</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//==Level2 Functions</font>
+<font color="#008000">//print_vector</font>
+&nbsp; <font color="#008000">//Prints the items of vectors </font>
+&nbsp;
+<font color="#008000">/**** Print Vector *********/</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> print_vector(vector&lt;AnyType&gt; thisvector)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"...\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;thisvector.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { print_element(thisvector[i]);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> print_vector(vector&lt;AnyType&gt; thisvector, <font color="#0000ff">int</font> n)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"...\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> mymin=min(n,<font color="#0000ff">int</font>(thisvector.size()));
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;mymin;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { print_element(thisvector[i]);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> print_vector(vector&lt;AnyType&gt; thisvector, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Open file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::trunc); <font color="#008000">//clear if same named file exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;thisvector.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { print_element(thisvector[i],filename);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#008000">//Using Maps</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> print_vector(vector&lt;AnyType&gt; thisvector, map_st_int MyMap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"...\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;thisvector.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { print_element(thisvector[i], MyMap);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> print_vector(vector&lt;AnyType&gt; thisvector, map_st_int MyMap, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Open file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::trunc); <font color="#008000">//clear if same named file exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;thisvector.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { print_element(thisvector[i],MyMap, filename);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******* End of Function **************/</font>
+
+
+
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> AnyType&gt;
+<font color="#0000ff">void</font> print_vector(vector&lt;AnyType&gt; thisvector, map_int_st MyMap, <font color="#0000ff">char</font> *filename)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Open file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (filename, ios::trunc); <font color="#008000">//clear if same named file exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;thisvector.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; MyMap.find(thisvector[i])-&gt;second  &lt;&lt; <font color="#ff0000">"  \n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt;<font color="#ff0000">"---\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******* End of Function **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   </ul>
+                                               </ul>
+                                               <li><h4>PreProcessor</h4></li>
+                                               <ul>
+                                                   <li><h4>Exceptions</h4></li>
+                                                   <p> The "Exceptions" is further categorised as Follows</p>
+                                                   <ul>
+                                                       <li><h4>Exceptions</h4> </li>
+                                                           <p> Exception code is mentioned below</p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/PreProcess/Exceptions/exceptions.hpp" download="exceptions">Exceptions</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/******** Start of Functions ************/</font>
+
+<font color="#008000">/***Start of Function***/</font>
+<font color="#008000">/*!
+&nbsp; \brief Argument Type is not valid
+&nbsp; */</font>
+
+<font color="#0000ff">void</font> exception_invalid_type()
+{
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"ESSENS:ERROR:: Only Type 1 is  Accepted \n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> ;&nbsp;&nbsp;&nbsp;&nbsp;
+}&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">/** End of Function **/</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<font color="#008000">/***Start of Function***/</font>
+<font color="#008000">/*!
+&nbsp; \brief Weight is not Integer or Double
+&nbsp; */</font>
+
+<font color="#0000ff">void</font> exception_weight_string()
+{
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"ESSENS:ERROR:: Weight Not Integer or Double \n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> ;&nbsp;&nbsp;&nbsp;&nbsp;
+}&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">/** End of Function **/</font>
+
+
+
+
+<font color="#008000">/******** End of All  Functions ************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   </ul>
+                                                   <li><h4>Level - 0</h4></li>
+                                                   <p> The Level - 0 has the following code</p>
+                                                   <ul>
+                                                       <li><h4>Check Type</h4> </li>
+                                                           <p> Check Type code is mentioned below</p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/PreProcess/Level0/check_type.hpp" download="check_type">Check Type</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/******** Start of Functions ************/</font>
+
+<font color="#008000">/*** Start of Function ***/</font>
+<font color="#008000">/*!
+&nbsp; \brief Check whether input is string
+&nbsp; */</font>
+<font color="#0000ff">bool</font> check_int(string s) {
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> answer=<font color="#0000ff">true</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;s.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!isdigit(s[i])) {answer=<font color="#0000ff">false</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font> answer;
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/*** End of Function ***/</font>
+
+
+<font color="#008000">/*** Start of Function ***/</font>
+<font color="#008000">/*!
+&nbsp; \brief Check whether input is double
+&nbsp; */</font>
+<font color="#0000ff">bool</font> check_double(std::string <font color="#0000ff">const</font>&amp; s) {
+&nbsp;&nbsp;&nbsp;&nbsp; std::istringstream ss(s);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> d;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> (ss &gt;&gt; d);
+}
+<font color="#008000">/*** End of Function ***/</font>
+
+<font color="#008000">/******** End of All  Functions ************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   </ul>
+                                                   <li><h4>Level - 1</h4></li>
+                                                   <p> The Level - 1 has the following code</p>
+                                                   <ul>
+                                                       <li><h4>Node Node</h4> </li>
+                                                           <p> Node Node code is mentioned below</p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/PreProcess/Level1/node_node.hpp" download="node_node">Node Node</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****List of Functions ******
+&nbsp; == Default graph_file graphXX
+&nbsp; == Default map_file mapXX
+&nbsp; ==Default error; printed on screen
+&nbsp; ==Calls
+&nbsp; check_int
+&nbsp; check_double
+&nbsp; execption_weight_string()
+&nbsp;&nbsp; node_node_wt
+&nbsp; --Overloaded as;
+&nbsp; (input file); DONE
+***** End of Description*****/</font>
+
+
+<font color="#008000">/******** Start of Functions ************/</font>
+<font color="#008000">/*
+&nbsp; \brief
+&nbsp; Input: Edge List from File (Node Node) \n
+&nbsp; Translates Edgelist from String to Numbers \n
+&nbsp; Stores EdgeList as Numbers to graphXX \n
+&nbsp; Stores Map of String to Number in nodemap \n
+&nbsp; Default Weight is Set to 1
+&nbsp; */</font>
+
+<font color="#0000ff">void</font> node_node(<font color="#0000ff">char</font> *file, map_st_int *nodemap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity1: Translate Strings to Numbers </font>
+&nbsp;&nbsp;&nbsp;&nbsp; string st1, st2;
+&nbsp;&nbsp;&nbsp;&nbsp; std::pair&lt;std::map&lt;string,<font color="#0000ff">int</font>&gt;::iterator,<font color="#0000ff">bool</font>&gt; ret;
+&nbsp;&nbsp;&nbsp;&nbsp; string line;
+&nbsp;&nbsp;&nbsp;&nbsp; stringstream linestream;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (<font color="#ff0000">"graphXX"</font>, ios::trunc); <font color="#008000">//Open graph_file</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; ifstream dataFile(file, ios::in); <font color="#008000">//Open input file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(getline(dataFile, line))
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;     <font color="#008000">//Readline</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; linestream&lt;&lt;line; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; linestream &gt;&gt; st1 &gt;&gt; st2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add strings st1, st2 to map if it does not yet exist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ret=nodemap-&gt;insert ( std::pair&lt;string,<font color="#0000ff">int</font>&gt;(st1,i) );
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(ret.second==<font color="#0000ff">true</font>){i++;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ret=nodemap-&gt;insert ( std::pair&lt;string,<font color="#0000ff">int</font>&gt;(st2,i) );
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(ret.second==<font color="#0000ff">true</font>){i++;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; linestream.clear();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Output transalted nodes to graph_file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; nodemap-&gt;find(st1)-&gt;second &lt;&lt;<font color="#ff0000">" "</font>&lt;&lt;nodemap-&gt;find(st2)-&gt;second&lt;&lt;<font color="#ff0000">" "</font>&lt;&lt;1&lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of reading file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//========= Done Activity 1 =============//</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity2: Store Map for Back Translation</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile1;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile1.open (<font color="#ff0000">"mapXX"</font>, ios::trunc); <font color="#008000">//Open map file</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Output to mapfile</font>
+&nbsp;&nbsp;&nbsp;&nbsp; std::map&lt;string,<font color="#0000ff">int</font>&gt;::iterator it;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (it=nodemap-&gt;begin(); it!=nodemap-&gt;end(); ++it)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile1 &lt;&lt; it-&gt;first &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; it-&gt;second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile1.close();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//========= Done Activity 2 =============//</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> ;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">/******** End of All  Functions ************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>Node Node Weight</h4> </li>
+                                                           <p> Node Node Weight code is mentioned below</p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/PreProcess/Level1/node_node_weight.hpp" download="node_node_weight">Node Node Weight</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****List of Functions ******
+&nbsp; == Default graph_file graphXX
+&nbsp; == Default map_file mapXX
+&nbsp; ==Default error; printed on screen
+&nbsp; ==Calls
+&nbsp; check_int
+&nbsp; check_double
+&nbsp; execption_weight_string()
+&nbsp; node_node_wt
+&nbsp; --Overloaded as;
+&nbsp; (input file); DONE
+***** End of Description*****/</font>
+
+
+<font color="#008000">/******** Start of Functions ************/</font>
+<font color="#008000">/*
+&nbsp; Input: Edge List from File (Node Node Weight) \n
+&nbsp; Translates Edgelist from String to Numbers \n
+&nbsp; Stores EdgeList as Numbers to graphXX \n
+&nbsp; Stores Map of String to Number in nodemap \n
+&nbsp; */</font>
+
+<font color="#0000ff">void</font> node_node_wt(<font color="#0000ff">char</font> *file, <font color="#0000ff">char</font>* gfile, <font color="#0000ff">char</font>* mapfile)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity1: Translate Strings to Numbers </font>
+&nbsp;&nbsp;&nbsp;&nbsp; string st1, st2, wt;
+&nbsp;&nbsp;&nbsp;&nbsp; map_st_int nodemap;
+&nbsp;&nbsp;&nbsp;&nbsp; std::pair&lt;std::map&lt;string,<font color="#0000ff">int</font>&gt;::iterator,<font color="#0000ff">bool</font>&gt; ret;
+&nbsp;&nbsp;&nbsp;&nbsp; string line;
+&nbsp;&nbsp;&nbsp;&nbsp; stringstream linestream;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Edge&gt; myEdges;
+&nbsp;&nbsp;&nbsp;&nbsp; myEdges.clear();
+&nbsp;&nbsp;&nbsp;&nbsp; Edge myedge;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; ifstream dataFile(file, ios::in); <font color="#008000">//Open input file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(getline(dataFile, line))
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;     <font color="#008000">//Readline</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; linestream.clear();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; linestream &lt;&lt; line;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; linestream &gt;&gt; st1 &gt;&gt; st2 &gt;&gt; wt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add strings st1, st2 to map if it does not yet exist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Delete all self loops here--otherwise disconnected nodes with self loops cause errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(st1.compare(st2)!=0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ret=nodemap.insert ( std::pair&lt;string,<font color="#0000ff">int</font>&gt;(st1,i) );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(ret.second==<font color="#0000ff">true</font>){i++;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  ret=nodemap.insert ( std::pair&lt;string,<font color="#0000ff">int</font>&gt;(st2,i) );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(ret.second==<font color="#0000ff">true</font>){i++;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if wt is int or double</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!check_int(wt) &amp;&amp; !check_double(wt)) <font color="#008000">//If it is string--raise exception </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { exception_weight_string(); <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node1=nodemap.find(st1)-&gt;second;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node2=nodemap.find(st2)-&gt;second;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.edge_wt=atof(wt.c_str());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myEdges.push_back(myedge);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Also add the other edge</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node1=nodemap.find(st2)-&gt;second;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.node2=nodemap.find(st1)-&gt;second;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myedge.edge_wt=atof(wt.c_str());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myEdges.push_back(myedge);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of reading file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; dataFile.close();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//========= Done Activity 1 =============//</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity2: Store Map for Back Translation</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile1;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile1.open (mapfile, ios::trunc); <font color="#008000">//Open map file</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Output to mapfile</font>
+&nbsp;&nbsp;&nbsp;&nbsp; std::map&lt;string,<font color="#0000ff">int</font>&gt;::iterator it;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (it=nodemap.begin(); it!=nodemap.end(); ++it)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile1 &lt;&lt; it-&gt;first &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; it-&gt;second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile1.close();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//========= Done Activity 2 =============//</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity 3: Writes Edges in Ordered Form to New File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;myEdges, inc_node1);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Run unique to remove duplicates</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Edge&gt; <font color="#0000ff">this</font>Edges=unique(myEdges);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (gfile, ios::trunc); <font color="#008000">//Open graph_file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> x=0;x&lt;<font color="#0000ff">this</font>Edges.size();x++)
+&nbsp;&nbsp;&nbsp;&nbsp; {myfile &lt;&lt; <font color="#0000ff">this</font>Edges[x].node1&lt;&lt;<font color="#ff0000">"  "</font>&lt;&lt;<font color="#0000ff">this</font>Edges[x].node2&lt;&lt;<font color="#ff0000">"  "</font>&lt;&lt;<font color="#0000ff">this</font>Edges[x].edge_wt &lt;&lt; <font color="#ff0000">"\n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//========= Done Activity 2 =============//</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> ;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">/******** End of All  Functions ************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>Node Weight Node</h4> </li>
+                                                           <p> Node Weight Node code is mentioned below</p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/PreProcess/Level1/node_weight_node.hpp" download="node_weight_node">Node Weight Node</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****List of Functions ******
+&nbsp; == Default graph_file graphXX
+&nbsp; == Default map_file mapXX
+&nbsp; ==Default error; printed on screen
+&nbsp; ==Calls
+&nbsp; check_int
+&nbsp; check_double
+&nbsp; execption_weight_string()
+&nbsp;&nbsp; node_node_wt
+&nbsp; --Overloaded as;
+&nbsp; (input file); DONE
+***** End of Description*****/</font>
+
+
+<font color="#008000">/******** Start of Functions ************/</font>
+<font color="#008000">/*
+&nbsp; Input: Edge List from File (Node Node Weight) \n
+&nbsp; Translates Edgelist from String to Numbers \n
+&nbsp; Stores EdgeList as Numbers to graphXX \n
+&nbsp; Stores Map of String to Number in nodemap \n
+&nbsp; */</font>
+
+<font color="#0000ff">void</font> node_wt_node(<font color="#0000ff">char</font> *file, map_st_int *nodemap, map_int_st *revmap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity1: Translate Strings to Numbers</font>
+&nbsp;&nbsp;&nbsp;&nbsp; string st1, st2, wt;
+&nbsp;&nbsp;&nbsp;&nbsp; std::pair&lt;std::map&lt;string,<font color="#0000ff">int</font>&gt;::iterator,<font color="#0000ff">bool</font>&gt; ret;
+&nbsp;&nbsp;&nbsp;&nbsp; std::pair&lt;std::map&lt;<font color="#0000ff">int</font>,string&gt;::iterator,<font color="#0000ff">bool</font>&gt; retR;
+&nbsp;&nbsp;&nbsp;&nbsp; string line;
+&nbsp;&nbsp;&nbsp;&nbsp; stringstream linestream;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.open (<font color="#ff0000">"graphXX"</font>, ios::trunc); <font color="#008000">//Open graph_file</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; ifstream dataFile(file, ios::in); <font color="#008000">//Open input file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(getline(dataFile, line))
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;     <font color="#008000">//Readline</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; linestream&lt;&lt;line; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; linestream &gt;&gt; st1 &gt;&gt; wt &gt;&gt; st2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add strings st1, st2 to map if it does not yet exist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ret=nodemap-&gt;insert ( std::pair&lt;string,<font color="#0000ff">int</font>&gt;(st1,i) );
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(ret.second==<font color="#0000ff">true</font>){
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; retR=revmap-&gt;insert ( std::pair&lt;<font color="#0000ff">int</font>,string&gt;(i,st1) );
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; i++;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ret=nodemap-&gt;insert ( std::pair&lt;string,<font color="#0000ff">int</font>&gt;(st2,i) );
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(ret.second==<font color="#0000ff">true</font>){
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; retR=revmap-&gt;insert ( std::pair&lt;<font color="#0000ff">int</font>,string&gt;(i,st2) );
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; i++;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if wt is int or double</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!check_int(wt) &amp;&amp; !check_double(wt)) <font color="#008000">//If it is string--raise exception </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { exception_weight_string(); <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; linestream.clear();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Output transalted nodes to graph_file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile &lt;&lt; nodemap-&gt;find(st1)-&gt;second &lt;&lt;<font color="#ff0000">" "</font>&lt;&lt;nodemap-&gt;find(st2)-&gt;second&lt;&lt;<font color="#ff0000">" "</font>&lt;&lt;wt&lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of reading file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//========= Done Activity 1 =============//</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Activity2: Store Map for Back Translation</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ofstream myfile1;
+&nbsp;&nbsp;&nbsp;&nbsp; myfile1.open (<font color="#ff0000">"mapXX"</font>, ios::trunc); <font color="#008000">//Open map file</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Output to mapfile</font>
+&nbsp;&nbsp;&nbsp;&nbsp; std::map&lt;string,<font color="#0000ff">int</font>&gt;::iterator it;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (it=nodemap-&gt;begin(); it!=nodemap-&gt;end(); ++it)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myfile1 &lt;&lt; it-&gt;first &lt;&lt; <font color="#ff0000">" "</font> &lt;&lt; it-&gt;second &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Close File</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myfile1.close();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//========= Done Activity 2 =============//</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> ;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">/******** End of All  Functions ************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   </ul>
+                                                   <li><h4>Level - 2</h4></li>
+                                                   <p> The Level - 2 has the following code</p>
+                                                   <ul>
+                                                       <li><h4>Translate from Input</h4> </li>
+                                                           <p> Translate from Input's code is mentioned below</p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_IO/PreProcess/Level2/translate_from_input.hpp" download="translate_from_input">Translate from Input</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/******** Start of Functions ************/</font>
+<font color="#008000">/*!
+&nbsp; \brief Calls Level1 translation function
+&nbsp; */</font>
+<font color="#008000">/*** Selects Correct Translation Function ***/</font>
+<font color="#0000ff">void</font> translate_input(<font color="#0000ff">char</font> *file, <font color="#0000ff">int</font> type, <font color="#0000ff">char</font> *gfile, <font color="#0000ff">char</font> *mapfile)
+{&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">switch</font> (type)
+&nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">case</font> 1:
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node_node_wt(file, gfile, mapfile); <font color="#0000ff">break</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">case</font> 2:
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//node_wt_node(file, mapfile,nodemap,revmap); break;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">case</font> 4:
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//	node_node(file, nodemap,revmap); break;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">default</font>:&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; exception_invalid_type(); <font color="#0000ff">break</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> ;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/*** End of Function ***/</font>
+
+
+<font color="#008000">/*** Creates Map from nodes in mapfile to Actual Values ***/</font>
+<font color="#0000ff">void</font> create_map(<font color="#0000ff">char</font> *file,  map_int_st *revmap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; string st1, st2;
+&nbsp;&nbsp;&nbsp;&nbsp; std::pair&lt;std::map&lt;<font color="#0000ff">int</font>,string&gt;::iterator,<font color="#0000ff">bool</font>&gt; ret;
+&nbsp;&nbsp;&nbsp;&nbsp; string line;
+&nbsp;&nbsp;&nbsp;&nbsp; stringstream linestream;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+&nbsp;&nbsp;&nbsp;&nbsp; ifstream dataFile(file, ios::in); <font color="#008000">//Open input file</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(getline(dataFile, line))
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Readline</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; linestream.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; linestream&lt;&lt;line;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; linestream &gt;&gt; st1 &gt;&gt; st2;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> num=atoi(st2.c_str());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ret=revmap-&gt;insert( std::pair&lt;<font color="#0000ff">int</font>,string&gt;(num,st1) );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; dataFile.close();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/*** End of Function ***/</font>
+
+
+<font color="#008000">/*** Creates Map from nodes in mapfile to Actual Values ***/</font>
+<font color="#0000ff">void</font> create_map(<font color="#0000ff">int</font> nodes,  map_int_st *revmap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; string st1;
+&nbsp;&nbsp;&nbsp;&nbsp; std::pair&lt;std::map&lt;<font color="#0000ff">int</font>,string&gt;::iterator,<font color="#0000ff">bool</font>&gt; ret;
+&nbsp;&nbsp;&nbsp;&nbsp; string line;
+&nbsp;&nbsp;&nbsp;&nbsp; stringstream linestream;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; st1=<font color="#0000ff">static_cast</font>&lt;ostringstream*&gt;( &amp;(ostringstream() &lt;&lt; i) )-&gt;str();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ret=revmap-&gt;insert( std::pair&lt;<font color="#0000ff">int</font>,string&gt;(i,st1) );
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/*** End of Function ***/</font>
+
+
+<font color="#008000">/******** End of All  Functions ************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   </ul>
+                                               </ul>
+                                           </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </body>
+    </html>
+{% endblock %}

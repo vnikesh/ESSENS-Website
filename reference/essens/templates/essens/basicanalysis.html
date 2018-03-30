@@ -1,0 +1,947 @@
+{% extends 'essens/base.html' %}
+{% load staticfiles %}
+{% block content %}
+            {% if user.is_authenticated %}
+                <div class="page-container">
+
+                    <h2 class="top-menu">Hello {{ user.username }},</h2>
+                    <p>Please choose from below options.</p>
+
+                </div>
+            {% endif %}
+            <div class="content container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="links">
+                            <!-- Example row of columns -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                       <div class="caption">
+                                            <h2>Basic Analysis</h2>
+                                            <p>This file has the main code of the project, the code is futher categoried as follows. </p>
+                                           <ul>
+                                               <li><h4>Level - 0</h4></li>
+                                               <ul>
+                                                   <li><h4>ADJ</h4></li>
+                                                   <p><h4>1. BTW Centrality </h4></p>
+                                                   <p> The code is shown below </p>
+                                                   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Analysis/Level0/ADJ/btw_centrality.hpp" download="btw_centrality">BTW Centrality</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****** Closeness Centrality *******/</font>
+<font color="#008000">//To be rewirtten using traversal</font>
+<font color="#008000">//Also finds diameter and radius</font>
+<font color="#0000ff">void</font> cls_centrality(A_Network X, vector&lt;int_double&gt; *clCC, <font color="#0000ff">int</font> *diameter,<font color="#0000ff">int</font> *radius)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//int s,v,w,j;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; stack&lt;<font color="#0000ff">int</font>&gt; Stack;
+&nbsp;&nbsp;&nbsp;&nbsp; queue&lt;<font color="#0000ff">int</font>&gt; Queue;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; Shortest_Paths;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; Distance;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt; vector&lt;<font color="#0000ff">int</font>&gt; &gt; Predecessor;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize centrality values</font>
+&nbsp;&nbsp;&nbsp;&nbsp; btwC-&gt;resize(nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {btwC-&gt;at(i).first=i;
+&nbsp;&nbsp;&nbsp;&nbsp; btwC-&gt;at(i).second=0;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Starting with source vertex 0 and calculating for each possible source vertex</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> s=0;s&lt;nodes;s++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//cout &lt;&lt; s &lt;&lt; "\n";</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths.resize(nodes,0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths[s]=1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance.resize(nodes,-1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance[s]=0;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Predecessor[i][j]=1 means j is predecessor of i.</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Predecessor.resize(nodes);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> x=0;x&lt;Predecessor.size();x++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {Predecessor[x].resize(0);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Start BFS======</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Calculating distances and shortest paths from source s to all other vertices:</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Queue.push(s);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(!Queue.empty())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> v = Queue.front();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Queue.pop();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Stack.push(v);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> dv=Distance[v]+1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> Shv=Shortest_Paths[v];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;X[v].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> w=X[v].ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//w found for the first time?</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(Distance[w]&lt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Queue.push(w);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance[w]=dv;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths[w] = Shortest_Paths[w] + Shv;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Predecessor[w].push_back(v);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Shortest path to w via v?</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(Distance[w] ==dv)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { Shortest_Paths[w] = Shortest_Paths[w] + Shv;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Predecessor[w].push_back(v);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//End of BFS for s	</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Stack returns vertices in order of non-increasing distance from s</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> dep;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> sh;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">double</font>&gt; Dependency(nodes,0);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(!Stack.empty())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> y = Stack.top();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Stack.pop();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; dep=(1+Dependency[y]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sh=Shortest_Paths[y];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(!Predecessor[y].empty())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> mypred=Predecessor[y].back();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Predecessor[y].pop_back();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Dependency[mypred] = Dependency[mypred] + (((<font color="#0000ff">double</font>)Shortest_Paths[mypred]/sh)*dep);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(y!=s)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {btwC-&gt;at(y).second = btwC-&gt;at(y).second + Dependency[y];}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">// end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#008000">//btwC-&gt;at(i).first=i;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; btwC-&gt;at(i).second=btwC-&gt;at(i).second/2.0;}
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4>2. CLS Centrality</h4> </p>
+                                                           <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Analysis/Level0/ADJ/cls_centrality.hpp" download="cls_centrality">CLS Centrality</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****** Betweenness Centrality *******/</font>
+<font color="#008000">//To be rewirtten using traversal</font>
+<font color="#0000ff">void</font> btw_centrality(A_Network X, vector&lt;int_double&gt; *btwC)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//int s,v,w,j;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; stack&lt;<font color="#0000ff">int</font>&gt; Stack;
+&nbsp;&nbsp;&nbsp;&nbsp; queue&lt;<font color="#0000ff">int</font>&gt; Queue;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; Shortest_Paths;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; Distance;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt; vector&lt;<font color="#0000ff">int</font>&gt; &gt; Predecessor;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize centrality values</font>
+&nbsp;&nbsp;&nbsp;&nbsp; btwC-&gt;resize(nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {btwC-&gt;at(i).first=i;
+&nbsp;&nbsp;&nbsp;&nbsp; btwC-&gt;at(i).second=0;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Starting with source vertex 0 and calculating for each possible source vertex</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> s=0;s&lt;nodes;s++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//cout &lt;&lt; s &lt;&lt; "\n";</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths.resize(nodes,0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths[s]=1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance.resize(nodes,-1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance[s]=0;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Predecessor[i][j]=1 means j is predecessor of i.</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Predecessor.resize(nodes);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> x=0;x&lt;Predecessor.size();x++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {Predecessor[x].resize(0);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Start BFS======</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Calculating distances and shortest paths from source s to all other vertices:</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Queue.push(s);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(!Queue.empty())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> v = Queue.front();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Queue.pop();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Stack.push(v);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> dv=Distance[v]+1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> Shv=Shortest_Paths[v];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;X[v].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> w=X[v].ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//w found for the first time?</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(Distance[w]&lt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Queue.push(w);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance[w]=dv;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths[w] = Shortest_Paths[w] + Shv;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Predecessor[w].push_back(v);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Shortest path to w via v?</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(Distance[w] ==dv)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { Shortest_Paths[w] = Shortest_Paths[w] + Shv;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Predecessor[w].push_back(v);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//End of BFS for s	</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Stack returns vertices in order of non-increasing distance from s</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> dep;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> sh;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">double</font>&gt; Dependency(nodes,0);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(!Stack.empty())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> y = Stack.top();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Stack.pop();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; dep=(1+Dependency[y]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sh=Shortest_Paths[y];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(!Predecessor[y].empty())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> mypred=Predecessor[y].back();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Predecessor[y].pop_back();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Dependency[mypred] = Dependency[mypred] + (((<font color="#0000ff">double</font>)Shortest_Paths[mypred]/sh)*dep);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(y!=s)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {btwC-&gt;at(y).second = btwC-&gt;at(y).second + Dependency[y];}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">// end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#008000">//btwC-&gt;at(i).first=i;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; btwC-&gt;at(i).second=btwC-&gt;at(i).second/2.0;}
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4>3. Clustering Coefficient</h4> </p>
+                                                           <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Analysis/Level0/ADJ/clustering_coefficient.hpp" download="clustering_coefficient">Clustering Coefficient</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Computes the clustering co-efficient of a node with respect to all/subset of its neighbors</font>
+
+
+<font color="#008000">/*** Compute Clustering Coefficient ***/</font>
+<font color="#0000ff">void</font> compute_CC(A_Network X, vector&lt;<font color="#0000ff">int</font>&gt; node_set, <font color="#0000ff">double</font> *cc)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(node_set.size()&lt;2) {printf (<font color="#ff0000">"ESSENS ERROR: Clustering Coefficient Needs at Least 2 Entries \n"</font>); <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; *cc=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> numerator=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> denominator=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; common_neighs;
+&nbsp;&nbsp;&nbsp;&nbsp; common_neighs.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;node_set);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;node_set.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">int</font> nx=node_set[i];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; myneighbors;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myneighbors.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(nx, X[nx].ListW, &amp;myneighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//No need to sort myneighbors as neighbors aranged in increasing order</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; common_neighs=intersect(myneighbors, node_set);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; numerator=numerator+(<font color="#0000ff">double</font>)common_neighs.size();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> total_nodes=(<font color="#0000ff">double</font>)node_set.size();
+&nbsp;&nbsp;&nbsp;&nbsp; denominator=total_nodes*(total_nodes-1);
+&nbsp;&nbsp;&nbsp;&nbsp; *cc=numerator/denominator;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//Weighted CCA as per Barrat 2004</font>
+<font color="#008000">//CC(i)= [Sum_j,k (wij+wik) ]/[(wi)*(n-1)] (n=#of neighbors) for all triangles i-j-k</font>
+<font color="#0000ff">void</font> compute_CCW(<font color="#0000ff">int</font> ni, A_Network X, vector&lt;<font color="#0000ff">int</font>&gt; node_set, <font color="#0000ff">double</font> *cc)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(node_set.size()&lt;2) {printf (<font color="#ff0000">"ESSENS ERROR: Clustering Coefficient Needs at Least 2 Entries \n"</font>); <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; *cc=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> numerator=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> denominator=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> wi=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;node_set);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//neighbors of ni</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;X[ni].ListW.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nj=X[ni].ListW[j].first;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!binary_search(node_set.begin(), node_set.end(),nj)) {<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> wij=X[ni].ListW[j].second;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wi=wi+wij;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//neighbors of nj</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;X[nj].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nk=X[nj].ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!binary_search(node_set.begin(), node_set.end(),nk)) {<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//neighbors of nk</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> l=0;l&lt;X[nk].ListW.size();l++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nl=X[nk].ListW[l].first;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Found triangle</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(nl==ni)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {  <font color="#0000ff">double</font> wik=X[nk].ListW[l].second;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; numerator=numerator+(wij+wik);}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for l</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for k</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for j</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> total_nodes=(<font color="#0000ff">double</font>)node_set.size();
+&nbsp;&nbsp;&nbsp;&nbsp; denominator=(total_nodes-1)*wi*2;
+&nbsp;&nbsp;&nbsp;&nbsp; *cc=numerator/denominator;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#0000ff">void</font> compute_CC(A_Network X, <font color="#0000ff">int</font> node, <font color="#0000ff">double</font> *cc)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; *cc=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> numerator=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> denominator=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; common_neighs;
+&nbsp;&nbsp;&nbsp;&nbsp; common_neighs.clear();
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; node_set;
+&nbsp;&nbsp;&nbsp;&nbsp; node_set.clear();
+&nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node,X[node].ListW, &amp;node_set);
+&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;node_set);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;node_set.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">int</font> nx=node_set[i];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; myneighbors;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myneighbors.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(nx, X[nx].ListW, &amp;myneighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;myneighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; common_neighs=intersect(myneighbors,node_set);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; numerator=numerator+(<font color="#0000ff">double</font>)common_neighs.size();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> total_nodes=(<font color="#0000ff">double</font>)node_set.size();
+&nbsp;&nbsp;&nbsp;&nbsp; denominator=total_nodes*(total_nodes-1);
+&nbsp;&nbsp;&nbsp;&nbsp; *cc=numerator/denominator;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4>4. Degree Centrality</h4> </p>
+                                                           <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Analysis/Level0/ADJ/degree_centrality.hpp" download="degree_centrality">Degree Centrality</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Compares Two Elements a,b</font>
+<font color="#008000">//returns 0 if a==b</font>
+<font color="#008000">//returns -1 if a<b< font="">
+<font color="#008000">//returns +1 if a&gt;b</font>
+
+<font color="#008000">/****** Degree Centrality *******/</font>
+<font color="#008000">//Degrees Unordered</font>
+<font color="#0000ff">void</font> degree_centrality(A_Network X, vector&lt;<font color="#0000ff">int</font>&gt; *degreeC, int_int *maxD)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize degreeC</font>
+&nbsp;&nbsp;&nbsp;&nbsp; degreeC-&gt;resize(X.size(),0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize maxD</font>
+&nbsp;&nbsp;&nbsp;&nbsp; maxD-&gt;first=-1; <font color="#008000">//vertex with maximum degree</font>
+&nbsp;&nbsp;&nbsp;&nbsp; maxD-&gt;second=-1; <font color="#008000">//value of maxdegree</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0; i&lt;X.size(); i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; degreeC-&gt;at(i)=X[i].ListW.size(); <font color="#008000">//compute degree of each vertex</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//update maxD</font>
+&nbsp;&nbsp;&nbsp;&nbsp;     <font color="#0000ff">if</font>(maxD-&gt;second &lt;degreeC-&gt;at(i))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {maxD-&gt;first=i; maxD-&gt;second=degreeC-&gt;at(i);}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+
+
+
+<font color="#008000">//Degrees Ordered in increasing form</font>
+<font color="#0000ff">void</font> degree_centrality(A_Network X, vector&lt;int_int&gt; *degreeC)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize degreeC</font>
+&nbsp;&nbsp;&nbsp;&nbsp; degreeC-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; int_int D;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0; i&lt;X.size(); i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; D.first=i;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; D.second=X[i].ListW.size();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; degreeC-&gt;push_back(D);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; sort(degreeC, dec_second);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">//Distribution of Degree in increasing form</font>
+<font color="#0000ff">void</font> degree_distribution(A_Network X, vector&lt;<font color="#0000ff">int</font>&gt; *degreeC)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize degreeC</font>
+&nbsp;&nbsp;&nbsp;&nbsp; degreeC-&gt;resize(0);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0; i&lt;X.size(); i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Extend degree sequence</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(X[i].ListW.size()&gt;degreeC-&gt;size())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { degreeC-&gt;resize((X[i].ListW.size()+1),0);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; degreeC-&gt;at(X[i].ListW.size())++;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******* End of Functions **************/</font></b<></font>
+</pre><font color="#008000">
+</font></code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4>5. Random Walk</h4> </p>
+                                                           <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Analysis/Level0/ADJ/random_walk.hpp" download="random_walk">Random Walk</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Compares Two Elements a,b</font>
+<font color="#008000">//returns 0 if a==b</font>
+<font color="#008000">//returns -1 if a<b< font="">
+<font color="#008000">//returns +1 if a&gt;b</font>
+
+<font color="#008000">/****** Degree Centrality *******/</font>
+<font color="#008000">//Degrees Unordered</font>
+<font color="#0000ff">void</font> random_walk(A_Network X, vector&lt;int_int&gt; *visitC, vector &lt; vector&lt;<font color="#0000ff">int</font>&gt; &gt; *paths, <font color="#0000ff">int</font> len, <font color="#0000ff">int</font> number, <font color="#0000ff">bool</font> repeat)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Seed for random number generator</font>
+&nbsp;&nbsp;&nbsp;&nbsp; srand (time(NULL));
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> max_val=(<font color="#0000ff">int</font>)X.size();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize path</font>
+&nbsp;&nbsp;&nbsp;&nbsp; paths-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; single_path;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; sorted_path;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//List of neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> index;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; visitC-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp; int_int dummy;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;(<font color="#0000ff">int</font>)X.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {  dummy.first=k;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dummy.second=0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; visitC-&gt;push_back(dummy);}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//For loop for number of paths travelled</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0; i&lt; number; i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; single_path.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Randomly select starting node</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=rand()%max_val;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//For loops for length of path travelled</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0; j&lt;len;j++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; single_path.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; visitC-&gt;at(node).second++;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//get neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node, X[node].ListW, &amp;neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//If no repeatition allowed use only leftover neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!repeat)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sorted_path=single_path;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;sorted_path);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; neighbors=difference(neighbors,sorted_path);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighbors.size()==0) {<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//get index of next neighbor</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; index=rand()%(<font color="#0000ff">int</font>)neighbors.size();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//get next node</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; node=neighbors[index];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; single_path.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; visitC-&gt;at(node).second++;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; paths-&gt;push_back(single_path);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Sort in decscending order</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(visitC, dec_second);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+
+
+
+<font color="#008000">/******* End of Functions **************/</font></b<></font>
+</pre><font color="#008000">
+</font></code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                               </ul>
+                                               <li><h4>Metrics</h4></li>
+                                               <p><h4>1. CLS Centrality</h4></p>
+                                               <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Analysis/Metrics/cls_centrality.hpp" download="cls_centrality">CLS Centrality</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****** Betweenness Centrality *******/</font>
+<font color="#008000">//To be rewirtten using traversal</font>
+<font color="#0000ff">void</font> btw_centrality(A_Network X, vector&lt;int_double&gt; *btwC)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//int s,v,w,j;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; stack&lt;<font color="#0000ff">int</font>&gt; Stack;
+&nbsp;&nbsp;&nbsp;&nbsp; queue&lt;<font color="#0000ff">int</font>&gt; Queue;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; Shortest_Paths;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; Distance;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt; vector&lt;<font color="#0000ff">int</font>&gt; &gt; Predecessor;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize centrality values</font>
+&nbsp;&nbsp;&nbsp;&nbsp; btwC-&gt;resize(nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {btwC-&gt;at(i).first=i;
+&nbsp;&nbsp;&nbsp;&nbsp; btwC-&gt;at(i).second=0;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Starting with source vertex 0 and calculating for each possible source vertex</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> s=0;s&lt;nodes;s++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//cout &lt;&lt; s &lt;&lt; "\n";</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths.resize(nodes,0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths[s]=1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance.resize(nodes,-1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance[s]=0;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Predecessor[i][j]=1 means j is predecessor of i.</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Predecessor.resize(nodes);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> x=0;x&lt;Predecessor.size();x++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {Predecessor[x].resize(0);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Start BFS======</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Calculating distances and shortest paths from source s to all other vertices:</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Queue.push(s);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(!Queue.empty())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> v = Queue.front();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Queue.pop();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Stack.push(v);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> dv=Distance[v]+1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> Shv=Shortest_Paths[v];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;X[v].ListW.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> w=X[v].ListW[k].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//w found for the first time?</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(Distance[w]&lt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Queue.push(w);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Distance[w]=dv;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Shortest_Paths[w] = Shortest_Paths[w] + Shv;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Predecessor[w].push_back(v);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Shortest path to w via v?</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(Distance[w] ==dv)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { Shortest_Paths[w] = Shortest_Paths[w] + Shv;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Predecessor[w].push_back(v);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//End of BFS for s	</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Stack returns vertices in order of non-increasing distance from s</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> dep;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> sh;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">double</font>&gt; Dependency(nodes,0);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(!Stack.empty())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> y = Stack.top();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Stack.pop();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; dep=(1+Dependency[y]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sh=Shortest_Paths[y];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(!Predecessor[y].empty())
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> mypred=Predecessor[y].back();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Predecessor[y].pop_back();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Dependency[mypred] = Dependency[mypred] + (((<font color="#0000ff">double</font>)Shortest_Paths[mypred]/sh)*dep);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(y!=s)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {btwC-&gt;at(y).second = btwC-&gt;at(y).second + Dependency[y];}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">// end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#008000">//btwC-&gt;at(i).first=i;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; btwC-&gt;at(i).second=btwC-&gt;at(i).second/2.0;}
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                               <p><h4>2. NMI</h4></p>
+                                               <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Analysis/Metrics/nmi.hpp" download="nmi">NMI</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/****** NMI Computation *******/</font>
+<font color="#008000">//Assume that the communities are bunched together and ordered consecutively</font>
+<font color="#008000">//Also nodes in each community ordered consecutively--required for intersection</font>
+<font color="#008000">//Assume communities start from 0</font>
+<font color="#0000ff">double</font> get_nmi(vector&lt;int_int&gt; *C1, vector&lt;int_int&gt; *C2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Largest community ID in C1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> maxC1=C1-&gt;at(C1-&gt;size()-1).second;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Largest community ID in C2</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> maxC2=C2-&gt;at(C2-&gt;size()-1).second;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> curC1=0; <font color="#008000">//st community</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> curC2=0; <font color="#008000">//current community C2</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; C1_set; <font color="#008000">//nodes in C1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; C2_set; <font color="#008000">//nodes in C2</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; nij;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> j=0;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> n=C1-&gt;size();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font>  pij_vals[maxC1+1][maxC2+1];
+&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(i&lt;C1-&gt;size())
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find vertices in the community curC1</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C1_set.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(C1-&gt;at(i).second==curC1 &amp;&amp; i&lt;C1-&gt;size())
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {C1_set.push_back(C1-&gt;at(i).first);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i++;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(i==C1-&gt;size()){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j=0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; curC2=0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(j&lt;C2-&gt;size())
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find vertices in the community curC2</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C2_set.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(C2-&gt;at(j).second==curC2 )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {C2_set.push_back(C2-&gt;at(j).first);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j++;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(j==C2-&gt;size()){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find pij (intersection of elements in C1 and C2)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pij_vals[curC1][curC2]=0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nij.clear();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nij=intersect(C1_set, C2_set);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> pij=<font color="#0000ff">double</font>(nij.size())/<font color="#0000ff">double</font>(n);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update pij in array</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pij_vals[curC1][curC2]=pij;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//update community in set 2</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; curC2++;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//update community in set 1</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; curC1++;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">/*== Caluclating Pij_vals DONE ===*/</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Computing NMI</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//comupte pi+ and HX</font>
+&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> pi[maxC1+1];
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> hx=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;=maxC1; i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pi[i]=0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(j=0;j&lt;=maxC2;j++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {pi[i]=pi[i]+ pij_vals[i][j];}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(pi[i]&gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {hx=hx+pi[i]*log(pi[i]);}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//comupte pj+ and HY</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> pj[maxC2+1];
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> hy=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;=maxC2; j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pj[j]=0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(i=0;i&lt;=maxC1;i++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {pj[j]=pj[j]+ pij_vals[i][j];}
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(pj[j]&gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {hy=hy+pj[j]*log(pj[j]);}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Compute IXY</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> Ixy=0.0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;=maxC1; i++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;=maxC2; j++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">// printf("%d %d %f--\n", i, j, pij_vals[i][j]);</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(pi[i]&gt;0 &amp;&amp; pj[j]&gt;0 &amp;&amp;pij_vals[i][j]&gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {Ixy=Ixy+pij_vals[i][j]*log((pij_vals[i][j])/(pi[i]*pj[j]));}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">// printf("%d %d %f \n", i, j, Ixy);</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Comput NMI</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> NMI=-2*Ixy/(hx+hy);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> NMI;
+}
+
+
+
+
+<font color="#008000">/**** Weighted NMI Computation as per Labatut Paper ***
+void get_nmiW(vector&lt;int_int&gt; *C1, vecor&lt;int_int&gt; *C2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; return;
+}
+
+*/</font>
+
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                               <p><h4>3. NMI Computation</h4></p>
+                                               <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Analysis/Metrics/nmi_computation.hpp" download="nmi_computation">NMI Computation</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre>****** NMI Computation *******/
+<font color="#008000">//Assume that the communities are bunched together and ordered consecutively</font>
+<font color="#008000">//Also nodes in each community ordered consecutively--required for intersection</font>
+<font color="#008000">//Assume communities start from 0</font>
+<font color="#0000ff">void</font> get_nmi(vector&lt;int_int&gt; *C1, vecor&lt;int_int&gt; *C2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Largest community ID in C1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; maxC1=C1-&gt;at(C1.size()-1).second;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Largest community ID in C2</font>
+&nbsp;&nbsp;&nbsp;&nbsp; maxC2=C2-&gt;at(C2.size()-1).second;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> curC1=0; <font color="#008000">//st community</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> curC2=0; <font color="#008000">//current community C2</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; C1_set; <font color="#008000">//nodes in C1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; C2_set; <font color="#008000">//nodes in C2</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; int12;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> i=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> j=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(i&lt;C1-&gt;size();)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find vertices in the community curC1</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(C1-&gt;at(i).second==curC1)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {C1_set.push_back(C1-&gt;at(i).first);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i++;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {curC1++;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j=0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(j&lt;C2-&gt;size())
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find vertices in the community curC1</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(C2-&gt;at(i).second==curC2)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {C2_set.push_back(C2-&gt;at(i).first);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j++;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {curC2++;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find pij (intersection of elements in C1 and C2)</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int12=intersection(C1_set, C2, set);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+}
+
+
+
+
+<font color="#008000">/**** Weighted NMI Computation as per Labatut Paper ***
+void get_nmiW(vector&lt;int_int&gt; *C1, vecor&lt;int_int&gt; *C2)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; return;
+}
+
+*/</font>
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                           </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </body>
+    </html>
+{% endblock %}

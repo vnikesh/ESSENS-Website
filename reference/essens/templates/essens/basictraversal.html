@@ -1,0 +1,2278 @@
+{% extends 'essens/base.html' %}
+{% load staticfiles %}
+{% block content %}
+            {% if user.is_authenticated %}
+                <div class="page-container">
+
+                    <h2 class="top-menu">Hello {{ user.username }},</h2>
+                    <p>Please choose from below options.</p>
+
+                </div>
+            {% endif %}
+            <div class="content container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="links">
+                            <!-- Example row of columns -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                       <div class="caption">
+                                            <h2>Basic Traversal</h2>
+                                            <p>The code ...... </p>
+                                           <p> This is further sub-divided as follows</p>
+                                           <ul>
+                                               <li>Level - 1</li>
+                                               <ul>
+                                                   <li><h4>ADJ</h4></li>
+                                                   <p> The USER gives the basic inputs here and it is further categoried as follows</p>
+                                                   <ul>
+                                                       <li><h4>1. Add Neighbors</h4></li>
+                                                       <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level1/ADJ/add_neighbors.hpp" download="add_neighbors">Add Neighbors</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">//Functions for adding neighbors to connected subgraph</font>
+<font color="#008000">//BFS--single node</font>
+<font color="#008000">//Neighbors stored as int_double</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> add_to_heap_bfs(<font color="#0000ff">int</font> prvnode, vector&lt;int_double&gt; neighbors,  vector&lt;<font color="#0000ff">double</font>&gt; *element_vals, vector&lt; pair&lt;int_double, <font color="#0000ff">double</font>&gt; &gt; * myheap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_double,<font color="#0000ff">double</font>&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//get next value</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Type2 next_val=element_vals-&gt;at(prvnode)+1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(element_vals-&gt;at(node)==0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {  element_vals-&gt;at(node)=next_val; <font color="#008000">//distance from start node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.second=element_vals-&gt;at(node);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first=neighbors[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, dec_second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******** End of Function *****/</font>
+
+
+
+
+
+<font color="#008000">///////////////////////////////////</font>
+<font color="#008000">//DFS--single node</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> add_to_heap_dfs(<font color="#0000ff">int</font> prvnode, vector&lt;Edge&gt; neighbors,  vector&lt;Type2&gt; *element_vals, vector&lt; pair&lt;Type1, Type2&gt; &gt; * myheap, vector&lt;Edge&gt; *myEdges)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;Type1,<font color="#0000ff">double</font>&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; prvnode=neighbors[0].node1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node=neighbors[i].node2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; element_vals-&gt;at(node)=element_vals-&gt;at(prvnode)+1; <font color="#008000">//depth</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.second=element_vals-&gt;at(node);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first=neighbors[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, inc_second);
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******** End of Function *****/</font>
+
+<font color="#008000">//MAXST--Font of Nodes</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> add_to_heap_maxst(vector&lt;Edge&gt; neighbors,  vector&lt;Type2&gt; *element_vals, vector&lt; pair&lt;Type1, Type2&gt; &gt; * myheap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> weight;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;Edge,<font color="#0000ff">double</font>&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {get(neighbors[i], <font color="#ff0000">"node2"</font>, &amp;node);
+&nbsp;&nbsp;&nbsp;&nbsp;  get(neighbors[i], <font color="#ff0000">"wt"</font>, &amp;weight);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(element_vals-&gt;at(node)&lt;weight) <font color="#008000">//critical value=max weight</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; element_vals-&gt;at(node)=weight;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.second=element_vals-&gt;at(node);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first=neighbors[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, inc_second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******** End of Function *****/</font>
+<font color="#008000">/*
+
+template &lt;class Type1, class Type2&gt;
+void add_to_heap_chd(vector&lt;Edge&gt; neighbors,  vector&lt;Type2&gt; *element_vals, vector&lt; pair&lt;Type1, Type2&gt; &gt; * myheap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; int node1, node2;
+&nbsp;&nbsp;&nbsp;&nbsp; double weight;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int&gt; neighbors1;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int&gt; neighbors2;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;Edge,double&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; getx_neighbors(node1, Y-&gt;at(node1).ListW, &amp;neighbors1);
+&nbsp;&nbsp;&nbsp;&nbsp; for(int i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {get(neighbors[i], "node2", &amp;node2);
+&nbsp;&nbsp;&nbsp;&nbsp;  get(neighbors[i], "wt", &amp;weight);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; getx_neighbors(node2, Y-&gt;at(node2).ListW, &amp;neighbors2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; if(issubset(neighbors1, neighbors2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {  element_vals-&gt;at(node2)=element_vals-&gt;at(node2)+weight;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.second=element_vals-&gt;at(node2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first=neighbors[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, inc_second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+
+}
+<font color="#008000">/******** End of Function *****/</font></font></pre><font color="#008000">
+</font></code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>2. Add to Heap</h4></li>
+                                                       <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level1/ADJ/add_to_heap.hpp" download="add_to_heap">Add To Heap</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">//Functions for adding neighbors to connected subgraph</font>
+<font color="#008000">//BFS--multiple nodes</font>
+<font color="#008000">//Neighbors stored as int_double</font>
+<font color="#0000ff">void</font> add_to_heap_bfs(<font color="#0000ff">int</font> prvnode, vector&lt;int_double&gt; neighbors,  vector&lt;<font color="#0000ff">double</font>&gt; *element_vals, vector&lt; pair&lt;int_double, <font color="#0000ff">double</font>&gt; &gt; *myheap, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_double,<font color="#0000ff">double</font>&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_double&gt; myDest;
+&nbsp;&nbsp;&nbsp;&nbsp; myDest.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//get next value</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> next_val=element_vals-&gt;at(prvnode)+1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//change prvnode val to show its been processed</font>
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals-&gt;at(prvnode)=-1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//if(element_vals-&gt;at(node)&gt;-1) //check if edge valid</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(element_vals-&gt;at(node)==0)<font color="#008000">//check if it is not visited</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {  element_vals-&gt;at(node)=next_val; <font color="#008000">//distance from start node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.second=element_vals-&gt;at(node);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first=neighbors[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, dec_second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myDest.push_back(neighbors[i]);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(Y,prvnode,myDest);
+}
+<font color="#008000">/******** End of Function *****/</font>
+<font color="#008000">/////////////////////////////////</font>
+
+
+&nbsp; <font color="#008000">//CHD--multiple nodes</font>
+&nbsp; <font color="#0000ff">void</font> add_to_heap_chd(<font color="#0000ff">int</font> prvnode, vector&lt;int_double&gt; neighbors,  vector&lt;<font color="#0000ff">double</font>&gt; *element_vals, vector&lt; pair&lt;int_double, <font color="#0000ff">double</font>&gt; &gt; *myheap, A_Network *Y)
+&nbsp; {
+&nbsp; <font color="#0000ff">int</font> node;
+&nbsp; pair&lt;int_double,<font color="#0000ff">double</font>&gt; myval;
+&nbsp; vector&lt;int_double&gt; myDest;
+&nbsp; myDest.resize(0);
+vector&lt;<font color="#0000ff">int</font>&gt; neighbors1;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighbors2;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <font color="#008000">//change prvnode val to show its been processed</font>
+&nbsp;&nbsp; element_vals-&gt;at(prvnode)=-1;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; get_neighbors(prvnode, Y-&gt;at(prvnode).ListW, &amp;neighbors1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp;  {
+&nbsp;&nbsp;&nbsp;&nbsp;  node=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Check if new node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">if</font>(element_vals-&gt;at(node)&gt;-1)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//Check if edge valid</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node, Y-&gt;at(node).ListW, &amp;neighbors2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(issubset(neighbors1, neighbors2)) <font color="#008000">//valid if subset</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {  element_vals-&gt;at(node)=element_vals-&gt;at(node)+neighbors[i].second; <font color="#008000">//number of connections to start_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.second=element_vals-&gt;at(node);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first=neighbors[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  push_heap(myheap, myval, inc_second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myDest.push_back(neighbors[i]);
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp;  } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;  add_edgeS(Y,prvnode,myDest);
+&nbsp; }
+&nbsp; <font color="#008000">/******** End of Function *****/</font>
+<font color="#008000">/////////////////////////////////</font>
+
+
+<font color="#008000">//MAXST--single node to be pushed by heap</font>
+<font color="#0000ff">void</font> add_to_heap_maxst(<font color="#0000ff">int</font> prvnode, vector&lt;int_double&gt; neighbors,  vector&lt;<font color="#0000ff">double</font>&gt; *element_vals, vector&lt; pair&lt;int_int, <font color="#0000ff">double</font>&gt; &gt; *myheap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_int,<font color="#0000ff">double</font>&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//change prvnode val to show its been processed</font>
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals-&gt;at(prvnode)=-1;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if new node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(element_vals-&gt;at(node)&gt;-1)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//	if(element_vals-&gt;at(node)<neighbors[i].second); number="" of="" connections="" to="" start_nodes<="" font="">
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp; myval.second=neighbors[i].second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first.first=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first.second=prvnode;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, inc_second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******** End of Function *****/</font>
+<font color="#008000">///////////////////////////////////</font>
+
+
+<font color="#008000">//MINST--single node to be pushed by heap</font>
+<font color="#0000ff">void</font> add_to_heap_minst(<font color="#0000ff">int</font> prvnode, vector&lt;int_double&gt; neighbors,  vector&lt;<font color="#0000ff">double</font>&gt; *element_vals, vector&lt; pair&lt;int_int, <font color="#0000ff">double</font>&gt; &gt; *myheap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_int,<font color="#0000ff">double</font>&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//change prvnode val to show its been processed</font>
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals-&gt;at(prvnode)=-1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; node=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if new node</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(element_vals-&gt;at(node)&gt;-1)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//	if(element_vals-&gt;at(node)<neighbors[i].second); number="" of="" connections="" to="" start_nodes<="" font="">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myval.second=neighbors[i].second;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myval.first.first=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; myval.first.second=prvnode;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, dec_second);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******** End of Function *****/</font>
+<font color="#008000">///////////////////////////////////</font>
+
+<font color="#008000">//DFS--single node to be pushed by heap</font>
+<font color="#0000ff">void</font> add_to_heap_dfs(<font color="#0000ff">int</font> prvnode, vector&lt;int_double&gt; neighbors,  vector&lt;<font color="#0000ff">double</font>&gt; *element_vals, vector&lt; pair&lt;int_int, <font color="#0000ff">double</font>&gt; &gt; *myheap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_int,<font color="#0000ff">double</font>&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//get next value</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> next_val=element_vals-&gt;at(prvnode)+1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//change prvnode val to show its been processed</font>
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals-&gt;at(prvnode)=-1;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(element_vals-&gt;at(node)&gt;-1) <font color="#008000">//check if edge valid</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {  element_vals-&gt;at(node)=next_val; <font color="#008000">//distance from start node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.second=element_vals-&gt;at(node);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first.first=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first.second=prvnode;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, inc_second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******** End of Function *****/</font>
+<font color="#008000">///////////////////////////////////</font>
+
+
+<font color="#008000">//RANDOM--single node--no repeats</font>
+<font color="#0000ff">void</font> add_to_heap_rnd(<font color="#0000ff">int</font> prvnode, vector&lt;int_double&gt; neighbors,  vector&lt;<font color="#0000ff">double</font>&gt; *element_vals, vector&lt; pair&lt;int_int, <font color="#0000ff">double</font>&gt; &gt; *myheap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_int,<font color="#0000ff">double</font>&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//get next value</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> next_val=element_vals-&gt;at(prvnode)+1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//change prvnode val to show its been processed</font>
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals-&gt;at(prvnode)=-1;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(element_vals-&gt;at(node)&gt;-1) <font color="#008000">//check if edge valid</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {  element_vals-&gt;at(node)=rand()%10; <font color="#008000">//distance from start node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.second=element_vals-&gt;at(node);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first.first=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first.second=prvnode;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, inc_second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******** End of Function *****/</font>
+
+
+<font color="#008000">//Random--Multiple node--no repeats</font>
+<font color="#0000ff">void</font> add_to_heap_rnd1(<font color="#0000ff">int</font> prvnode, vector&lt;int_double&gt; neighbors,  vector&lt;<font color="#0000ff">double</font>&gt; *element_vals, vector&lt; pair&lt;int_double, <font color="#0000ff">double</font>&gt; &gt; *myheap, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_double,<font color="#0000ff">double</font>&gt; myval;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_double&gt; myDest;
+&nbsp;&nbsp;&nbsp;&nbsp; myDest.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//get next value</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> next_val=element_vals-&gt;at(prvnode)+1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//change prvnode val to show its been processed</font>
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals-&gt;at(prvnode)=-1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node=neighbors[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(element_vals-&gt;at(node)&gt;-1) <font color="#008000">//check if edge valid</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {  element_vals-&gt;at(node)=rand()%10; <font color="#008000">//distance from start node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.second=element_vals-&gt;at(node);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myval.first=neighbors[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; push_heap(myheap, myval, dec_second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myDest.push_back(neighbors[i]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(Y,prvnode,myDest);
+}
+<font color="#008000">/******** End of Function *****/</font>
+<font color="#008000">/////////////////////////////////</font></neighbors[i].second);></font></neighbors[i].second);></font></pre><font color="#008000"><font color="#008000">
+</font></font></code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>3. Find Neighbors</h4></li>
+                                                       <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level1/ADJ/find_neighbors.hpp" download="find_neighbors">Find Neighbors</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">/****** Finds Distance 1 Neighbors *******/</font>
+
+
+<font color="#008000">//For single node =======</font>
+<font color="#008000">//For single nodes use only the corresponding row; not the entire network</font>
+<font color="#008000">//neighbors+wt</font>
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, vector&lt;int_double&gt; Vrow, vector&lt;int_double&gt; *neighbors)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;Vrow.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(Vrow[i]);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/******* End of Function ***/</font>
+
+<font color="#008000">//only neighbors</font>
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, vector&lt;int_double&gt; Vrow, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;Vrow.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(Vrow[i].first);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Function ***/</font>
+
+<font color="#008000">//only neighbors</font>
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, vector&lt;int_double&gt; Vrow, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors, vector&lt;<font color="#0000ff">int</font>&gt; blacklist, vector&lt;<font color="#0000ff">int</font>&gt; valid)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> ind=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;Vrow.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(blacklist, Vrow[i].first))
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//if(contains_sort(valid, Vrow[i].first))</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> j=ind;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(;j&lt;valid.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(valid[j]==Vrow[i].first)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(Vrow[i].first);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ind=j+1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(ind==valid.size()){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Function ***/</font>
+
+
+<font color="#008000">//only neighbors</font>
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, vector&lt;int_double&gt; Vrow, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors, vector&lt;<font color="#0000ff">int</font>&gt; blacklist)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;Vrow.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">if</font>(!contains_sort(blacklist, Vrow[i].first))
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;push_back(Vrow[i].first);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Function ***/</font>
+
+<font color="#008000">//only edgelist</font>
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, vector&lt;int_double&gt; Vrow, vector&lt;Edge&gt; *neighbors)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Edge mye;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;Vrow.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {mye=create(node,Vrow[i].first, Vrow[i].second);
+&nbsp;&nbsp;&nbsp;&nbsp;  neighbors-&gt;push_back(mye);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/**** End of Function ***/</font>
+
+
+<font color="#008000">// Get neighbors with blacklist</font>
+<font color="#008000">//Assume blacklist is sorted in increasing order</font>
+<font color="#008000">//neighbors+wt</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, vector&lt;int_double&gt; Vrow, vector&lt;int_double&gt; *neighbors, vector&lt;Type1&gt; blacklist, <font color="#0000ff">const</font> string &amp;edge_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;Vrow.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">if</font>(!contains_sort(blacklist, Vrow[i], edge_prop))
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;push_back(Vrow[i]);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//only neighbors</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, vector&lt;int_double&gt; Vrow, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors, vector&lt;Type1&gt; blacklist, <font color="#0000ff">const</font> string &amp;edge_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;Vrow.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {<font color="#0000ff">if</font>(!contains_sort(blacklist, Vrow[i], edge_prop))
+&nbsp;&nbsp;&nbsp;&nbsp;  neighbors-&gt;push_back(Vrow[i].first);}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">//only edgelist</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, vector&lt;int_double&gt; Vrow, vector&lt;Edge&gt; *neighbors, vector&lt;Type1&gt; blacklist, <font color="#0000ff">const</font> string &amp;edge_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Edge mye;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;Vrow.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { <font color="#0000ff">if</font>(!contains_sort(blacklist, Vrow[i], edge_prop))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {mye=create(node,Vrow[i].first, Vrow[i].second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;push_back(mye);}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">//=================================</font>
+<font color="#008000">//For multiple nodes =======</font>
+<font color="#008000">//Send Network X, only if size of nodes is large enough. Otherwise use repeated calls to single nodes.</font>
+<font color="#008000">//neigbors will be repeated</font>
+
+<font color="#008000">//neighbors+wt</font>
+<font color="#0000ff">void</font> get_neighbors(vector&lt;<font color="#0000ff">int</font>&gt; nodes, A_Network X, vector&lt;int_double&gt; *neighbors)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Iterate Through all the nodes </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> k=0; k&lt; nodes.size(); k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=nodes[k];
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node&lt;-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X[node].ListW.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(X[node].ListW[i]);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//sort the neigbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/******* End of Function ***/</font>
+
+<font color="#008000">//For multiple nodes =======</font>
+<font color="#008000">//Send Network X, only if size of nodes is large enough. Otherwise use repeated calls to single nodes.</font>
+<font color="#008000">//neigbors will be repeated</font>
+
+<font color="#008000">//neighbors+wt</font>
+<font color="#0000ff">void</font> get_neighbors(vector&lt;<font color="#0000ff">int</font>&gt; nodes, A_Network X, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Iterate Through all the nodes </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> k=0; k&lt; nodes.size(); k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=nodes[k];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node&lt;-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X[node].ListW.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(X[node].ListW[i].first);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//sort the neigbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/******* End of Function ***/</font>
+
+
+
+<font color="#008000">//only edgelist</font>
+<font color="#0000ff">void</font> get_neighbors(vector&lt;<font color="#0000ff">int</font>&gt; nodes, A_Network X, vector&lt;Edge&gt; *neighbors)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Iterate Through all the nodes </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> k=0; k&lt; nodes.size(); k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=nodes[k];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node&lt;-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Edge mye;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X[node].ListW.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {mye=create(node,X[node].ListW[i].first, X[node].ListW[i].second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;push_back(mye);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//sort the neigbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/**** End of Function ***/</font>
+
+
+<font color="#008000">// Get neighbors with blacklist</font>
+<font color="#008000">//Assume blacklist is ordered in increasing order</font>
+<font color="#008000">//neighbors+wt</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_neighbors(vector&lt;<font color="#0000ff">int</font>&gt; nodes, A_Network X, vector&lt;int_double&gt; *neighbors, vector&lt;Type1&gt; blacklist, <font color="#0000ff">const</font> string &amp;edge_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Iterate Through all the nodes </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> k=0; k&lt; nodes.size(); k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=nodes[k];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node&lt;-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X[node].ListW.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(blacklist, X[node].ListW[i], edge_prop))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(X[node].ListW[i]);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//sort the neigbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//only neighbors</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_neighbors(vector&lt;<font color="#0000ff">int</font>&gt; nodes, A_Network X, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors, vector&lt;Type1&gt; blacklist, <font color="#0000ff">const</font> string &amp;edge_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Iterate Through all the nodes </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> k=0; k&lt; nodes.size(); k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=nodes[k];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node&lt;-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X[node].ListW.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(blacklist, X[node].ListW[i], edge_prop))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(X[node].ListW[i].first);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//sort the neigbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">//only neighbors</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_neighbors(vector&lt;<font color="#0000ff">int</font>&gt; nodes, A_Network X, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors, vector&lt;Type1&gt; blacklist)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Iterate Through all the nodes </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> k=0; k&lt; nodes.size(); k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=nodes[k];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node&lt;-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X[node].ListW.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(blacklist, X[node].ListW[i].first))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(X[node].ListW[i].first);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//sort the neigbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">//only neighbors</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">bool</font> get_neighbors(vector&lt;<font color="#0000ff">int</font>&gt; nodes, A_Network X, <font color="#0000ff">int</font> node1, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors, vector&lt;Type1&gt; blacklist)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Iterate Through all the nodes </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> k=0; k&lt; nodes.size(); k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=nodes[k];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X[node].ListW.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(X[node].ListW[i].first==node1) {found=<font color="#0000ff">true</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(blacklist, X[node].ListW[i].first))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(X[node].ListW[i].first);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(found){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//sort the neigbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!found)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; sort(neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; *neighbors=unique(*neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font> found;}
+
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">bool</font> get_neighbors(vector&lt;<font color="#0000ff">int</font>&gt; nodes, A_Network X, <font color="#0000ff">int</font> node1, <font color="#0000ff">int</font> node2, <font color="#0000ff">bool</font> f1, <font color="#0000ff">bool</font> f2, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors, vector&lt;Type1&gt; blacklist)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Iterate Through all the nodes </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> k=0; k&lt; nodes.size(); k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=nodes[k];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X[node].ListW.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(blacklist, X[node].ListW[i].first))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {neighbors-&gt;push_back(X[node].ListW[i].first);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!f1){
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(X[node].ListW[i].first==node1) {found=<font color="#0000ff">true</font>;}}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!f2) {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(X[node].ListW[i].first==node2) {found=<font color="#0000ff">true</font>;}}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(found){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(found){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//sort the neigbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; *neighbors=unique(*neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font> found;}
+
+
+<font color="#008000">//only edgelist</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_neighbors(vector&lt;<font color="#0000ff">int</font>&gt; nodes, A_Network X, vector&lt;Edge&gt; *neighbors, vector&lt;Type1&gt; blacklist, <font color="#0000ff">const</font> string &amp;edge_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Iterate Through all the nodes </font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> k=0; k&lt; nodes.size(); k++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=nodes[k];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node&lt;-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Edge mye;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add the neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X[node].ListW.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(blacklist, X[node].ListW[i], edge_prop))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {mye=create(node,X[node].ListW[i].first, X[node].ListW[i].second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;push_back(mye);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//sort the neigbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/******* End of Functions **************/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>4. Get Next Nodes</h4></li>
+                                                       <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level1/ADJ/get_next_nodes.hpp" download="get_next_nodes">Get Next Nodes</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">/***** Update the Priority Queue *****/</font>
+<font color="#008000">//Determine critical value of nodes</font>
+<font color="#008000">//Add node to heap</font>
+<font color="#008000">/***** Update the Priority Queue *****/</font>
+
+<font color="#008000">//Update Priority Q</font>
+
+<font color="#008000">//Single Element Selected ; Use marked value to check if new node</font>
+<font color="#0000ff">bool</font> get_next_nodes(vector&lt; pair&lt;int_double, <font color="#0000ff">double</font>&gt; &gt; *myheap, vector&lt;<font color="#0000ff">double</font>&gt; marked, <font color="#0000ff">int</font> *stnode)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; int_double tops;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_double, <font color="#0000ff">double</font>&gt; top_elem;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myheap-&gt;size()==0){ <font color="#0000ff">return</font> <font color="#0000ff">false</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get top element that is not marked</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myheap-&gt;size()==0){ <font color="#0000ff">return</font> <font color="#0000ff">false</font>;}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; top_elem=myheap-&gt;at(0);
+&nbsp;&nbsp;&nbsp;&nbsp; pop_heap(myheap);
+&nbsp;&nbsp;&nbsp;&nbsp; tops=top_elem.first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(marked[tops.first]&gt;-1){ <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; *stnode=tops.first;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+}
+
+
+
+<font color="#008000">//Single Element Selected ; Use marked value to check if new node;; add to subgraph</font>
+<font color="#0000ff">bool</font> get_next_nodes(vector&lt; pair&lt;int_int, <font color="#0000ff">double</font>&gt; &gt; *myheap, vector&lt;<font color="#0000ff">double</font>&gt; marked, <font color="#0000ff">int</font> *stnode, vector&lt;Edge&gt; *myEdge)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; int_int tops;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_int, <font color="#0000ff">double</font>&gt; top_elem;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myheap-&gt;size()==0){ <font color="#0000ff">return</font> <font color="#0000ff">false</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get top element that is not marked</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myheap-&gt;size()==0){ <font color="#0000ff">return</font> <font color="#0000ff">false</font>;}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; top_elem=myheap-&gt;at(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; pop_heap(myheap);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; tops=top_elem.first;
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(marked[tops.first]&gt;-1){ <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; Edge mye=create(tops.first, tops.second, top_elem.second);
+&nbsp;&nbsp;&nbsp;&nbsp; myEdge-&gt;push_back(mye);
+&nbsp;&nbsp;&nbsp;&nbsp; *stnode=tops.first;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+}
+
+<font color="#008000">//Single Element Selected ; Use marked value to check if new node;; add to subgraph</font>
+<font color="#0000ff">bool</font> get_next_nodes(vector&lt; pair&lt;int_int, <font color="#0000ff">double</font>&gt; &gt; *myheap, vector&lt;<font color="#0000ff">double</font>&gt; marked, <font color="#0000ff">int</font> *stnode, vector&lt;int_int&gt; *myEdge)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; int_int tops;
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_int, <font color="#0000ff">double</font>&gt; top_elem;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myheap-&gt;size()==0){ <font color="#0000ff">return</font> <font color="#0000ff">false</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get top element that is not marked</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myheap-&gt;size()==0){ <font color="#0000ff">return</font> <font color="#0000ff">false</font>;}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; top_elem=myheap-&gt;at(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; pop_heap(myheap);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; tops=top_elem.first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(marked[tops.first]&gt;-1){ <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; myEdge-&gt;push_back(tops);
+&nbsp;&nbsp;&nbsp;&nbsp; *stnode=tops.first;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+}
+
+
+
+
+<font color="#008000">//Multiple Elements Selected; Use marked value to check if new node</font>
+<font color="#0000ff">bool</font> get_next_nodes(vector&lt; pair&lt;int_double, <font color="#0000ff">double</font>&gt; &gt; *myheap, vector&lt;<font color="#0000ff">double</font>&gt; marked, vector&lt;<font color="#0000ff">int</font>&gt; *stnode)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; int_double tops;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myheap-&gt;size()==0){ <font color="#0000ff">return</font> <font color="#0000ff">false</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Clear current set</font>
+&nbsp;&nbsp;&nbsp;&nbsp; stnode-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get first element</font>
+&nbsp;&nbsp;&nbsp;&nbsp; pair&lt;int_double, <font color="#0000ff">double</font>&gt; top_elem=myheap-&gt;at(0);
+&nbsp;&nbsp;&nbsp;&nbsp; pop_heap(myheap);
+&nbsp;&nbsp;&nbsp;&nbsp; tops=top_elem.first;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> highval=top_elem.second;
+&nbsp;&nbsp;&nbsp;&nbsp; stnode-&gt;push_back(tops.first);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get rest of top elements</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(myheap-&gt;size()==0){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; top_elem=myheap-&gt;at(0);
+&nbsp;&nbsp;&nbsp;&nbsp; tops=top_elem.first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//remove nodes already processed</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(marked[tops.first]==-1)
+&nbsp;&nbsp;&nbsp;&nbsp;  {pop_heap(myheap); <font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//keep on adding elements that all have the same high value</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(top_elem.second==highval)&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; {stnode-&gt;push_back(tops.first);
+&nbsp;&nbsp;&nbsp;&nbsp;  pop_heap(myheap);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+}</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>5. Network Traversal</h4></li>
+                                                       <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level1/ADJ/network_traversal.hpp" download="Network_Traversal">Network Traversal</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">/*** User Defined ***/</font>
+<font color="#008000">//1. Weighted: Yes or No</font>
+<font color="#008000">//2. Initial Blacklist</font>
+<font color="#008000">//3. Critical Values</font>
+<font color="#008000">//4. Output Form</font>
+<font color="#008000">//5. Stop: nodes*%; edge*%; node found; edge found; (0,1,2,3,..)</font>
+<font color="#008000">/**************************/</font>
+<font color="#008000">//Weighted</font>
+<font color="#008000">//No Blacklist</font>
+<font color="#008000">//No Critical Values</font>
+<font color="#008000">//Output Form A_Network</font>
+<font color="#008000">//Stop when all vertices reached</font>
+
+<font color="#0000ff">void</font> traversal_110(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">void</font>(*add_to_heap)(<font color="#0000ff">int</font>, vector&lt;int_double&gt;, vector&lt;<font color="#0000ff">double</font>&gt;*, vector&lt; pair&lt;int_double,<font color="#0000ff">double</font>&gt; &gt;*, A_Network  *), A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize Output Network</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; create_Network(total_nodes,0,Y);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize start_node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; start_node;
+&nbsp;&nbsp;&nbsp;&nbsp; start_node.resize(1);
+&nbsp;&nbsp;&nbsp;&nbsp; start_node[0]=node;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize critical values and place them in heap</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt; pair&lt;int_double,<font color="#0000ff">double</font>&gt; &gt; myheap;
+&nbsp;&nbsp;&nbsp;&nbsp; myheap.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; make_heap(&amp;myheap);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Priority element for each node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">double</font>&gt; element_vals;
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals.resize(X.size(),0);
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals[start_node[0]]=0;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_double&gt; neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue while a valid node remains</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> it=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font> (1)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;start_node.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((start_node[i]&lt;-1) || (start_node[i]&gt;=total_nodes))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; start_node[i] &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get the next set of neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(start_node[i],X[start_node[i]].ListW, &amp;neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update heap based on new values</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_to_heap(start_node[i],neighbors, &amp;element_vals, &amp;myheap, Y);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update  start node</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!get_next_nodes(&amp;myheap,element_vals, &amp;start_node)){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; it++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//cout &lt;&lt; it &lt;&lt; "\n";</font>
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******** End of Function *****/</font>
+
+
+<font color="#0000ff">void</font> traversal_010(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">void</font>(*add_to_heap)(<font color="#0000ff">int</font>, vector&lt;int_double&gt;, vector&lt;<font color="#0000ff">double</font>&gt;*, vector&lt; pair&lt;int_double,<font color="#0000ff">double</font>&gt; &gt;*, A_Network  *), A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize Output Network</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; create_Network(total_nodes,0,Y);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize start_node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> start_node=node;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize critical values and place them in heap</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt; pair&lt;int_double,<font color="#0000ff">double</font>&gt; &gt; myheap;
+&nbsp;&nbsp;&nbsp;&nbsp; myheap.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; make_heap(&amp;myheap);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Priority element for each node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">double</font>&gt; element_vals;
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals.resize(X.size(),0);
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals[start_node]=1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_double&gt; neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue while a valid node remains</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> it=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font> (1)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((start_node&lt;-1) || (start_node&gt;=total_nodes))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; start_node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get the next set of neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(start_node,X[start_node].ListW, &amp;neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update heap based on new values </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_to_heap(start_node,neighbors, &amp;element_vals, &amp;myheap, Y);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update blacklist and start node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!get_next_nodes(&amp;myheap, element_vals,&amp;start_node)){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; it++;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//	cout &lt;&lt; it &lt;&lt; "\n";</font>
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******** End of Function *****/</font>
+
+
+<font color="#0000ff">void</font> traversal_000(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">void</font>(*add_to_heap)(<font color="#0000ff">int</font>, vector&lt;int_double&gt;, vector&lt;<font color="#0000ff">double</font>&gt;*, vector&lt; pair&lt;int_int,<font color="#0000ff">double</font>&gt; &gt;*), A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize Output Network</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; create_Network(total_nodes,0,Y);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize start_node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> start_node=node;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize critical values and place them in heap</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt; pair&lt;int_int,<font color="#0000ff">double</font>&gt; &gt; myheap;
+&nbsp;&nbsp;&nbsp;&nbsp; myheap.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; make_heap(&amp;myheap);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Priority element for each node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">double</font>&gt; element_vals;
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals.resize(X.size(),0);
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals[start_node]=1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_double&gt; neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initailize edgelist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Edge&gt; myEdges;
+&nbsp;&nbsp;&nbsp;&nbsp; myEdges.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue while a valid node remains</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> it=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font> (1)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((start_node&lt;-1) || (start_node&gt;=total_nodes))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; start_node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get the next set of neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(start_node,X[start_node].ListW, &amp;neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update heap based on new values </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_to_heap(start_node,neighbors, &amp;element_vals, &amp;myheap);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update Y and start node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node updated by heap top</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!get_next_nodes(&amp;myheap, element_vals,&amp;start_node, &amp;myEdges)){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; it++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//cout &lt;&lt; it &lt;&lt; "\n";</font>
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(Y, myEdges);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******** End of Function *****/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>6. Network TraversalX</h4></li>
+                                                       <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level1/ADJ/network_traversalX.hpp" download="Network_TraversalX">Network TraversalX</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">/*** User Defined ***/</font>
+<font color="#008000">//1. Weighted: Yes or No</font>
+<font color="#008000">//2. Initial Blacklist</font>
+<font color="#008000">//3. Critical Values</font>
+<font color="#008000">//4. Output Form</font>
+<font color="#008000">//5. Stop: nodes*%; edge*%; node found; edge found; (0,1,2,3,..)</font>
+<font color="#008000">/**************************/</font>
+<font color="#008000">//Weighted</font>
+<font color="#008000">//No Blacklist</font>
+<font color="#008000">//No Critical Values</font>
+<font color="#008000">//Output Form A_Network</font>
+<font color="#008000">//Stop when all vertices reached</font>
+
+
+<font color="#0000ff">void</font> traversalX_000(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">void</font>(*add_to_heap)(<font color="#0000ff">int</font>, vector&lt;int_double&gt;, vector&lt;<font color="#0000ff">double</font>&gt;*, vector&lt; pair&lt;int_int,<font color="#0000ff">double</font>&gt; &gt;*), <font color="#0000ff">int</font> times,A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize Output Network</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; create_Network(total_nodes,0,Y);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize start_node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> start_node=node;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize critical values and place them in heap</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt; pair&lt;int_int,<font color="#0000ff">double</font>&gt; &gt; myheap;
+&nbsp;&nbsp;&nbsp;&nbsp; myheap.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; make_heap(&amp;myheap);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Priority element for each node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">double</font>&gt; element_vals;
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals.resize(X.size(),0);
+&nbsp;&nbsp;&nbsp;&nbsp; element_vals[start_node]=1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_double&gt; neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initailize edgelist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_int&gt; myEdges;
+&nbsp;&nbsp;&nbsp;&nbsp; myEdges.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue while a valid node remains</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> it=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font> (it&lt;times)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((start_node&lt;-1) || (start_node&gt;=total_nodes))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; start_node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get the next set of neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(start_node,X[start_node].ListW, &amp;neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update heap based on new values </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_to_heap(start_node,neighbors, &amp;element_vals, &amp;myheap);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update Y and start node</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node updated by heap top</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!get_next_nodes(&amp;myheap, element_vals,&amp;start_node, &amp;myEdges)){<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; it++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//cout &lt;&lt; it &lt;&lt; "\n";</font>
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(Y, myEdges);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******** End of Function *****/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>7. Update Values</h4></li>
+                                                       <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level1/ADJ/update_values.hpp" download="update_values">Update Values</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Join to Acyclic Graph</font>
+<font color="#008000">//Used nodes marked in vector</font>
+<font color="#0000ff">void</font> acyclic0(<font color="#0000ff">int</font> node1, vector&lt;int_double&gt; neighbors, vector&lt;<font color="#0000ff">double</font>&gt; elements, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Edge&gt; myedge;
+&nbsp;&nbsp;&nbsp;&nbsp; Edge mye;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;   <font color="#0000ff">if</font>((elements[neighbors[i].first]==0))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  { mye=create(node1, neighbors[i].first, neighbors[i].second);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//myedge.push_back(mye);</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  add_edge(Y,mye);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  }
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#008000">//add_edges(Y,myedge);		   </font>
+}
+<font color="#008000">/******** End of Function *****/</font>
+
+
+<font color="#008000">//Join to Acyclic Graph</font>
+<font color="#008000">//Blacklist visited Nodes</font>
+<font color="#008000">//Fontwise  Traversal</font>
+<font color="#008000">//Single Element Added</font>
+<font color="#008000">//Weighted Traversal</font>
+<font color="#0000ff">void</font> update_values_acyclic0(Edge tops,  vector&lt;<font color="#0000ff">int</font>&gt; *stnode, vector&lt;<font color="#0000ff">int</font>&gt; *blacklist, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> mynode;
+&nbsp;&nbsp;&nbsp;&nbsp; get(tops,<font color="#ff0000">"node2"</font>,&amp;mynode);
+&nbsp;&nbsp;&nbsp;&nbsp; stnode-&gt;push_back(mynode);
+&nbsp;&nbsp;&nbsp;&nbsp; *blacklist=merge(mynode, *blacklist);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edge(Y,tops);&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******** End of Function *****/</font>
+
+
+<font color="#008000">//Join to Chordal Graph</font>
+<font color="#008000">//Blacklist visited Nodes</font>
+<font color="#008000">//Single Node  Traversal</font>
+<font color="#008000">//Multiple Element Added</font>
+<font color="#008000">//Weighted Traversal</font>
+<font color="#0000ff">void</font> update_values_chordal0(Edge tops,  <font color="#0000ff">int</font> *stnode, vector&lt;<font color="#0000ff">int</font>&gt; *blacklist,  vector&lt;Edge&gt; neighbors, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> mynode;
+&nbsp;&nbsp;&nbsp;&nbsp; get(tops,<font color="#ff0000">"node2"</font>,&amp;mynode);
+&nbsp;&nbsp;&nbsp;&nbsp; *stnode=mynode;
+&nbsp;&nbsp;&nbsp;&nbsp; *blacklist=merge(mynode, *blacklist);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edge(Y,tops);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//vector<int_double> myvec;</int_double></font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add neighbors if they form chordal</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if chordal--neighbors(node2) should be subset of neighbors of (node1)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">/*int node1;
+&nbsp;&nbsp;&nbsp;&nbsp; int node2;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int&gt; neighbors1;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int&gt; neighbors2;
+&nbsp;&nbsp;&nbsp;&nbsp; clock_t q;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; "galu \n";
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; "::::: "&lt;&lt; neighbors.size()&lt;&lt;"\n";
+&nbsp;&nbsp;&nbsp;&nbsp; q=clock();
+&nbsp;&nbsp;&nbsp;&nbsp; get(neighbors[0],"node1",&amp;node1);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; getx_neighbors(node1, Y-&gt;at(node1).ListW, &amp;neighbors1);
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; "palu \n";
+&nbsp;&nbsp;&nbsp;&nbsp; for(int i=0;i&lt;neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get(neighbors[i],"node2",&amp;node2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; getx_neighbors(node2, Y-&gt;at(node2).ListW, &amp;neighbors2);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; if(issubset(neighbors1, neighbors2))
+&nbsp;&nbsp;&nbsp;&nbsp;    {  add_edge(Y,neighbors[i]);&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; q=clock()-q;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; "Time---"&lt;&lt; ((float)q)/CLOCKS_PER_SEC &lt;&lt;"\n";*/</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/******** End of Function *****/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   </ul>
+                                               </ul>
+                                               <li><h4>Level - 2</h4></li>
+                                               <ul>
+                                                   <li><h4>ADJ</h4></li>
+                                                   <p> The code .... </p>
+                                                   <ul>
+                                                       <li><h4>1. Find Xneighbors</h4></li>
+                                                       <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level2/ADJ/find_Xneighbors.hpp" download="find_Xneighbors">Find Xneighbors</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">/****** Finds All Nodes Accessible at Distance &lt;=k *******/</font>
+<font color="#008000">//defined for only one starting node---for many nodes kth distance can be conflicting</font>
+<font color="#008000">//Neighbors are not repreated</font>
+<font color="#008000">//Rows are sequential starting from 0</font>
+<font color="#008000">//Largest Row is size of A_network-1;</font>
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">void</font> get_unq_neighbors(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">int</font> k, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node==-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(distance&lt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {cout &lt;&lt; <font color="#ff0000">"ESSENS:INFO  All nodes reached by level"</font> &lt;&lt; distance &lt;&lt;<font color="#ff0000">"\n"</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update visited_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes, next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; *neighbors=merge(*neighbors, cur_neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; *neighbors=unique(*neighbors);
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/**** End of Function ***/</font>
+
+<font color="#008000">//Varied Neighbor Type</font>
+<font color="#008000">//no blacklist</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_unq_neighbors(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">int</font> k, vector&lt;Type1&gt; *neighbors, <font color="#0000ff">const</font> string &amp;opt1)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node==-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Type1&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(distance&lt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(cur_neighbors, opt1, &amp;next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {cout &lt;&lt; <font color="#ff0000">"ESSENS:INFO  All nodes reached by level"</font> &lt;&lt; distance &lt;&lt;<font color="#ff0000">"\n"</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update visited_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes, next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; *neighbors=merge(*neighbors, cur_neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; *neighbors=unique(*neighbors,opt1,eq,next_level_nodes[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/**** End of Function ***/</font>
+
+<font color="#008000">//With blacklist</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> get_unq_neighbors(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">int</font> k, vector&lt;Type1&gt; *neighbors, vector&lt;Type2&gt; blacklist, <font color="#0000ff">const</font> string &amp;node_prop, <font color="#0000ff">const</font> string &amp;blk_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node==-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Type1&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;   <font color="#008000">//Set of nodes reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; black_nodes; <font color="#008000">//List of nodes not to traverse;</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; black_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(distance&lt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(cur_neighbors, node_prop, &amp;next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {cout &lt;&lt; <font color="#ff0000">"ESSENS:INFO  All nodes reached by level"</font> &lt;&lt; distance &lt;&lt;<font color="#ff0000">"\n"</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new nodes to visited nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes,next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//remove blacklist nodes from next_level_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(blacklist,blk_prop,&amp;black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=difference(next_level_nodes, black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new neighbors to total_neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; *neighbors=merge(*neighbors, cur_neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; *neighbors=unique(*neighbors,node_prop,eq,next_level_nodes[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/**** End of Function ***/</font>
+
+
+
+<font color="#008000">/****** Finds All Nodes Accessible at Distance &lt;=k *******/</font>
+<font color="#008000">//defined for only one starting node---for many nodes kth distance can be conflicting</font>
+<font color="#008000">//Neighbors are  repeated including starting node;</font>
+<font color="#008000">//This traversal will cause cycles</font>
+<font color="#008000">//Rows are sequential starting from 0</font>
+<font color="#008000">//Largest Row is size of A_network-1;</font>
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">void</font> get_all_neighbors(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">int</font> k, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node==-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(distance&lt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {cout &lt;&lt; <font color="#ff0000">"ESSENS:INFO  All nodes reached by level"</font> &lt;&lt; distance &lt;&lt;<font color="#ff0000">"\n"</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; *neighbors=merge(*neighbors, cur_neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/**** End of Function ***/</font>
+
+<font color="#008000">//Varied Neighbor Type</font>
+<font color="#008000">//no blacklist</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_all_neighbors(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">int</font> k, vector&lt;Type1&gt; *neighbors, <font color="#0000ff">const</font> string &amp;opt1)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node==-1) || (node==X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Type1&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(distance&lt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(cur_neighbors, opt1, &amp;next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {cout &lt;&lt; <font color="#ff0000">"ESSENS:INFO  All nodes reached by level"</font> &lt;&lt; distance &lt;&lt;<font color="#ff0000">"\n"</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; *neighbors=merge(*neighbors, cur_neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/**** End of Function ***/</font>
+
+<font color="#008000">//With blacklist</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> get_all_neighbors(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">int</font> k, vector&lt;Type1&gt; *neighbors, vector&lt;Type2&gt; blacklist, <font color="#0000ff">const</font> string &amp;node_prop, <font color="#0000ff">const</font> string &amp;blk_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node==-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Type1&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; black_nodes; <font color="#008000">//List of nodes not to traverse;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; black_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(distance&lt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(cur_neighbors, node_prop, &amp;next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {cout &lt;&lt; <font color="#ff0000">"ESSENS:INFO  All nodes reached by level"</font> &lt;&lt; distance &lt;&lt;<font color="#ff0000">"\n"</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//remove blacklist nodes from next_level_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(blacklist,blk_prop,&amp;black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=difference(next_level_nodes, black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new neighbors to total_neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; *neighbors=merge(*neighbors, cur_neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/**** End of Function ***/</font>
+
+<font color="#008000">/****** Finds Distance Neighbors at Distance ==k *******/</font>
+<font color="#008000">//defined for only one starting node---for many nodes kth distance can be conflicting</font>
+<font color="#008000">//Neighbors can be repeated</font>
+<font color="#008000">//Rows are sequential starting from 0</font>
+<font color="#008000">//Largest Row is size of A_network-1;</font>
+<font color="#008000">//Return neigbors at distance ==k</font>
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">int</font> k, vector&lt;<font color="#0000ff">int</font>&gt; *neighbors)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node==-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(distance&lt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {cout &lt;&lt; <font color="#ff0000">"ESSENS:INFO  All nodes reached by level"</font> &lt;&lt; distance &lt;&lt;<font color="#ff0000">"\n"</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update visited_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes, next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; *neighbors=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/**** End of Function ***/</font>
+
+
+
+<font color="#008000">//Varied Neighbor Type</font>
+<font color="#008000">//no blacklist</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">int</font> k, vector&lt;Type1&gt; *neighbors, <font color="#0000ff">const</font> string &amp;opt1)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node==-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Type1&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(distance&lt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(cur_neighbors, opt1, &amp;next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {cout &lt;&lt; <font color="#ff0000">"ESSENS:INFO  All nodes reached by level"</font> &lt;&lt; distance &lt;&lt;<font color="#ff0000">"\n"</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update visited_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes, next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; *neighbors=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">/**** End of Function ***/</font>
+
+<font color="#008000">//With blacklist</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1, <font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">void</font> get_neighbors(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">int</font> k, vector&lt;Type1&gt; *neighbors, vector&lt;Type2&gt; blacklist, <font color="#0000ff">const</font> string &amp;node_prop, <font color="#0000ff">const</font> string &amp;blk_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node==-1) || (node&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//clear neighbors;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; neighbors-&gt;clear();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Type1&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;   <font color="#008000">//Set of nodes reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; black_nodes; <font color="#008000">//List of nodes not to traverse;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node);
+&nbsp;&nbsp;&nbsp;&nbsp; black_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(distance&lt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(cur_neighbors, node_prop, &amp;next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {cout &lt;&lt; <font color="#ff0000">"ESSENS:INFO  All nodes reached by level"</font> &lt;&lt; distance &lt;&lt;<font color="#ff0000">"\n"</font>; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new nodes to visited nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes,next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//remove blacklist nodes from next_level_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(blacklist,blk_prop,&amp;black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=difference(next_level_nodes, black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new neighbors to total_neighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; *neighbors= cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+<font color="#008000">/**** End of Function ***/</font>
+
+
+<font color="#008000">/****Shortest Path Length ***/</font>
+<font color="#008000">//Find shortest path from node to target node(s)</font>
+<font color="#008000">//Only int taken as nodes</font>
+<font color="#008000">//-1 means disconnected</font>
+
+<font color="#008000">//Default</font>
+<font color="#0000ff">int</font> shortest_path(<font color="#0000ff">int</font> node1, <font color="#0000ff">int</font> node2, A_Network X)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1==-1) || (node1&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font> -1;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2==-1) || (node2&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font> -1;}
+
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> path=-1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1) <font color="#008000">//Until node is found or no new node can be reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {<font color="#0000ff">break</font>;}<font color="#008000">//no new nodes obtained</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new nodes to visited nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes,next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(contains(next_level_nodes, node2)){path=distance+1; <font color="#0000ff">break</font>;}
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> path;
+}
+<font color="#008000">/**** End of Function ***/</font>
+
+<font color="#008000">//With Blacklist</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> Type2&gt;
+<font color="#0000ff">int</font> shortest_path(<font color="#0000ff">int</font> node1, <font color="#0000ff">int</font> node2, A_Network X,vector&lt;Type2&gt; blacklist,<font color="#0000ff">const</font> string &amp;blk_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; black_nodes; <font color="#008000">//List of nodes not to traverse;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> path=-1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; black_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1) <font color="#008000">//Until node is found or no new node can be reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {<font color="#0000ff">break</font>;}<font color="#008000">//no new nodes obtained</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new nodes to visited nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes,next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//remove blacklist nodes from next_level_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(blacklist,blk_prop,&amp;black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=difference(next_level_nodes, black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(contains(next_level_nodes, node2)){path=distance+1; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> path;
+}
+<font color="#008000">/**** End of Function ***/</font>
+
+
+
+<font color="#008000">//With Valid</font>
+<font color="#0000ff">int</font> shortest_path(<font color="#0000ff">int</font> node1, <font color="#0000ff">int</font> node2, A_Network X,vector&lt;<font color="#0000ff">int</font>&gt; valid)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> path=-1;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1) <font color="#008000">//Until node is found or no new node can be reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found=get_neighbors(next_level_nodes, X, node2, &amp;cur_neighbors, visited_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(found){path=distance+1; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {path=-1;<font color="#0000ff">break</font>;}<font color="#008000">//no new nodes obtained</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new nodes to visited nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(next_level_nodes,visited_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//keep only neighbors from valid nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=intersect(next_level_nodes, valid);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0){path =-1; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> path;
+}
+
+
+<font color="#008000">/**** End of Function ***/</font>
+
+
+<font color="#008000">//With Valid</font>
+<font color="#0000ff">int</font> shortest_path(vector&lt;<font color="#0000ff">int</font>&gt; nodes, <font color="#0000ff">int</font> node2, <font color="#0000ff">int</font> node3, A_Network X,vector&lt;<font color="#0000ff">int</font>&gt; valid)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> path=0;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=nodes;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found,f2,f3;
+&nbsp;&nbsp;&nbsp;&nbsp; f2=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; f3=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1) <font color="#008000">//Until node is found or no new node can be reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; found=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, node2, node3, f2,f3, &amp;cur_neighbors, visited_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(found)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(contains_sort(cur_neighbors, node2)){f2=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(contains_sort(cur_neighbors, node3)){f3=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(f2 &amp;&amp; f3){path=1; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {path=-1;<font color="#0000ff">break</font>;}<font color="#008000">//no new nodes obtained</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new nodes to visited nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(next_level_nodes,visited_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//keep only neighbors from valid nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=intersect(next_level_nodes, valid);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0){path =-1; <font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//distance++;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> path;
+}
+
+
+<font color="#008000">/**** End of Function ***/</font>
+
+
+<font color="#008000">/**** End of Function ***/</font>
+
+
+
+<font color="#008000">//Over Multiple nodes</font>
+<font color="#008000">//Default</font>
+vector&lt;<font color="#0000ff">int</font>&gt; shortest_path(<font color="#0000ff">int</font> node1, vector&lt;<font color="#0000ff">int</font>&gt; nodes2, A_Network X)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; path (nodes2.size(), -1);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1==-1) || (node1==X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font> path;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> found=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1) <font color="#008000">//Until node is found or no new node can be reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {<font color="#0000ff">break</font>;}<font color="#008000">//no new nodes obtained</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new nodes to visited nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes,next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;nodes2.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { node2=nodes2[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(node2&gt;-1) <font color="#008000">//if not alread found;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">if</font>(contains(next_level_nodes, node2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {path[i]=distance+1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  nodes2[i]=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  found++;}<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(found==nodes2.size()) {<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> path;
+}
+<font color="#008000">/**** End of Function ***/</font>
+
+<font color="#008000">//with blacklist</font>
+<font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type2&gt;
+vector&lt;<font color="#0000ff">int</font>&gt; shortest_path(<font color="#0000ff">int</font> node1, vector&lt;<font color="#0000ff">int</font>&gt; nodes2, A_Network X,vector&lt;Type2&gt; blacklist,<font color="#0000ff">const</font> string &amp;blk_prop)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cur_neighbors; <font color="#008000">//Set of neighbors at each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; visited_nodes;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; next_level_nodes; <font color="#008000">//Source nodes for each level</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; black_nodes; <font color="#008000">//List of nodes not to traverse;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; path (nodes2.size(), -1);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check for errors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1==-1) || (node1&gt;=X.size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font> path;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//continue until distance k reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; visited_nodes.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; black_nodes.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> distance=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> found=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(1) <font color="#008000">//Until node is found or no new node can be reached</font>
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get neighbors and sort them</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(next_level_nodes, X, &amp;cur_neighbors, visited_nodes, <font color="#ff0000">"first"</font>);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain next level nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=cur_neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(next_level_nodes.size()==0) {<font color="#0000ff">break</font>;}<font color="#008000">//no new nodes obtained</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add new nodes to visited nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; visited_nodes=merge(visited_nodes,next_level_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//remove blacklist nodes from next_level_nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_all(blacklist,blk_prop,&amp;black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; next_level_nodes=difference(next_level_nodes, black_nodes);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;nodes2.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; { node2=nodes2[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(node2&gt;-1) <font color="#008000">//if not alread found;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(contains(next_level_nodes, node2))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {path[i]=distance+1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; nodes2[i]=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; found++;}<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(found==nodes2.size()) {<font color="#0000ff">break</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; distance++;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font> path;
+}
+<font color="#008000">/**** End of Function ***/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>2. Travesal</h4></li>
+                                                       <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level2/ADJ/traversal.hpp" download="traversal">Traversal</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">/**Traversal based on these features ***/</font>
+<font color="#008000">// 1. Traverse Type: Node; Font; Pieces (0,1,2)</font>
+<font color="#008000">// 2. Increase Set: Node; Nodes; Subgraph (0,1,2);</font>
+<font color="#008000">// 3. Edges added as traversed (0); from top of heap (1);</font>
+<font color="#008000">//===Optional</font>
+<font color="#008000">// 4. Blacklist : Visited or Not X Node or Edge (00 (visited; node) (0); 01 (visited; edge)(1); </font>
+<font color="#008000">/**************************/</font>
+
+<font color="#0000ff">void</font> traversal(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">const</font> string &amp;opt, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find the matching options</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//BFS</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//multiple node travesal--1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by multiple nodes--1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"bfs"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_110(node,X,add_to_heap_bfs,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//CHORDAL</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node travesal--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by multiple nodes--1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"chd"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_010(node,X,add_to_heap_chd,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//MAXST</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node travesal--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by single node--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"maxst"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_000(node,X,add_to_heap_maxst,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//MINST</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node travesal--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by single node--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"minst"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_000(node,X,add_to_heap_minst,Y);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//DFS</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node travesal--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by single node--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"dfs"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_000(node,X,add_to_heap_dfs,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//RANDOM</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node travesal--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by single node--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"rnd"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_000(node,X,add_to_heap_rnd,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//RANDOM1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//multiple node travesal--1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by multiple nodes--1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"rnd1"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_110(node,X,add_to_heap_rnd1,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+
+<font color="#008000">/********/</font>
+
+
+
+
+<font color="#008000">/******* End of Functions **************/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                       <li><h4>3. TravesalX</h4></li>
+                                                       <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Core/Basic_Traversal/Level2/ADJ/traversalX.hpp" download="traversalX">TraversalX</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">/**Traversal based on these features ***/</font>
+<font color="#008000">// 1. Traverse Type: Node; Font; Pieces (0,1,2)</font>
+<font color="#008000">// 2. Increase Set: Node; Nodes; Subgraph (0,1,2);</font>
+<font color="#008000">// 3. Edges added as traversed (0); from top of heap (1);</font>
+<font color="#008000">//===Optional</font>
+<font color="#008000">// 4. Blacklist : Visited or Not X Node or Edge (00 (visited; node) (0); 01 (visited; edge)(1); </font>
+<font color="#008000">/**************************/</font>
+
+<font color="#0000ff">void</font> traversal(<font color="#0000ff">int</font> node, A_Network X, <font color="#0000ff">const</font> string &amp;opt, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find the matching options</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//BFS</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//multiple node travesal--1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by multiple nodes--1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"bfs"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_110(node,X,add_to_heap_bfs,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//CHORDAL</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node travesal--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by multiple nodes--1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"chd"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_010(node,X,add_to_heap_chd,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//MAXST</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node travesal--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by single node--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//create acyclic graph--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"maxst"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_000(node,X,add_to_heap_maxst,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//DFS</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node travesal--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by single node--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//create acyclic graph--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"dfs"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_000(node,X,add_to_heap_dfs,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//RANDOM1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//single node travesal--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//increase by single node--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Edges added as traversed--0</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(opt==<font color="#ff0000">"rnd"</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; {traversal_000(node,X,add_to_heap_rnd,Y);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+
+<font color="#008000">/********/</font>
+
+
+
+
+<font color="#008000">/******* End of Functions **************/</font></pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   </ul>
+                                               </ul>
+                                           </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </body>
+    </html>
+{% endblock %}

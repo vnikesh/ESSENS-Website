@@ -1,0 +1,1955 @@
+{% extends 'essens/base.html' %}
+{% load staticfiles %}
+{% block content %}
+            {% if user.is_authenticated %}
+                <div class="page-container">
+
+                    <h2 class="top-menu">Hello {{ user.username }},</h2>
+                    <p>Please choose from below options.</p>
+
+                </div>
+            {% endif %}
+            <div class="content container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="links">
+                            <!-- Example row of columns -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                       <div class="caption">
+                                            <h2>Basic Change</h2>
+                                            <p>This file has the main code of the project, the code is futher categoried as follows. </p>
+                                           <ul>
+                                               <li><h4>Level - 0</h4></li>
+                                               <p>Level - 0 code is further divided as shown below. </p>
+                                               <ul>
+                                                   <li><h4> ADJ </h4></li>
+                                                   <p><h4> 1. Add Edge</h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level0/ADJ/add_edge.hpp" download="add_edge">Add Edge</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Add Single Edge</font>
+<font color="#008000">//Both end nodes  exist in the network</font>
+<font color="#008000">// The edge does not exist--otherwise duplicates are added</font>
+
+<font color="#008000">//Default </font>
+<font color="#008000">//---Undirected Edge Add</font>
+<font color="#008000">//---Edges in network are sorted in increasing order.</font>
+<font color="#0000ff">void</font> add_edge(A_Network *X, Edge mye)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; int_double colvals;
+&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+<font color="#0000ff">int</font> node1=mye.node1;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">int</font> node2=mye.node2;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">double</font> wt=mye.edge_wt;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.first=node2;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.second=wt;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW=merge (colvals,Alist.ListW);
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node2;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node2);
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.first=node1;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.second=wt;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW=merge (colvals,Alist.ListW);
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node2)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Functions **************/</font>
+
+
+
+<font color="#008000">//---Undirected Edge Add</font>
+<font color="#008000">//---Edges in network are sorted in increasing order.</font>
+<font color="#0000ff">void</font> add_edge(A_Network *X, int_int nodes)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; int_double colvals;
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=nodes.first;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2=nodes.second;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.first=node2;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.second=1;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW=merge (colvals,Alist.ListW);
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node2;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node2);
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.first=node1;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.second=1;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW=merge (colvals,Alist.ListW);
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node2)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">//---Undirected Edge Add</font>
+<font color="#008000">//---Option for edges to be sorted sort=1; unsort=0;</font>
+<font color="#008000">//Option for being directed or not node1-&gt;node2; undir=1; dir=0;</font>
+<font color="#0000ff">void</font> add_edge(A_Network *X, Edge mye, <font color="#0000ff">bool</font> undir, <font color="#0000ff">bool</font> sort)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; int_double colvals;
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=mye.node1;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2=mye.node2;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> wt=mye.edge_wt;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//This edge will be added always</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.first=node2;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.second=wt;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(sort) {Alist.ListW=merge (colvals,Alist.ListW);}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {Alist.ListW.push_back(colvals);}
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//This edge will added only if undirected</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(undir)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node2;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node2);
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.first=node1;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.second=wt;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(sort) {Alist.ListW=merge (colvals,Alist.ListW);}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {Alist.ListW.push_back(colvals);}
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node2)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/******* End of Functions **************/</font>
+
+<font color="#008000">//---Undirected Edge Add</font>
+<font color="#008000">//---Edges in network are sorted in increasing order.</font>
+<font color="#0000ff">void</font> add_edge(vector&lt;int_double&gt; *X1, vector&lt;int_double&gt; *X2, int_int nodes)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; int_double colvals;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=nodes.first;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2=nodes.second;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.first=node2;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.second=1;
+&nbsp;&nbsp;&nbsp;&nbsp; *X1=merge (colvals,*X1);
+&nbsp;&nbsp;&nbsp;&nbsp; *X1=unique(*X1);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node2;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.first=node1;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.second=1;
+&nbsp;&nbsp;&nbsp;&nbsp; *X2=merge(colvals,*X2);
+&nbsp;&nbsp;&nbsp;&nbsp; *X2=unique(*X2);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4> 2. Add Vertex</h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level0/ADJ/add_vertex.hpp" download="add_vertex">Add Vertex</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre>
+<font color="#008000">//Add Single Vertex</font>
+<font color="#008000">//Vertex is numbered as the last row, i.e. X-&gt;size();</font>
+<font color="#008000">//Is not connected with rest of the network</font>
+<font color="#008000">//If id is not given mapped as string of integer</font>
+<font color="#0000ff">void</font> add_vertex(A_Network *X, map_st_int *nodemap)
+{
+<font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;	</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <font color="#008000">//Add node to Alist</font>
+&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; Alist.Row=node;
+&nbsp; Alist.ListW.resize(0);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; X-&gt;push_back(Alist);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//Change Id to string</font>
+string st1 = <font color="#0000ff">static_cast</font>&lt;ostringstream*&gt;( &amp;(ostringstream() &lt;&lt; node) )-&gt;str();
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//Add to map</font>
+std::pair&lt;std::map&lt;string,<font color="#0000ff">int</font>&gt;::iterator,<font color="#0000ff">bool</font>&gt; ret=nodemap-&gt;insert ( std::pair&lt;string,<font color="#0000ff">int</font>&gt;(st1,node) );
+
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/******* End of Function **************/</font>
+
+<font color="#008000">//Node Id given</font>
+<font color="#0000ff">void</font> add_vertex(A_Network *X, string st1, map_st_int *nodemap)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;	</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node to Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.Row=node;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.resize(0);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;push_back(Alist);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add to map</font>
+&nbsp;&nbsp;&nbsp;&nbsp; std::pair&lt;std::map&lt;string,<font color="#0000ff">int</font>&gt;::iterator,<font color="#0000ff">bool</font>&gt; ret=nodemap-&gt;insert ( std::pair&lt;string,<font color="#0000ff">int</font>&gt;(st1,node) );
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(ret.second==<font color="#0000ff">true</font>){cout &lt;&lt; <font color="#ff0000">"ESSENS:ERROR:: Node of Same Name exists \n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+
+<font color="#008000">//Vertex is added as a temporary measure, not reflected in nodemap</font>
+<font color="#0000ff">void</font> add_vertex (A_Network *X)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;	</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node to Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.Row=node;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.resize(0);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;push_back(Alist);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4> 3. Delete Edge</h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level0/ADJ/del_edge.hpp" download="del_edge">Delete Edge</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Delete Single Edge</font>
+<font color="#008000">//ASSUMPTIONS---</font>
+<font color="#008000">//Both nodes should exist in the network</font>
+<font color="#008000">//Weight is not considered when checking for edges to delete</font>
+<font color="#008000">//======</font>
+<font color="#008000">//---remove both ends from network</font>
+<font color="#0000ff">void</font> del_edge(A_Network *X, Edge mye)
+{
+
+&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//Get Edge info</font>
+<font color="#0000ff">int</font> node1=mye.node1;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">int</font> node2=mye.node2;&nbsp;&nbsp;&nbsp;&nbsp;
+vector&lt;<font color="#0000ff">int</font>&gt; index;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node1--&gt;node2</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,node2, <font color="#ff0000">"all"</font>,node2, &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; node2&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node2--&gt;node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node2);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,node1, <font color="#ff0000">"all"</font>,node1, &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; node1&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node2)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;}
+
+
+
+<font color="#008000">//ASSUMPTIONS---</font>
+<font color="#008000">//Both nodes should exist in the network</font>
+<font color="#008000">//Weight is not considered when checking for edges to delete</font>
+<font color="#008000">//======</font>
+<font color="#008000">//---remove only specified end from network--0 node1--node2 removed ; 1 node2--node1 removes</font>
+<font color="#0000ff">void</font> del_edge(A_Network *X, Edge mye, <font color="#0000ff">int</font> dir)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=mye.node1;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2=mye.node2;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; index;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(dir==0)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node1--&gt;node2</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,node2, <font color="#ff0000">"all"</font>,node2, &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; node2&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(dir==1)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node2--&gt;node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node2);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,node1, <font color="#ff0000">"all"</font>,node1, &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; node1&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node2)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR:: Opion for dir="</font> &lt;&lt;dir &lt;&lt;<font color="#ff0000">" not defined \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//edn of first else</font>
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                               </ul>
+                                               <li><h4>Level - 1</h4></li>
+                                               <p>Level - 1 code is further divided as shown below. </p>
+                                               <ul>
+                                                   <li><h4> ADJ </h4></li>
+                                                   <p><h4> 1. Add Connected Vertex</h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level1/ADJ/add_connected_vertex.hpp" download="add_connected_vertex">Add Connected Vertex</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">//Add Single Vertex</font>
+<font color="#008000">//Vertex is numbered as the last row, i.e. X-&gt;size();</font>
+<font color="#008000">//Is not connected with rest of the network</font>
+<font color="#008000">//If id is not given mapped as string of integer</font>
+<font color="#0000ff">void</font> add_connected_vertex(A_Network *X, map_st_int *nodemap, vector&lt;int_double&gt; neighs)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; add_vertex(X, nodemap);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(X,node,neighs);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#0000ff">void</font> add_connected_vertex(A_Network *X, string st1, map_st_int *nodemap, vector&lt;int_double&gt; neighs)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; add_vertex(X, st1, nodemap);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(X,node,neighs);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#0000ff">void</font> add_connected_vertex(A_Network *X,  vector&lt;int_double&gt; neighs)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; add_vertex(X);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(X,node,neighs);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+
+<font color="#0000ff">void</font> add_connected_vertex(A_Network *X, map_st_int *nodemap, vector&lt;int_double&gt; neighs, <font color="#0000ff">bool</font> dir)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; add_vertex(X, nodemap);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(X,node,neighs,dir);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">//==with only neighbors; no weights</font>
+<font color="#0000ff">void</font> add_connected_vertex(A_Network *X, map_st_int *nodemap, vector&lt;<font color="#0000ff">int</font>&gt; neighs)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; add_vertex(X, nodemap);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(X,node,neighs);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#0000ff">void</font> add_connected_vertex(A_Network *X, string st1, map_st_int *nodemap, vector&lt;<font color="#0000ff">int</font>&gt; neighs)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; add_vertex(X, st1, nodemap);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(X,node,neighs);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#0000ff">void</font> add_connected_vertex(A_Network *X,  vector&lt;<font color="#0000ff">int</font>&gt; neighs)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; add_vertex(X);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(X,node,neighs);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+
+<font color="#0000ff">void</font> add_connected_vertex(A_Network *X, map_st_int *nodemap, vector&lt;<font color="#0000ff">int</font>&gt; neighs, <font color="#0000ff">bool</font> dir)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node=X-&gt;size(); <font color="#008000">//Initialize node;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; add_vertex(X, nodemap);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(X,node,neighs,dir);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/******* End of Function **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4> 2. Add Multiple Edge</h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level1/ADJ/add_multiple_edge.hpp" download="add_multiple_edge">Add Multiple Edge</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//---Add edges from one source to many destinations</font>
+<font color="#008000">// Weight is set to one</font>
+<font color="#0000ff">void</font> add_edgeS(A_Network *X, <font color="#0000ff">int</font> src, vector&lt;<font color="#0000ff">int</font>&gt; dest)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node1 --&gt; node2s</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+<font color="#0000ff">int</font> node1=src;
+<font color="#0000ff">int</font> node2;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize destinations;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_double&gt; colvals;
+&nbsp;&nbsp;&nbsp;&nbsp; int_double cv;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Set destination</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node2=dest[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cv.first=node2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cv.second=1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; colvals.push_back(cv);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW=merge (colvals,Alist.ListW);
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node2s--&gt;node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Edge mye=create(dest[i],node1,1);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(X,mye,0,1);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/*****************/</font>
+
+<font color="#008000">//---Add edges from one source to many destinations</font>
+<font color="#008000">// Weight is given</font>
+<font color="#0000ff">void</font> add_edgeS(A_Network *X, <font color="#0000ff">int</font> src, vector&lt;int_double&gt; dest)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node1 --&gt; node2s</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=src;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Set destination</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node2=dest[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW=merge (dest,Alist.ListW);
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node2s--&gt;node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; int_double colvals1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">double</font> wt;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals1.first=node1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node2=dest[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; wt=dest[i].second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; colvals1.second=wt;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW=merge (colvals1,Alist.ListW);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node2)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">//---Add edges from one source to many destinations</font>
+<font color="#008000">// Unidirectional;</font>
+<font color="#008000">//dir =0 is bidirectional dir=1 is unidirectional;</font>
+<font color="#0000ff">void</font> add_edgeS(A_Network *X, <font color="#0000ff">int</font> src, vector&lt;<font color="#0000ff">int</font>&gt; dest, <font color="#0000ff">bool</font> dir)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node1 --&gt; node2s</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=src;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize destinations;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_double&gt; colvals;
+&nbsp;&nbsp;&nbsp;&nbsp; int_double cv;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Set destination</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node2=dest[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cv.first=node2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cv.second=1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; colvals.push_back(cv);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW=merge (colvals,Alist.ListW);
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(dir==0)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node2s--&gt;node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Edge mye=create(dest[i],node1,1);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(X,mye,0,1);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">/*****************/</font>
+
+<font color="#008000">//---Add edges from one source to many destinations</font>
+<font color="#008000">// Weight is given</font>
+<font color="#008000">// Unidirectional;</font>
+<font color="#008000">//dir =0 is bidirectional dir=1 is unidirectional;</font>
+<font color="#0000ff">void</font> add_edgeS(A_Network *X, <font color="#0000ff">int</font> src, vector&lt;int_double&gt; dest, <font color="#0000ff">bool</font> dir)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node1 --&gt; node2s</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=src;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initialize destinations;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_double&gt; colvals;
+&nbsp;&nbsp;&nbsp;&nbsp; int_double cv;
+&nbsp;&nbsp;&nbsp;&nbsp; colvals.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Set destination</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node2=dest[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2&gt;=X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add Edge to node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW=merge (dest,Alist.ListW);
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(dir==0)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add node2s--&gt;node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Edge mye=create(dest[i].first,node1,dest[i].second);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(X,mye,0,1);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+
+<font color="#008000">//Add edge list</font>
+<font color="#008000">//Sorted and undirected</font>
+<font color="#0000ff">void</font> add_edgeS(A_Network *X,  vector&lt;Edge&gt; edges)
+{
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;edges.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;  add_edge(X,edges[i]);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+
+<font color="#0000ff">return</font>;}
+
+
+<font color="#0000ff">void</font> add_edgeS(A_Network *X,  vector&lt;int_int&gt; edges)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;edges.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(X,edges[i]);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">//Add edge list</font>
+<font color="#008000">//---Option for edges to be sorted sort=1; unsort=0;</font>
+<font color="#008000">//Option for being directed or not node1-&gt;node2; undir=1; dir=0;</font>
+
+<font color="#0000ff">void</font> add_edgeS(A_Network *X,  vector&lt;Edge&gt; edges, <font color="#0000ff">bool</font> undir, <font color="#0000ff">bool</font> sort)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;edges.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(X,edges[i],undir,sort);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4> 3. Delete Connected Vertex</h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level1/ADJ/del_connected_vertex.hpp" download="del_connected_vertex">Delete Connected Vertex</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">//Node is left as singleton vertex</font>
+<font color="#0000ff">void</font> del_vertex(A_Network *X, <font color="#0000ff">int</font> node1)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighs;
+&nbsp;&nbsp;&nbsp;&nbsp; get_all_neighbors(node1, *X, 1, &amp;neighs);
+&nbsp;&nbsp;&nbsp;&nbsp; del_edgeS(X,node1,neighs);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">//With option</font>
+<font color="#008000">//dir=0 bidirectional dir=1 unidirectional</font>
+<font color="#0000ff">void</font> del_vertex(A_Network *X, <font color="#0000ff">int</font> node1,<font color="#0000ff">bool</font> dir)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighs;
+&nbsp;&nbsp;&nbsp;&nbsp; get_all_neighbors(node1, *X, 1, &amp;neighs);
+&nbsp;&nbsp;&nbsp;&nbsp; del_edgeS(X,node1,neighs,dir);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+
+<font color="#008000">/******* End of Function **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4> 4. Delete Multiple Edge</h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level1/ADJ/del_multiple_edge.hpp" download="del_multiple_edge">Delete Multiple Edge</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                   <code>
+<pre><font color="#008000">//Single source multiple destination</font>
+<font color="#008000">//No weight given</font>
+<font color="#0000ff">void</font> del_edgeS(A_Network *X, <font color="#0000ff">int</font> src, vector&lt;<font color="#0000ff">int</font>&gt; dest)
+{
+&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#008000">//Get Edge info</font>
+<font color="#0000ff">int</font> node1=src;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node1--&gt;node2s</font>
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; index;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0; i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,dest[i], <font color="#ff0000">"all"</font>,dest[i], &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; dest[i]&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Edge mye=create(dest[i],src,1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; del_edge(X,mye,0);
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+
+
+<font color="#008000">//Single source multiple destination</font>
+<font color="#008000">//No weight given</font>
+<font color="#008000">//dir=0 node1-&gt;node2 dir=1 node2-&gt;node1</font>
+<font color="#0000ff">void</font> del_edgeS(A_Network *X, <font color="#0000ff">int</font> src, vector&lt;<font color="#0000ff">int</font>&gt; dest, <font color="#0000ff">bool</font> dir)
+{
+&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=src;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node1--&gt;node2s</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(dir==0)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; index;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0; i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,dest[i], <font color="#ff0000">"all"</font>,dest[i], &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; dest[i]&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(dir==0)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;dest.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Edge mye=create(dest[i],src,1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; del_edge(X, mye,0);
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+
+<font color="#008000">//Delete set of edges</font>
+<font color="#0000ff">void</font> del_edgeS(A_Network *X, vector&lt;Edge&gt; edges)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Edge mye;
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;edges.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { cout &lt;&lt; i &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; mye=edges[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=mye.node1;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2=mye.node2;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; index;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node1--&gt;node2</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,node2, <font color="#ff0000">"all"</font>,node2, &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; node2&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node2--&gt;node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,node1, <font color="#ff0000">"all"</font>,node1, &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; node1&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node2)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+<font color="#008000">//One side only</font>
+<font color="#008000">//dir=0; del node1-&gt;node2; dir=1 del node2--&gt;node1</font>
+<font color="#0000ff">void</font> del_edgeS(A_Network *X, vector&lt;Edge&gt; edges, <font color="#0000ff">bool</font> dir)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; Edge mye;
+&nbsp;&nbsp;&nbsp;&nbsp; ADJ_Bundle Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;edges.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; { cout &lt;&lt; i &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; mye=edges[i];
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Get Edge info</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=mye.node1;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2=mye.node2;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; index;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if the nodes exists</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node1&lt;0) || (node1==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>((node2&lt;0) || (node2==X-&gt;size()))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Row"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node1--&gt;node2</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,node2, <font color="#ff0000">"all"</font>,node2, &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node1 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; node2&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node1)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Remove node2--&gt;node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist=X-&gt;at(node2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find if node2 is connected to node1</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; contains (Alist.ListW,<font color="#ff0000">"first"</font>,node1, <font color="#ff0000">"all"</font>,node1, &amp;index);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(index.size()==0){cout &lt;&lt;<font color="#ff0000">"ESSENS:ERROR::   Edge"</font> &lt;&lt; node2 &lt;&lt; <font color="#ff0000">"-&gt;"</font>&lt;&lt; node1&lt;&lt;<font color="#ff0000">" Does not exist \n"</font>; <font color="#0000ff">return</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Erase node from list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Alist.ListW.erase(Alist.ListW.begin()+index[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Udate Alist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; X-&gt;at(node2)=Alist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#008000">//Single source multiple destination</font>
+<font color="#008000">//weight given</font>
+<font color="#0000ff">void</font> del_edgeS(A_Network *X, <font color="#0000ff">int</font> src, vector&lt;int_double&gt; dest)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; mydest;
+&nbsp;&nbsp;&nbsp;&nbsp; get_all(dest, <font color="#ff0000">"first"</font>, &amp;mydest);
+&nbsp;&nbsp;&nbsp;&nbsp; del_edgeS(X, src, dest);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+
+<font color="#008000">//With Options</font>
+<font color="#008000">//Single source multiple destination</font>
+<font color="#008000">//weight given</font>
+<font color="#008000">//dir=0 bidirectional dir=1 unidirectional</font>
+<font color="#0000ff">void</font> del_edgeS(A_Network *X, <font color="#0000ff">int</font> src, vector&lt;int_double&gt; dest, <font color="#0000ff">bool</font> dir)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; mydest;
+&nbsp;&nbsp;&nbsp;&nbsp; get_all(dest, <font color="#ff0000">"first"</font>, &amp;mydest);
+&nbsp;&nbsp;&nbsp;&nbsp; del_edgeS(X, src, mydest,dir);
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Functions **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                               </ul>
+                                               <li><h4>Level - 2</h4></li>
+                                               <p>Level - 2 code is further divided as shown below. </p>
+                                               <ul>
+                                                   <li><h4> ADJ </h4></li>
+                                                   <p><h4> 1. Combine Networks </h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level2/ADJ/combine_networks.hpp" download="combine_networks">Combine Networks</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> find_candidate_edges(A_Network X, A_Network Y, A_Network Z, vector&lt;<font color="#0000ff">int</font>&gt; vertex_list, vector&lt;Type1&gt; *edge_list)
+{
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1, node2;
+&nbsp;&nbsp;&nbsp;&nbsp; int_int myedge;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighbors, neighborsX, neighborsY, neighborsZ, neighborsi, neighborsj;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; blacklist;
+&nbsp;&nbsp;&nbsp;&nbsp; edge_list-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//For each vertex find candidate edges</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;vertex_list.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node1=vertex_list[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find distance 1 neighbors in i in chordal network Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node1,Y[node1].ListW, &amp;neighbors); <font color="#008000">//find a Adj to v</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighbors.size()&lt;2){<font color="#0000ff">continue</font>;} <font color="#008000">//If only one neighbor no edge can be formed</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//else find neighbors that are connected but not in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//nodes not to be checked in blacklist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> j=0;j&lt;neighbors.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2=neighbors[j];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist=merge(node2,blacklist);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in  X;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node2,X[node2].ListW,&amp;neighborsX, blacklist,neighbors); <font color="#008000">//get neighbors of node2;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;     <font color="#0000ff">if</font>(neighborsX.size()==0){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in chordal Y;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node2,Y[node2].ListW,&amp;neighborsY,blacklist,neighbors); <font color="#008000">//get neighbors of node2;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(Z[node2].ListW.size()&gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in non-chordal Z</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node2,Z[node2].ListW,&amp;neighborsZ, blacklist,neighbors); <font color="#008000">//get neighbors of node2;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find identify vertices that are not in Y and Z</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighborsj=merge(neighborsZ, neighborsY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {neighborsj=neighborsY;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Collect edges in X but not in Y and Z</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsj.size()&gt;0){
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighborsi=difference(neighborsX, neighborsj);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {neighborsi=neighborsX;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//add to edge_list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;neighborsi.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   {myedge.first=min(node2, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge.second=max(node2, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; edge_list-&gt;push_back(myedge);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for k			</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for j</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for i</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp; *edge_list=unique(*edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//print_vector(*edge_list);</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;
+}
+<font color="#008000">///////// End of Function </font>
+
+
+
+<font color="#0000ff">void</font> find_addable_edges(A_Network X, A_Network *Y, A_Network *Z, vector&lt;int_int&gt; edge_list, vector&lt;<font color="#0000ff">int</font>&gt; *used_vertex, <font color="#0000ff">bool</font> *del_work)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> a=-1, b=-1, path;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsaY, neighborsbY, IYab,IXab, diffneighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; DYa, DYb;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> addable=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> deletable =<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> edge_add=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> edge_del=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found;
+&nbsp;&nbsp;&nbsp;&nbsp; used_vertex-&gt;resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0; i&lt; edge_list.size(); i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; a=edge_list[i].first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; b=edge_list[i].second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; addable=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; deletable=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find IC(a,b)=Adj(a)^Adj(b)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(a,Y-&gt;at(a).ListW,&amp;neighborsaY); <font color="#008000">//get neighbors of a;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(b,Y-&gt;at(b).ListW,&amp;neighborsbY); <font color="#008000">//get neighbors of b;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; IYab=intersect(neighborsaY, neighborsbY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//pick top one</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> v=IYab[0];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find neighbors of v1 in Y but not in IYab</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(v,Y-&gt;at(v).ListW,&amp;diffneighbors, IYab); <font color="#008000">//get neighbors of v not in IYab;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; path=0;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Conditions for addable</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//C1: join a and b if no diffneighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(diffneighbors.size()==0){addable=<font color="#0000ff">true</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//C2: Find neighbors of a in diffneighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; DYa=intersect(diffneighbors, neighborsaY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//If zero then a is disconnected--join</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(DYa.size()==0) {addable=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//C3: Find neighbors of b in diffneighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; DYb=intersect(diffneighbors, neighborsbY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//If zero then b is disconnected--join</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(DYb.size()==0){addable=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//C4: If there is no path from a to b using diffneighbors only</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; path=shortest_path(a,b,*Y,diffneighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(path==-1) {addable=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//if addable--add to Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(addable==<font color="#0000ff">true</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; edge_add++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(&amp;Y-&gt;at(a).ListW, &amp;Y-&gt;at(b).ListW,edge_list[i]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//store affected nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; used_vertex-&gt;push_back(a);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; used_vertex-&gt;push_back(b);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Deletable</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(path&gt;2 &amp;&amp; *del_work)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> r=a;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> p=b;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> xt=0;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(xt&lt;2)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsaX, neighborsbX, neighborsaZ, neighborsbZ, blacklist;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find IG(a,b)=Adj(a)^Adj(b)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighborsaZ=blacklist;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighborsbZ=blacklist;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(Z-&gt;at(r).ListW.size()&gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {get_neighbors(r,Z-&gt;at(r).ListW,&amp;neighborsaZ,blacklist,diffneighbors);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(r,X[r].ListW,&amp;neighborsaX, neighborsaZ, diffneighbors); <font color="#008000">//get neighbors of a that are in path_nodes;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsaX.size()==0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {edge_del++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(&amp;Z-&gt;at(r).ListW, &amp;Z-&gt;at(p).ListW,edge_list[i]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">break</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(Z-&gt;at(p).ListW.size()&gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {get_neighbors(p,Z-&gt;at(p).ListW,&amp;neighborsbZ,blacklist,neighborsaX);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(p,X[p].ListW,&amp;neighborsbX, neighborsbZ, neighborsaX); <font color="#008000">//get neighbors of b that are in path_nodes;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsbX.size()==0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {edge_del++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(&amp;Z-&gt;at(r).ListW, &amp;Z-&gt;at(p).ListW,edge_list[i]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;      <font color="#0000ff">break</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; xt++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; r=diffneighbors[0];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for i;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; sort(used_vertex);
+*used_vertex=unique(*used_vertex);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"Number of Edges Added :"</font> &lt;&lt; edge_add &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"Number of Edges Delted :"</font> &lt;&lt; edge_del &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(edge_del &lt;=edge_add*.2) {*del_work=<font color="#0000ff">false</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#008000">//Add edges from X that form a triangle in Z</font>
+<font color="#0000ff">void</font> add_edges_chd(A_Network X, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; vertex_list, used_vertex;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_int&gt; edge_list;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Create Network for unwanted edges</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Number of nodes is total_nodes;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; A_Network Z;
+&nbsp;&nbsp;&nbsp;&nbsp; create_Network(total_nodes, 0,&amp;Z);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initially check all vertices</font>
+&nbsp;&nbsp;&nbsp;&nbsp; vertex_list.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;total_nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {vertex_list.push_back(i);}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find candidate_edges</font>
+&nbsp;&nbsp;&nbsp;&nbsp; find_candidate_edges(X,*Y,Z,vertex_list,&amp;edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> it=1;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_edges=total_nodes-1;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"\n Initial Edge "</font> &lt;&lt; total_edges &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> del_work=<font color="#0000ff">true</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(edge_list.size() &gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"\n Iterations: "</font>&lt;&lt; it  &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"Vertices: "</font>&lt;&lt; vertex_list.size() &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"Candidate Edge: "</font>&lt;&lt; edge_list.size() &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find addable edges for edge_list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; find_addable_edges(X,Y, &amp;Z, edge_list, &amp;vertex_list, &amp;del_work);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find candidate_edges</font>
+&nbsp;&nbsp;&nbsp;&nbsp; find_candidate_edges(X,*Y, Z, vertex_list, &amp;edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; it++;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Function **************/</font>
+
+
+<font color="#008000">//NOT PART OF CHORDAL ALGORITHM---</font>
+<font color="#008000">//Combine Two Networks</font>
+<font color="#008000">//Add edges from X that form a triangle in Z</font>
+<font color="#0000ff">void</font> combine_networks_tri(A_Network X, A_Network *Z)
+{
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1, node2;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; di_neighborsY;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; d1_neighborsX;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; d1_neighborsY;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; d1_neighborsXY;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; A_Network Y=*Z;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;total_nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find distance 1 neighbors in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(i,Y[i].ListW, &amp;di_neighborsY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(di_neighborsY.size()==1){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check How many di_neighborsY are also d1_neighbors in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;di_neighborsY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0; j&lt;di_neighborsY.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node1=di_neighborsY[j];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; d1_neighborsXY.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=j+1; k&lt;di_neighborsY.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node2=di_neighborsY[k];
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if not neighbor of Y--then </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(node2, Z-&gt;at(node1).ListW,  <font color="#ff0000">"first"</font>))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    <font color="#008000">//Check if neighbor of X</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    <font color="#0000ff">if</font>(contains_sort(node2,X[node1].ListW, <font color="#ff0000">"first"</font>))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    {d1_neighborsXY.push_back(node2);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">// end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add edges to Z</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(Z, node1, d1_neighborsXY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for -j</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for -i	</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Function **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4> 2. Combine Networks1 </h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level2/ADJ/combine_networks1.hpp" download="combine_networks1">Combine Networks1</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">//Combine Two Networks</font>
+<font color="#008000">//Add edges from X that form a triangle in Z</font>
+<font color="#0000ff">void</font> add_triangles_chd(A_Network X, A_Network *Z)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsX;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsY;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1;
+&nbsp;&nbsp;&nbsp;&nbsp; int_int myedge;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_int&gt; myQ;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsi;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsj;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; blacklist;
+
+&nbsp;&nbsp;&nbsp;&nbsp; A_Network Y=*Z;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Create Initial Set of Edges to be added</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;total_nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; i &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find distance 1 neighbors in i in chordal network Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(i,Y[i].ListW, &amp;neighbors); <font color="#008000">//find a Adj to v</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.push_back(i);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighbors.size()==1){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find distance from each neighbor</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> j=0;j&lt;neighbors.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=neighbors[j];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist=merge(node1,blacklist);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in chordal Y;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node1,Y[node1].ListW,&amp;neighborsY,blacklist,neighbors); <font color="#008000">//get neighbors of node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in  X;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node1,X[node1].ListW,&amp;neighborsX, blacklist,neighbors); <font color="#008000">//get neighbors of node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsX.size()==0){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsY.size()&gt;0){
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find edges in X but not in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighborsi=difference(neighborsX, neighborsY); <font color="#008000">//find triangles a--b--v--a</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//neighborsi=intersect(neighborsj, neighbors);</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {neighborsi=neighborsX;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;neighborsi.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {myedge.first=min(node1, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge.second=max(node1, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myQ=merge(myedge, myQ);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for k			</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for j</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for i</font>
+&nbsp;&nbsp;&nbsp;&nbsp; myQ=unique(myQ);
+&nbsp;&nbsp;&nbsp;&nbsp; print_vector(myQ);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Done Creating Initial Set</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsaY;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsbY;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsvY;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; diffneighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; DYa;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; DYb;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; IYab;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> it=1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(myQ.size()&gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"========== "</font>&lt;&lt; it &lt;&lt;<font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; it++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge=myQ.back();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myQ.pop_back();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; print_element(myedge);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> a=myedge.first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> b=myedge.second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> joined=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find IC(a,b)=Adj(a)^Adj(b)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(a,Y[a].ListW,&amp;neighborsaY); <font color="#008000">//get neighbors of a;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(b,Y[b].ListW,&amp;neighborsbY); <font color="#008000">//get neighbors of b;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//intersect</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; IYab=intersect(neighborsaY, neighborsbY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//print_vector(IYab);</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//pick top one</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> v=IYab[0];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find neighbors of v1 in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(v,Y[v].ListW,&amp;diffneighbors, IYab); <font color="#008000">//get neighbors of v;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//get neighbors of v1 not in IC(a,b)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//diffneighbors=difference(neighborsvY,IYab);</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//print_vector(diffneighbors);</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find neighbors of a in diffneighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; DYa=intersect(diffneighbors, neighborsaY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//If zero then a is disconnected</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(DYa.size()==0) {joined=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find neighbors of b in diffneighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; DYb=intersect(diffneighbors, neighborsbY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//If zero then b is disconnected</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(DYb.size()==0){joined=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//check for path from a to b</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> path=shortest_path(a,b,Y,diffneighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(path==-1){joined=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//if(a,b) in</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(joined)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"join "</font> &lt;&lt; a  &lt;&lt; <font color="#ff0000">":"</font>&lt;&lt; b &lt;&lt; <font color="#ff0000">"\n"</font>;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add (a,b) to Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge( &amp;Y, myedge);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find edges from neighbors of a</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighbors=neighborsaY;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighbors=merge(b, neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighbors.size( )&gt;1)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> j=0;j&lt;neighbors.size()-1;j++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.push_back(a);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=neighbors[j];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist=merge(node1,blacklist);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in chordal Y;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node1,Y[node1].ListW,&amp;neighborsY,blacklist,neighbors); <font color="#008000">//get neighbors of node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in  X;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node1,X[node1].ListW,&amp;neighborsX, blacklist,neighbors); <font color="#008000">//get neighbors of node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsX.size()==0){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsY.size()&gt;0){
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find edges in X but not in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighborsi=difference(neighborsX, neighborsY); <font color="#008000">//find triangles a--b--v--a</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//neighborsi=intersect(neighborsj, neighbors);</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {neighborsi=neighborsX;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;neighborsi.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge.first=min(node1, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge.second=max(node1, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myQ=merge(myedge, myQ);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for k		</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for j</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find edges from neighbors of b</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighbors=neighborsbY;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighbors=merge(a, neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighbors.size()&gt;1)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.push_back(b);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> j=0;j&lt;neighbors.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1=neighbors[j];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist=merge(node1,blacklist);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in chordal Y;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node1,Y[node1].ListW,&amp;neighborsY,blacklist,neighbors); <font color="#008000">//get neighbors of node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in  X;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node1,X[node1].ListW,&amp;neighborsX, blacklist,neighbors); <font color="#008000">//get neighbors of node1;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsX.size()==0){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsY.size()&gt;0){
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find edges in X but not in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighborsi=difference(neighborsX, neighborsY); <font color="#008000">//find triangles a--b--v--a</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//neighborsi=intersect(neighborsj, neighbors);</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {neighborsi=neighborsX;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;neighborsi.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge.first=min(node1, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge.second=max(node1, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myQ=merge(myedge, myQ);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for k	</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for j</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myQ=unique(myQ);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//	print_vector(myQ);</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; *Z=Y;
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Function **************/</font>
+
+
+<font color="#008000">//Combine Two Networks</font>
+<font color="#008000">//Add edges from X that form a triangle in Z</font>
+<font color="#0000ff">void</font> combine_networks_tri(A_Network X, A_Network *Z)
+{
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node1, node2;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; di_neighborsY;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; d1_neighborsX;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; d1_neighborsY;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; d1_neighborsXY;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; A_Network Y=*Z;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;total_nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find distance 1 neighbors in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(i,Y[i].ListW, &amp;di_neighborsY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(di_neighborsY.size()==1){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check How many di_neighborsY are also d1_neighbors in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;di_neighborsY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0; j&lt;di_neighborsY.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node1=di_neighborsY[j];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; d1_neighborsXY.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=j+1; k&lt;di_neighborsY.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; node2=di_neighborsY[k];
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if not neighbor of Y--then </font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(!contains_sort(node2, Z-&gt;at(node1).ListW,  <font color="#ff0000">"first"</font>))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    <font color="#008000">//Check if neighbor of X</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    <font color="#0000ff">if</font>(contains_sort(node2,X[node1].ListW, <font color="#ff0000">"first"</font>))
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    {d1_neighborsXY.push_back(node2);}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;    } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">// end of for</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Add edges to Z</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(Z, node1, d1_neighborsXY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for -j</font>
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for -i	</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Function **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4> 3. Combine NetworksX </h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level2/ADJ/combine_networksX.hpp" download="combine_networksx">Combine NetworksX</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#0000ff">template</font>&lt;<font color="#0000ff">class</font> Type1&gt;
+<font color="#0000ff">void</font> find_candidate_edgesX(A_Network X, A_Network Y, <font color="#0000ff">int</font> node1, vector&lt;Type1&gt; *edge_list)
+{
+
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2;
+&nbsp;&nbsp;&nbsp;&nbsp; int_int myedge;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighbors, neighborsX, neighborsY, neighborsZ, neighborsi, neighborsj;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsXX, neighborsYY, neighborsZZ; &nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; blacklist;
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find distance 1 neighbors in i in chordal network Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node1,Y[node1].ListW, &amp;neighbors); <font color="#008000">//find a Adj to v</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighbors.size()&lt;2){<font color="#0000ff">return</font>;} <font color="#008000">//If only one neighbor no edge can be formed</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//else find neighbors that are connected but not in Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//nodes not to be checked in blacklist</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist.push_back(node1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> j=0;j&lt;neighbors.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> node2=neighbors[j];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; blacklist=merge(node2,blacklist);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in  X;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node2,X[node2].ListW,&amp;neighborsX, blacklist,neighbors); <font color="#008000">//get neighbors of node2;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;     <font color="#0000ff">if</font>(neighborsX.size()==0){<font color="#0000ff">continue</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find triangulating edges in chordal Y;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(node2,Y[node2].ListW,&amp;neighborsj,blacklist,neighbors); <font color="#008000">//get neighbors of node2;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Collect edges in X but not in Y and Z</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(neighborsj.size()&gt;0){
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; neighborsi=difference(neighborsX, neighborsj);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {neighborsi=neighborsX;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//cout &lt;&lt; neighborsi.size() &lt;&lt; "===\n";</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//add to edge_list</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> k=0;k&lt;neighborsi.size();k++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   {myedge.first=min(node2, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge.second=max(node2, neighborsi[k]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   edge_list-&gt;push_back(myedge);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for k			</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of for j</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;
+}
+<font color="#008000">///////// End of Function </font>
+
+
+
+<font color="#0000ff">void</font> find_addable_edgesX(A_Network X, A_Network *Y, vector&lt;int_int&gt; edge_list)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> a=-1, b=-1, path;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighborsaY, neighborsbY, IYab,IXab, diffneighbors;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; DYa, DYb;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> addable=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> deletable =<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> edge_add=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> edge_del=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">bool</font> found;
+&nbsp;&nbsp;&nbsp;&nbsp; int_int myedge;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font> (<font color="#0000ff">int</font> i=0;i&lt;edge_list.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; edge_list.size() &lt;&lt; <font color="#ff0000">"::"</font>&lt;&lt; i &lt;&lt;<font color="#ff0000">"...\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge=edge_list[i];
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; a=myedge.first;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; b=myedge.second;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; addable=<font color="#0000ff">false</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Find IC(a,b)=Adj(a)^Adj(b)</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(a,Y-&gt;at(a).ListW,&amp;neighborsaY); <font color="#008000">//get neighbors of a;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(b,Y-&gt;at(b).ListW,&amp;neighborsbY); <font color="#008000">//get neighbors of b;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; IYab=intersect(neighborsaY, neighborsbY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//pick top one</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> v=IYab[0];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find neighbors of v1 in Y but not in IYab</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(v,Y-&gt;at(v).ListW,&amp;diffneighbors, IYab); <font color="#008000">//get neighbors of v not in IYab;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; path=0;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Conditions for addable</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//C1: join a and b if no diffneighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(diffneighbors.size()==0){addable=<font color="#0000ff">true</font>; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//C2: Find neighbors of a in diffneighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; DYa=intersect(diffneighbors, neighborsaY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//If zero then a is disconnected--join</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(DYa.size()==0) {addable=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//C3: Find neighbors of b in diffneighbors</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; DYb=intersect(diffneighbors, neighborsbY);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//If zero then b is disconnected--join</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(DYb.size()==0){addable=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font> {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//C4: If there is no path from a to b using diffneighbors only</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; path=shortest_path(a,b,*Y,diffneighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(path==-1) {addable=<font color="#0000ff">true</font>;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of else</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of else</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//if addable--add to Y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(addable==<font color="#0000ff">true</font>)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; edge_add++;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(&amp;Y-&gt;at(a).ListW, &amp;Y-&gt;at(b).ListW,myedge);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//store affected nodes</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; find_candidate_edgesX(X, *Y, a, &amp;edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; find_candidate_edgesX(X, *Y, b, &amp;edge_list);&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; edge_list=unique(edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"Number of Edges Added :"</font> &lt;&lt; edge_add &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; <font color="#ff0000">"Number of Edges Delted :"</font> &lt;&lt; edge_del &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">return</font>;
+}
+
+
+<font color="#008000">//Add edges from X that form a triangle in Z</font>
+<font color="#0000ff">void</font> add_edges_chdX(A_Network X, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_int&gt; edge_list;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Initially check all vertices</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;total_nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {find_candidate_edgesX(X,*Y,i,&amp;edge_list);}
+&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp; edge_list=unique(edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//find candidate_edges</font>
+&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; edge_list.size() &lt;&lt; <font color="#ff0000">"\n"</font>;
+&nbsp;&nbsp;&nbsp;&nbsp; find_addable_edgesX(X,Y, edge_list);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Function **************/</font>
+
+<font color="#008000">//ICPP Algorithm</font>
+
+<font color="#008000">//Add edges from X that form a triangle in Z</font>
+<font color="#0000ff">void</font> add_edges_chdPP(A_Network X, A_Network *Y)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> total_nodes=X.size();
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;int_int&gt; lp;
+&nbsp;&nbsp;&nbsp;&nbsp; int_int dx;
+&nbsp;&nbsp;&nbsp;&nbsp; dx.first=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; dx.second=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; lp.resize(total_nodes,dx);
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; Q1;
+&nbsp;&nbsp;&nbsp;&nbsp; Q1.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt; vector&lt;<font color="#0000ff">int</font>&gt; &gt; chordal;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; dummy;
+&nbsp;&nbsp;&nbsp;&nbsp; dummy.resize(1);
+&nbsp;&nbsp;&nbsp;&nbsp; dummy[0]=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; chordal.resize(total_nodes, dummy);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; create_Network(total_nodes, 0,Y);
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Obtain Lowest Parent of Each Vertex</font>
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;total_nodes;i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(X[i].ListW.size() &gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <font color="#0000ff">if</font>(X[i].ListW[0].first &lt; i)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; lp[i].first=X[i].ListW[0].first; <font color="#008000">//This is beaucse the networks are sorted</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; lp[i].second=0;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Q1.push_back(lp[i].first);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{lp[i].first=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;      lp[i].second=-1;}
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;Q1);
+&nbsp;&nbsp;&nbsp;&nbsp; Q1=unique(Q1);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; Q2;
+&nbsp;&nbsp;&nbsp;&nbsp; Q2.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; cW, cV, cX, cZ;
+&nbsp;&nbsp;&nbsp;&nbsp; int_int myedge;
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;<font color="#0000ff">int</font>&gt; neighbors;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font>(Q1.size()!=0)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Q2.resize(0);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> x=0;x&lt;Q1.size();x++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> v=Q1[x];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//cout &lt;&lt; v &lt;&lt; ":::"&lt;&lt; X[v].ListW.size() &lt;&lt;"+++"&lt;<q1.size() <<".."<<x<<"\n";<="" font="">
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(X[v].ListW.size()&gt;0)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; get_neighbors(v, X[v].ListW, &amp;neighbors);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Check if subset</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//w=neighbors[i]</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt; neighbors.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {   <font color="#0000ff">int</font> w=neighbors[i];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(lp[w].first==v)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cW.clear();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cW.clear();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cX.clear();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cZ.clear();
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//chordal of w</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  cW=chordal[w];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  cV=chordal[v];
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//If subset if cW intersect cV gives cW</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cX=intersect(cW,cV);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; cZ=difference(cW,cX);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(cZ.size()==0) <font color="#008000">//is a subset==add v to w</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; chordal[w].push_back(v); <font color="#008000">//add v to chordal w</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge.first=w;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; myedge.second=v;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(&amp;Y-&gt;at(w).ListW, &amp;Y-&gt;at(v).ListW,myedge); <font color="#008000">//add edge to y</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//Update lp[w]</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> k=lp[w].second+1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(X[w].ListW.size() &gt;k)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">if</font>(X[w].ListW[k].first &lt; w)
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; lp[w].first=X[w].ListW[k].first; <font color="#008000">//This is beaucse the networks are sorted</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; lp[w].second=k;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Q2.push_back(lp[w].first);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">else</font>{lp[i].first=-1;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; lp[i].second=-1;}&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of if</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for i</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for x</font>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;Q2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Q2=unique(Q2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Q1=Q2;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; } <font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}</q1.size()></font>
+</pre><font color="#008000">
+</font></code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4> 4. Permute Vertex </h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level2/ADJ/permute_vertex.hpp" download="permute_vertex">Permute Vertex</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">//Permute the vertices in the graph based on the order</font>
+
+A_Network permute_vertex(A_Network X, vector&lt;<font color="#0000ff">int</font>&gt; permute_list)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; A_Network Y;
+&nbsp;&nbsp;&nbsp;&nbsp; create_Network(X.size(),0, &amp;Y);
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> i=0;i&lt;X.size();i++)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> r=permute_list[X[i].Row];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Y[r].ListW=X[i].ListW;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">for</font>(<font color="#0000ff">int</font> j=0;j&lt;Y[r].ListW.size();j++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Y[r].ListW[j].first=permute_list [ Y[r].ListW[j].first];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for j</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#008000">//sort the edge list to keep the nodes sorted</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sort(&amp;Y[r].ListW);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of for i</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font> Y;}
+<font color="#008000">/******* End of Function **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                                   <p><h4> 5. Perturb Network </h4></p>
+                                                   <p> The Following code </p>
+														   <p><a href="https://raw.githubusercontent.com/vnikesh/Media/master/ESSENS/Basic_Change/Level2/ADJ/perturb_network.hpp" download="perturb_network">Perturb Network</a></p>
+														   <div class="auto">
+															   <table class="split">
+																   <tbody>
+																   <td class="source">
+                                                                       <code>
+<pre><font color="#008000">//Perturb Network Edges Based on Cross Linking</font>
+<font color="#008000">//Select two edges (a--b) and (c--d) ; (a-/-d) ; (b-/-c)</font>
+<font color="#008000">//Cross them such that (a--d); (c--b); (a-/-b) and (c-/-d)</font>
+
+<font color="#0000ff">void</font> perturb_edges_cross(A_Network *X, <font color="#0000ff">int</font> num)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Edge&gt; edges; <font color="#008000">//Each set of 4 vertice constitute a,b,c,d in order;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; Edge newedge1, newedge2;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">int</font> it=0;
+&nbsp;&nbsp;&nbsp;&nbsp; <font color="#0000ff">while</font> (it&lt;num)
+&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; pick_random_2edges(*X, &amp;edges);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; newedge1=create(edges[0].node1, edges[1].node2, edges[0].edge_wt);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; newedge2=create(edges[1].node1, edges[0].node2, edges[1].edge_wt);
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; del_edge(X, edges[0]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; del_edge(X, edges[1]);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(X, newedge1);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; add_edge(X, newedge2);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; it++;
+&nbsp;&nbsp;&nbsp;&nbsp; }<font color="#008000">//end of while</font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#0000ff">return</font>;}
+<font color="#008000">/******* End of Function **************/</font>
+
+<font color="#008000">//Add Random Edges to the network</font>
+
+<font color="#0000ff">void</font> perturb_edges_add (A_Network *X, <font color="#0000ff">int</font> num)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Edge&gt; edges; <font color="#008000">//Each set of 4 vertice constitute a,b,c,d in order;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; pick_random_edges(*X, &amp;edges, num,0);
+&nbsp;&nbsp;&nbsp;&nbsp; add_edgeS(X, edges);
+}
+<font color="#008000">/******* End of Function **************/</font>
+
+
+<font color="#008000">//Delete Random Edges to the network</font>
+
+<font color="#0000ff">void</font> perturb_edges_del(A_Network *X, <font color="#0000ff">int</font> num)
+{
+&nbsp;&nbsp;&nbsp;&nbsp; vector&lt;Edge&gt; edges; <font color="#008000">//Each set of 4 vertice constitute a,b,c,d in order;</font>
+&nbsp;&nbsp;&nbsp;&nbsp; pick_random_edges(*X, &amp;edges, num,1);
+&nbsp;&nbsp;&nbsp;&nbsp; del_edgeS(X, edges);
+&nbsp;&nbsp;&nbsp;&nbsp;
+}
+<font color="#008000">/******* End of Function **************/</font>
+</pre>
+</code>
+                                                                   </td>
+                                                                   </tbody>
+                                                               </table>
+                                                           </div>
+                                               </ul>
+                                           </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </body>
+    </html>
+{% endblock %}

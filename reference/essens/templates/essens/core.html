@@ -1,0 +1,36 @@
+{% extends 'essens/base.html' %}
+{% load staticfiles %}
+{% block content %}
+            {% if user.is_authenticated %}
+                <div class="page-container">
+
+                    <h2 class="top-menu">Hello {{ user.username }},</h2>
+                    <p>Please choose from below options.</p>
+
+                </div>
+            {% endif %}
+            <div class="content container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="links">
+                            <!-- Example row of columns -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                       <div class="caption">
+                                            <h2>Core</h2>
+                                            <p>This file has the main code of the project, the code is futher categoried as follows. </p>
+                                           <ul>
+                                               <li><a href="{% url 'essens:basicio' %}">Basic IO</a></li>
+                                               <li><a href="{% url 'essens:basicsetops' %}">Basic SetOps</a></li>
+                                               <li><a href="{% url 'essens:basictraversal' %}">Basic Traversal</a></li>
+                                           </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </body>
+    </html>
+{% endblock %}
